@@ -1,0 +1,88 @@
+<section class="space-y-6 m-8">
+  <h1 class="text-2xl md:text-3xl text-gray-800 mb-6">Resumen de soporte técnico</h1>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Card: Incidencias -->
+    <div class="bg-white rounded-md border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-800 mb-16">Incidencias de asistencia técnica</h2>
+      <div class="flex items-center gap-3">
+        <button
+          class="inline-flex items-center px-4 py-2 rounded-full bg-primary hover:bg-primary/80 text-white shadow-sm"
+          >Crear incidencia</button>
+        <button
+          class="inline-flex items-center px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-50 text-gray-800"
+          >Iniciar chat</button>
+      </div>
+    </div>
+
+    <!-- Card: Sesiones con expertos -->
+    <div class="bg-white rounded-md border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">Agenda sesion</h2>
+      <div class="flex items-center gap-3 mb-3 mt-14">
+        <button
+          class="inline-flex items-center px-4 py-2 rounded-full border border-gray-800 text-gray-900 hover:bg-gray-900 hover:text-white font-medium transition">Agendar
+          sesion con soporte</button>
+      </div>
+      <a class="text-sm text-blue-700 hover:underline cursor-pointer">Más información sobre la asistencia y las
+        sesiones con expertos</a>
+    </div>
+  </div>
+
+  <!-- Buttons group: Temas de ayuda por fabricante -->
+   <h2 class="text-lg font-semibold text-gray-800 mb-2">Temas de ayuda por fabricante</h2>
+   <div class="inline-flex rounded-sm shadow-xs border-b-2 border-gray-200" role="group">
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Adobe)" [class.active]="getSelectedCompanyType() === companyTypes.Adobe">Adobe</button>
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Anydesk)" [class.active]="getSelectedCompanyType() === companyTypes.Anydesk">Anydesk</button>
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Atlasti)" [class.active]="getSelectedCompanyType() === companyTypes.Atlasti">Atlas.ti</button>
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Autodesk)" [class.active]="getSelectedCompanyType() === companyTypes.Autodesk">Autodesk</button>
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Claris)" [class.active]="getSelectedCompanyType() === companyTypes.Claris">Claris</button>
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Corel)" [class.active]="getSelectedCompanyType() === companyTypes.Corel">Corel</button>
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Graphisoft)" [class.active]="getSelectedCompanyType() === companyTypes.Graphisoft">Graphisoft</button>
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Kaspersky)" [class.active]="getSelectedCompanyType() === companyTypes.Kaspersky">Kaspersky</button>
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Microsoft)" [class.active]="getSelectedCompanyType() === companyTypes.Microsoft">Microsoft</button>
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Panopto)" [class.active]="getSelectedCompanyType() === companyTypes.Panopto">Panopto</button>
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Sketchup)" [class.active]="getSelectedCompanyType() === companyTypes.Sketchup">SketchUp</button>
+    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Starlab)" [class.active]="getSelectedCompanyType() === companyTypes.Starlab">Starlab</button>
+   </div>
+
+   <!-- Content: Cards de temas de ayuda por fabricante -->
+   <div class="mt-16">
+    @switch (getSelectedCompanyType()) {
+      @case (companyTypes.Adobe) {
+        <app-adobe-topic></app-adobe-topic>
+      }
+      @case (companyTypes.Anydesk) {
+        <app-anydesk-topic></app-anydesk-topic>
+      }
+      @case (companyTypes.Atlasti) {
+        <app-atlasti-topic></app-atlasti-topic>
+      }
+      @case (companyTypes.Autodesk) {
+        <app-autodesk-topic></app-autodesk-topic>
+      }
+      @case (companyTypes.Claris) {
+        <app-claris-topic></app-claris-topic>
+      }
+      @case (companyTypes.Corel) {
+        <app-corel-topic></app-corel-topic>
+      }
+      @case (companyTypes.Graphisoft) {
+        <app-graphisoft-topic></app-graphisoft-topic>
+      }
+      @case (companyTypes.Kaspersky) {
+        <app-kaspersky-topic></app-kaspersky-topic>
+      }
+      @case (companyTypes.Microsoft) {
+        <app-microsoft-topic></app-microsoft-topic>
+      }
+      @case (companyTypes.Panopto) {
+        <app-panopto-topic></app-panopto-topic>
+      }
+      @case (companyTypes.Sketchup) {
+        <app-sketchup-topic></app-sketchup-topic>
+      }
+      @case (companyTypes.Starlab) {
+        <app-starlab-topic></app-starlab-topic>
+      }
+    }
+   </div>
+</section>
