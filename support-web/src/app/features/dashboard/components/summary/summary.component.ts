@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdobeTopicComponent } from "./components/adobe-topic/adobe-topic.component";
 import { AnydeskTopicComponent } from "./components/anydesk-topic/anydesk-topic.component";
@@ -12,6 +12,8 @@ import { PanoptoTopicComponent } from "./components/panopto-topic/panopto-topic.
 import { AtlastiTopicComponent } from "./components/atlasti-topic/atlasti-topic.component";
 import { SketchupTopicComponent } from "./components/sketchup-topic/sketchup-topic.component";
 import { StarlabTopicComponent } from "./components/starlab-topic/starlab-topic.component";
+import { MatDialog } from "@angular/material/dialog";
+import { CreateIncidentComponent } from './components/create-incident/create-incident.component';
 
 enum CompanyType {
   Adobe = 'adobe',
@@ -38,6 +40,7 @@ enum CompanyType {
 export class SummaryComponent {
   companyTypes = CompanyType;
   selectedCompanyType = signal<CompanyType>(CompanyType.Adobe);
+  readonly createIncident = inject(MatDialog);
 
   public setSelectedCompanyType(company: CompanyType) {
     this.selectedCompanyType.set(company);
@@ -45,5 +48,9 @@ export class SummaryComponent {
 
   public getSelectedCompanyType() {
     return this.selectedCompanyType();
+  }
+
+  opendialog() {
+    const dialogRef = this.createIncident.open(CreateIncidentComponent);
   }
 }

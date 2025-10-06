@@ -1,0 +1,110 @@
+<section class="flex flex-col m-6">
+  <h2 mat-dialog-title class="text-xl font-semibold mb-4">Describe tu problema</h2>
+
+  <mat-dialog-content class="mat-typography">
+    <mat-stepper #stepper [linear]="isLinear">
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+          <ng-template matStepLabel>Describe el problema</ng-template>
+
+          <div class="m-4">
+            <p class="mt-4 font-semibold">Seleccione el fabricante del producto afectado:</p>
+            <mat-form-field class="w-full">
+              <mat-label>Fabricante del producto afectado</mat-label>
+              <mat-select formControlName="manufacturer" required>
+                <mat-option value="adobe">Adobe</mat-option>
+                <mat-option value="anydesk">Anydesk</mat-option>
+                <mat-option value="atlasti">Atlas.ti</mat-option>
+                <mat-option value="autodesk">Autodesk</mat-option>
+                <mat-option value="claris">Claris</mat-option>
+                <mat-option value="corel">Corel</mat-option>
+                <mat-option value="graphisoft">Graphisoft</mat-option>
+                <mat-option value="kaspersky">Kaspersky</mat-option>
+                <mat-option value="microsoft">Microsoft</mat-option>
+                <mat-option value="panopto">Panopto</mat-option>
+                <mat-option value="sketchup">SketchUp</mat-option>
+                <mat-option value="starlab">Starlab</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="m-4">
+            <mat-form-field class="w-full">
+              <mat-label>Prioridad del problema</mat-label>
+              <mat-select formControlName="priority" required>
+                <mat-option value="baja">P4: menor, Interrupciones minimas (o ninguna) de operaciones normales.</mat-option>
+                <mat-option value="media">P3: importante, Interrupciones de operaciones normales.</mat-option>
+                <mat-option value="alta">P2: urgente, Interrupciones graves de operaciones normales.</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="m-4">
+            <p class="font-semibold">¿Donde esta P1: Critico?</p>
+            <p class="text-sm text-gray-500">Si el problema produce interrupciones o interrupciones extremadamente graves en un sistema de producción, llámanos para que podamos atenderte de inmediato: +57 (311)774-2766
+            </p>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="m-4">
+            <p class="font-semibold">Cuantificar la indicendia del problema</p>
+            <p class="text-sm text-gray-500">Ayúdanos a conocer en qué escala afecta el problema a tu organización.</p>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="m-4">
+            <p class="font-semibold mt-4">Resume el problema</p>
+            <p class="text-sm text-gray-500">Escribe una breve descripción del problema. Así nos referiremos a tu caso.</p>
+            <mat-form-field class="w-full">
+              <mat-label>Introducir titulo</mat-label>
+              <input matInput formControlName="title">
+            </mat-form-field>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="m-4">
+            <p class="font-semibold mt-4">Describe el problema</p>
+            <p class="text-sm text-gray-500">Incluye cuándo se produjo por primera vez, las tareas que estabas tratando de completar o los productos que estabas usando cuando se produjo el problema y los pasos para reproducir el problema.</p>
+              <mat-form-field class="w-full">
+                <mat-label>Introducir descripción</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+              </mat-form-field>
+            </div>
+            <mat-divider></mat-divider>
+            
+          <div class="py-4">
+            <p class="font-semibold mt-4">Adjunta capturas de pantalla (opcional)</p>
+            <p class="text-sm text-gray-500">Archivos permitidos: SVG, PNG, JPG. Máximo 20 MB.</p>
+            <button type="button" mat-stroked-button (click)="fileInput.click()">Seleccionar Archivos</button>
+            <input hidden #fileInput type="file" multiple (change)="onFileSelected($event)">
+            <div *ngIf="selectedFiles.length > 0" class="mt-2">
+              <div *ngFor="let file of selectedFiles; let i = index" class="text-sm">
+                <span>{{ file.name }}</span>
+                <button mat-icon-button color="warn" (click)="removeFile(i)" aria-label="Eliminar archivo">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>Método de contacto</ng-template>
+        </form>
+      </mat-step>
+    </mat-stepper>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="mt-4">
+    <button mat-button (click)="dialogRef.close(false)">Cancelar</button>
+    <button mat-button *ngIf="stepper.selectedIndex > 0" (click)="stepper.previous()">Atrás</button>
+
+    <button mat-flat-button color="primary" *ngIf="stepper.selectedIndex < 1" (click)="stepper.next()">
+      Siguiente
+    </button>
+
+    <button mat-flat-button color="primary" *ngIf="stepper.selectedIndex === 1" (click)="onSubmit()">
+      Enviar Incidente
+    </button>
+  </mat-dialog-actions>
+
+</section>
