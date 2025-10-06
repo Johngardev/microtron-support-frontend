@@ -32,7 +32,8 @@
             <mat-form-field class="w-full">
               <mat-label>Prioridad del problema</mat-label>
               <mat-select formControlName="priority" required>
-                <mat-option value="baja">P4: menor, Interrupciones minimas (o ninguna) de operaciones normales.</mat-option>
+                <mat-option value="baja">P4: menor, Interrupciones minimas (o ninguna) de operaciones
+                  normales.</mat-option>
                 <mat-option value="media">P3: importante, Interrupciones de operaciones normales.</mat-option>
                 <mat-option value="alta">P2: urgente, Interrupciones graves de operaciones normales.</mat-option>
               </mat-select>
@@ -41,7 +42,8 @@
           <mat-divider></mat-divider>
           <div class="m-4">
             <p class="font-semibold">¿Donde esta P1: Critico?</p>
-            <p class="text-sm text-gray-500">Si el problema produce interrupciones o interrupciones extremadamente graves en un sistema de producción, llámanos para que podamos atenderte de inmediato: +57 (311)774-2766
+            <p class="text-sm text-gray-500">Si el problema produce interrupciones o interrupciones extremadamente
+              graves en un sistema de producción, llámanos para que podamos atenderte de inmediato: +57 (311)774-2766
             </p>
           </div>
           <mat-divider></mat-divider>
@@ -52,7 +54,8 @@
           <mat-divider></mat-divider>
           <div class="m-4">
             <p class="font-semibold mt-4">Resume el problema</p>
-            <p class="text-sm text-gray-500">Escribe una breve descripción del problema. Así nos referiremos a tu caso.</p>
+            <p class="text-sm text-gray-500">Escribe una breve descripción del problema. Así nos referiremos a tu caso.
+            </p>
             <mat-form-field class="w-full">
               <mat-label>Introducir titulo</mat-label>
               <input matInput formControlName="title">
@@ -61,27 +64,33 @@
           <mat-divider></mat-divider>
           <div class="m-4">
             <p class="font-semibold mt-4">Describe el problema</p>
-            <p class="text-sm text-gray-500">Incluye cuándo se produjo por primera vez, las tareas que estabas tratando de completar o los productos que estabas usando cuando se produjo el problema y los pasos para reproducir el problema.</p>
-              <mat-form-field class="w-full">
-                <mat-label>Introducir descripción</mat-label>
-                <textarea matInput formControlName="description"></textarea>
-              </mat-form-field>
-            </div>
-            <mat-divider></mat-divider>
-            
+            <p class="text-sm text-gray-500">Incluye cuándo se produjo por primera vez, las tareas que estabas tratando
+              de completar o los productos que estabas usando cuando se produjo el problema y los pasos para reproducir
+              el problema.</p>
+            <mat-form-field class="w-full">
+              <mat-label>Introducir descripción</mat-label>
+              <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+          </div>
+          <mat-divider></mat-divider>
+
           <div class="py-4">
             <p class="font-semibold mt-4">Adjunta capturas de pantalla (opcional)</p>
             <p class="text-sm text-gray-500">Archivos permitidos: SVG, PNG, JPG. Máximo 20 MB.</p>
             <button type="button" mat-stroked-button (click)="fileInput.click()">Seleccionar Archivos</button>
             <input hidden #fileInput type="file" multiple (change)="onFileSelected($event)">
-            <div *ngIf="selectedFiles.length > 0" class="mt-2">
-              <div *ngFor="let file of selectedFiles; let i = index" class="text-sm">
+            @if (selectedFiles.length > 0) {
+            <div class="mt-2">
+              @for (file of selectedFiles; track $index) {
+              <div class="text-sm">
                 <span>{{ file.name }}</span>
-                <button mat-icon-button color="warn" (click)="removeFile(i)" aria-label="Eliminar archivo">
+                <button mat-icon-button color="warn" (click)="removeFile($index)" aria-label="Eliminar archivo">
                   <mat-icon>close</mat-icon>
                 </button>
               </div>
+              }
             </div>
+            }
           </div>
         </form>
       </mat-step>
@@ -95,16 +104,20 @@
   </mat-dialog-content>
 
   <mat-dialog-actions class="mt-4">
-    <button mat-button (click)="dialogRef.close(false)">Cancelar</button>
-    <button mat-button *ngIf="stepper.selectedIndex > 0" (click)="stepper.previous()">Atrás</button>
-
-    <button mat-flat-button color="primary" *ngIf="stepper.selectedIndex < 1" (click)="stepper.next()">
+    <button class="text-black bg-gray-200 hover:bg-gray-300 font-semibold py-2 px-4 rounded-full" (click)="dialogRef.close(false)">Cancelar</button>
+    @if (stepper.selectedIndex > 0) {
+    <button class="ml-auto text-black bg-gray-200 hover:bg-gray-300 font-semibold py-2 px-4 rounded-full" (click)="stepper.previous()">Atrás</button>
+    }
+    @if (stepper.selectedIndex < 1) {
+    <button  class="ml-auto text-white bg-primary hover:bg-primary/80 hover:text-white font-semibold py-2 px-4 rounded-full" (click)="stepper.next()">
       Siguiente
     </button>
-
-    <button mat-flat-button color="primary" *ngIf="stepper.selectedIndex === 1" (click)="onSubmit()">
+    }
+    @if (stepper.selectedIndex === 1) {
+    <button class="ml-auto text-white bg-primary hover:bg-primary/80 hover:text-white font-semibold py-2 px-4 rounded-full" (click)="onSubmit()">
       Enviar Incidente
     </button>
+    }
   </mat-dialog-actions>
 
 </section>
