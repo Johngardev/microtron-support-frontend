@@ -29,6 +29,7 @@
           </div>
           <mat-divider></mat-divider>
           <div class="m-4">
+            <p class="font-semibold">Seleccione la prioridad del problema:</p>
             <mat-form-field class="w-full">
               <mat-label>Prioridad del problema</mat-label>
               <mat-select formControlName="priority" required>
@@ -74,17 +75,17 @@
           </div>
           <mat-divider></mat-divider>
 
-          <div class="py-4">
+          <div class="py-4 m-4 flex flex-col justify-center items-center">
             <p class="font-semibold mt-4">Adjunta capturas de pantalla (opcional)</p>
             <p class="text-sm text-gray-500">Archivos permitidos: SVG, PNG, JPG. Máximo 20 MB.</p>
-            <button type="button" mat-stroked-button (click)="fileInput.click()">Seleccionar Archivos</button>
+            <button type="button" class="text-white bg-primary hover:bg-primary/80 hover:text-white font-semibold py-2 px-4 rounded-full mt-4" (click)="fileInput.click()">Seleccionar Archivos</button>
             <input hidden #fileInput type="file" multiple (change)="onFileSelected($event)">
             @if (selectedFiles.length > 0) {
             <div class="mt-2">
               @for (file of selectedFiles; track $index) {
               <div class="text-sm">
                 <span>{{ file.name }}</span>
-                <button mat-icon-button color="warn" (click)="removeFile($index)" aria-label="Eliminar archivo">
+                <button type="button" class="text-white bg-primary hover:bg-primary/80 hover:text-white font-semibold py-2 px-4 rounded-" (click)="removeFile($index)" aria-label="Eliminar archivo">
                   <mat-icon>close</mat-icon>
                 </button>
               </div>
