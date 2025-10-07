@@ -83,9 +83,9 @@
             @if (selectedFiles.length > 0) {
             <div class="mt-2">
               @for (file of selectedFiles; track $index) {
-              <div class="text-sm">
-                <span>{{ file.name }}</span>
-                <button type="button" class="text-white bg-primary hover:bg-primary/80 hover:text-white font-semibold py-2 px-4 rounded-" (click)="removeFile($index)" aria-label="Eliminar archivo">
+              <div class="text-sm flex flex-row justify-between">
+                <span class="m-2">{{ file.name }}</span>
+                <button type="button" class="text-white bg-primary hover:bg-primary/80 hover:text-white font-semibold py-2 px-4 rounded-full m-2" (click)="removeFile($index)" aria-label="Eliminar archivo">
                   <mat-icon>close</mat-icon>
                 </button>
               </div>
@@ -99,6 +99,25 @@
       <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup">
           <ng-template matStepLabel>Método de contacto</ng-template>
+
+          <div class="m-4">
+            <p class="font-semibold">Correo electrónico</p>
+            <p class="text-sm text-gray-500">Te enviaremos comunicaciones y actualizaciones de casos a esta dirección: <span class="font-semibold">john&#64;microtron.com</span></p>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="m-4">
+            <p class="font-semibold">Enumera las personas a las que deseas enviar una notificación (opcional)</p>
+            <p class="text-sm text-gray-500">El Servicio de atención al cliente de Adobe enviará novedades de casos a los correos electrónicos de esta lista. Puedes enviar notificaciones a un máximo de 10 personas.</p>
+            <mat-form-field class="w-full">
+              <mat-label>Introducir correo electrónico</mat-label>
+              <input matInput formControlName="notificationEmails">
+            </mat-form-field>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="m-4">
+            <p class="font-semibold">Horas laborales</p>
+            <p class="text-sm text-gray-500">Si necesitamos llamarte, un agente de Microtrón tendrá en cuenta cuáles son tus horas de trabajo y el horario comercial del Servicio de atención al cliente de Microtrón SAS.</p>
+          </div>
         </form>
       </mat-step>
     </mat-stepper>
