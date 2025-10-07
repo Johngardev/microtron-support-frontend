@@ -1,0 +1,24 @@
+/* :host nos permite aplicar estilos directamente al componente */
+:host {
+    --mat-slider-handle-color: black;
+    --mat-slider-track-color: black;
+    --mat-slider-ripple-color: rgba(0, 0, 0, 0.1);
+    --mat-slider-handle-outline-color: white;
+  
+    /* Colores para el estado inactivo (la parte gris de la barra) */
+    --mat-mdc-slider-inactive-track-color: #e5e7eb; /* gray-200 de Tailwind */
+    --mat-mdc-slider-inactive-track-opacity: 1;
+  
+    /* Estilos del selector (el círculo) */
+    --mat-mdc-slider-handle-height: 20px;
+    --mat-mdc-slider-handle-width: 20px;
+    --mat-mdc-slider-handle-border-width: 2px;
+    --mat-mdc-slider-handle-border-color: black;
+  }
+  
+  /* Aseguramos que el componente mat-slider use las variables que definimos.
+    La clase .mat-mdc-slider es la que aplica el componente internamente.
+  */
+  .mat-mdc-slider {
+    width: 100%;
+  }

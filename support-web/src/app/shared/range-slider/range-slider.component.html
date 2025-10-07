@@ -1,1 +1,25 @@
-<p>range-slider works!</p>
+<div class="w-full max-w-lg p-4">
+    <div class="text-right text-sm text-gray-600 font-medium mb-1">
+      {{ timeRange.start }} - {{ timeRange.end }}
+    </div>
+  
+    <div class="relative">
+      <mat-slider class="w-full" 
+                  [min]="minHour" 
+                  [max]="maxHour" 
+                  [step]="1" 
+                  [discrete]="true" 
+                  [showTickMarks]="false">
+        <input matSliderStartThumb [(ngModel)]="timeRange.start">
+        <input matSliderEndThumb [(ngModel)]="timeRange.end">
+      </mat-slider>
+    </div>
+  
+    <div class="flex justify-between w-full text-sm text-gray-400 px-1">
+      <span>5</span>
+      <span>9</span>
+      <span>13</span>
+      <span>17</span>
+      <span>21</span>
+    </div>
+  </div>

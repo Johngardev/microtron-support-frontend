@@ -117,6 +117,16 @@
           <div class="m-4">
             <p class="font-semibold">Horas laborales</p>
             <p class="text-sm text-gray-500">Si necesitamos llamarte, un agente de Microtrón tendrá en cuenta cuáles son tus horas de trabajo y el horario comercial del Servicio de atención al cliente de Microtrón SAS.</p>
+            <app-range-slider></app-range-slider>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="m-4">
+            <p class="font-semibold">Nùmero de telefono</p>
+            <p class="text-sm text-gray-500">Es posible que un agente de Adobe te contacte por teléfono para solucionar problemas o solicitar alguna aclaración.</p>
+            <mat-form-field class="w-full">
+              <mat-label>Introducir numero de telefono</mat-label>
+              <input matInput formControlName="phoneNumber">
+            </mat-form-field>
           </div>
         </form>
       </mat-step>
