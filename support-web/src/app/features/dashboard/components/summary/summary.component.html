@@ -30,60 +30,12 @@
 
   <!-- Buttons group: Temas de ayuda por fabricante -->
    <h2 class="text-lg font-semibold text-gray-800 mb-2">Temas de ayuda por fabricante</h2>
-   <div class="inline-flex rounded-sm shadow-xs border-b-2 border-gray-200" role="group">
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Adobe)" [class.active]="getSelectedCompanyType() === companyTypes.Adobe">Adobe</button>
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Anydesk)" [class.active]="getSelectedCompanyType() === companyTypes.Anydesk">Anydesk</button>
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Atlasti)" [class.active]="getSelectedCompanyType() === companyTypes.Atlasti">Atlas.ti</button>
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Autodesk)" [class.active]="getSelectedCompanyType() === companyTypes.Autodesk">Autodesk</button>
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Claris)" [class.active]="getSelectedCompanyType() === companyTypes.Claris">Claris</button>
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Corel)" [class.active]="getSelectedCompanyType() === companyTypes.Corel">Corel</button>
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Graphisoft)" [class.active]="getSelectedCompanyType() === companyTypes.Graphisoft">Graphisoft</button>
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Kaspersky)" [class.active]="getSelectedCompanyType() === companyTypes.Kaspersky">Kaspersky</button>
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Microsoft)" [class.active]="getSelectedCompanyType() === companyTypes.Microsoft">Microsoft</button>
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Panopto)" [class.active]="getSelectedCompanyType() === companyTypes.Panopto">Panopto</button>
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Sketchup)" [class.active]="getSelectedCompanyType() === companyTypes.Sketchup">SketchUp</button>
-    <button type="button" class="px-4 py-2 text-sm text-gray-900 hover:bg-gray-50 hover:border-b-2 hover:border-primary" (click)="setSelectedCompanyType(companyTypes.Starlab)" [class.active]="getSelectedCompanyType() === companyTypes.Starlab">Starlab</button>
-   </div>
-
-   <!-- Content: Cards de temas de ayuda por fabricante -->
-   <div class="mt-16">
-    @switch (getSelectedCompanyType()) {
-      @case (companyTypes.Adobe) {
-        <app-adobe-topic></app-adobe-topic>
-      }
-      @case (companyTypes.Anydesk) {
-        <app-anydesk-topic></app-anydesk-topic>
-      }
-      @case (companyTypes.Atlasti) {
-        <app-atlasti-topic></app-atlasti-topic>
-      }
-      @case (companyTypes.Autodesk) {
-        <app-autodesk-topic></app-autodesk-topic>
-      }
-      @case (companyTypes.Claris) {
-        <app-claris-topic></app-claris-topic>
-      }
-      @case (companyTypes.Corel) {
-        <app-corel-topic></app-corel-topic>
-      }
-      @case (companyTypes.Graphisoft) {
-        <app-graphisoft-topic></app-graphisoft-topic>
-      }
-      @case (companyTypes.Kaspersky) {
-        <app-kaspersky-topic></app-kaspersky-topic>
-      }
-      @case (companyTypes.Microsoft) {
-        <app-microsoft-topic></app-microsoft-topic>
-      }
-      @case (companyTypes.Panopto) {
-        <app-panopto-topic></app-panopto-topic>
-      }
-      @case (companyTypes.Sketchup) {
-        <app-sketchup-topic></app-sketchup-topic>
-      }
-      @case (companyTypes.Starlab) {
-        <app-starlab-topic></app-starlab-topic>
-      }
-    }
-   </div>
+   <mat-tab-group>
+   @for (manufacturer of manufacturers; track manufacturer.key) {
+    <mat-tab>
+      <ng-template mat-tab-label>{{ manufacturer.name }}</ng-template>
+      <app-help-topic [topics]="manufacturer.topics"></app-help-topic>
+    </mat-tab>
+   }
+   </mat-tab-group>
 </section>
