@@ -1,17 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdobeTopicComponent } from "./components/adobe-topic/adobe-topic.component";
-import { AnydeskTopicComponent } from "./components/anydesk-topic/anydesk-topic.component";
-import { AutodeskTopicComponent } from "./components/autodesk-topic/autodesk-topic.component";
-import { ClarisTopicComponent } from "./components/claris-topic/claris-topic.component";
-import { CorelTopicComponent } from "./components/corel-topic/corel-topic.component";
-import { GraphisoftTopicComponent } from "./components/graphisoft-topic/graphisoft-topic.component";
-import { KasperskyTopicComponent } from "./components/kaspersky-topic/kaspersky-topic.component";
-import { MicrosoftTopicComponent } from "./components/microsoft-topic/microsoft-topic.component";
-import { PanoptoTopicComponent } from "./components/panopto-topic/panopto-topic.component";
-import { AtlastiTopicComponent } from "./components/atlasti-topic/atlasti-topic.component";
-import { SketchupTopicComponent } from "./components/sketchup-topic/sketchup-topic.component";
-import { StarlabTopicComponent } from "./components/starlab-topic/starlab-topic.component";
 import { MatDialog } from "@angular/material/dialog";
 import { CreateIncidentComponent } from './components/create-incident/create-incident.component';
 import { HelpTopicComponent } from "../../../../shared/help-topic/help-topic.component";
@@ -53,7 +41,7 @@ export interface Manufacturer {
 @Component({
   selector: 'app-summary',
   standalone: true,
-  imports: [CommonModule, AdobeTopicComponent, AnydeskTopicComponent, AutodeskTopicComponent, ClarisTopicComponent, CorelTopicComponent, GraphisoftTopicComponent, KasperskyTopicComponent, MicrosoftTopicComponent, PanoptoTopicComponent, AtlastiTopicComponent, SketchupTopicComponent, StarlabTopicComponent, HelpTopicComponent, MatTabsModule],
+  imports: [CommonModule, HelpTopicComponent, MatTabsModule],
   templateUrl: './summary.component.html',
   styleUrl: './summary.component.css'
 })
