@@ -4,39 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { CreateIncidentComponent } from './components/create-incident/create-incident.component';
 import { HelpTopicComponent } from "../../../../shared/help-topic/help-topic.component";
 import { MatTabsModule } from "@angular/material/tabs";
-
-enum CompanyType {
-  Adobe = 'adobe',
-  Anydesk = 'anydesk',
-  Atlasti = 'atlasti',
-  Autodesk = 'autodesk',
-  Claris = 'claris',
-  Corel = 'corel',
-  Graphisoft = 'graphisoft',
-  Kaspersky = 'kaspersky',
-  Microsoft = 'microsoft',
-  Panopto = 'panopto',
-  Sketchup = 'sketchup',
-  Starlab = 'starlab'
-}
-
-export interface HelpCard {
-  title: string;
-  description: string;
-  links: { text: string; url: string }[];
-}
-
-export interface HelpTopic {
-  topicTitle: string;
-  popularLinks?: { text: string; url: string }[];
-  cards: HelpCard[];
-}
-
-export interface Manufacturer {
-  key: string;
-  name: string;
-  topics: HelpTopic[];
-}
+import { Manufacturer } from "../../../../core/interfaces/manufacturer.interface";
 
 @Component({
   selector: 'app-summary',
@@ -46,17 +14,7 @@ export interface Manufacturer {
   styleUrl: './summary.component.css'
 })
 export class SummaryComponent {
-  companyTypes = CompanyType;
-  selectedCompanyType = signal<CompanyType>(CompanyType.Adobe);
   readonly createIncident = inject(MatDialog);
-
-  public setSelectedCompanyType(company: CompanyType) {
-    this.selectedCompanyType.set(company);
-  }
-
-  public getSelectedCompanyType() {
-    return this.selectedCompanyType();
-  }
 
   opendialog() {
     const dialogRef = this.createIncident.open(CreateIncidentComponent);
