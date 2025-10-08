@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { HelpTopic } from '../../features/dashboard/components/summary/summary.component';
+import { HelpTopic } from '../../core/models/help-topic.model';
 import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({

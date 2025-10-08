@@ -31,7 +31,7 @@
   <!-- Buttons group: Temas de ayuda por fabricante -->
    <h2 class="text-lg font-semibold text-gray-800 mb-2">Temas de ayuda por fabricante</h2>
    <mat-tab-group>
-   @for (manufacturer of manufacturers; track manufacturer.key) {
+   @for (manufacturer of manufacturers | async; track manufacturer.key) {
     <mat-tab>
       <ng-template mat-tab-label>{{ manufacturer.name }}</ng-template>
       <app-help-topic [topics]="manufacturer.topics"></app-help-topic>
