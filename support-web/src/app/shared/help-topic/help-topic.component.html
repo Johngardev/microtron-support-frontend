@@ -1,3 +1,34 @@
-<div class="py-6">
-  
-</div>
+<section class="py-6 space-y-10">
+  @for (topic of topics; track $index) {
+    
+    <h3 class="text-xl md:text-2xl text-gray-800 mb-4 pb-2 border-b">
+      {{ topic.topicTitle }}
+    </h3>
+
+    @if (topic.popularLinks && topic.popularLinks.length > 0) {
+      <div>
+        @for (link of topic.popularLinks; track $index) {
+          <a [href]="link.url" target="_blank" class="block text-blue-600 hover:underline">
+            {{ link.text }} ↗
+          </a>
+        }
+      </div>
+    }
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (card of topic.cards; track $index) {
+        <div class="bg-white rounded-lg border border-gray-200 p-6 flex flex-col">
+          <h4 class="text-lg text-gray-800 mb-2">{{ card.title }}</h4>
+          <p class="text-gray-600 flex-grow">{{ card.description }}</p>
+          <div class="mt-4 space-y-2">
+            @for (link of card.links; track $index) {
+              <a [href]="link.url" class="block text-blue-600 font-medium hover:underline">
+                {{ link.text }}
+              </a>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>
