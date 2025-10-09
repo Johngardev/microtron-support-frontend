@@ -3,6 +3,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Incident } from '../../../../core/models/incident.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs'; 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { DatePipe } from '@angular/common';
 
 // --- Datos de ejemplo (esto vendría de un servicio) ---
 const MOCK_INCIDENTS: Incident[] = [
@@ -12,16 +16,24 @@ const MOCK_INCIDENTS: Incident[] = [
   { id: 'C-1027', status: 'Cerrado', product: 'Anydesk', title: 'Conexión remota inestable', admin: 'Peter Jones', priority: 'Media', creationDate: new Date('2025-10-01') },
 ];
 
+
+export enum IncidentStatus {
+  Abierto = 'Abierto',
+  Cerrado = 'Cerrado',
+  Todos = 'Todos'
+}
+
+
 @Component({
   selector: 'app-incidents',
   standalone: true,
-  imports: [MatTableModule],
+  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe],
   templateUrl: './incidents.component.html',
   styleUrl: './incidents.component.css'
 })
 export class IncidentsComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['id', 'status', 'product', 'title', 'description', 'priority', 'creationDate', 'notificationEmails', 'attachments', 'admin', 'phoneNumber'];
+  displayedColumns: string[] = ['id', 'status', 'product', 'title', 'admin', 'priority', 'creationDate'];
 
   dataSource = new MatTableDataSource<Incident>();
 
@@ -33,7 +45,7 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.calculateStats();
-    this.filterByStatus('Abierto');
+    this.filterByStatus(IncidentStatus.Abierto);
   }
 
   ngAfterViewInit(): void {
@@ -47,8 +59,8 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  filterByStatus(status: 'Abierto' | 'Cerrado' | 'Todos'): void {
-    if (status === 'Todos') {
+  filterByStatus(status: IncidentStatus): void {
+    if (status === IncidentStatus.Todos) {
       this.dataSource.data = MOCK_INCIDENTS;
     } else {
       this.dataSource.data = MOCK_INCIDENTS.filter((incident) => incident.status === status);
@@ -62,8 +74,8 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
   //--- Estadísticas ---
   calculateStats(): void {
     this.totalIncidents = MOCK_INCIDENTS.length;
-    this.totalOpenIncidents = MOCK_INCIDENTS.filter((incident) => incident.status === 'Abierto').length;
-    this.totalClosedIncidents = MOCK_INCIDENTS.filter((incident) => incident.status === 'Cerrado').length;
+    this.totalOpenIncidents = MOCK_INCIDENTS.filter((incident) => incident.status === IncidentStatus.Abierto).length;
+    this.totalClosedIncidents = MOCK_INCIDENTS.filter((incident) => incident.status === IncidentStatus.Cerrado).length;
   }
 
 }
