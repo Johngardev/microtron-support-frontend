@@ -1,6 +1,6 @@
 export interface Incident {
   id: string;
-  status: 'Abierto' | 'Cerrado' | 'En Proceso';
+  status: 'Abierto' | 'Cerrado';
   product: string;
   title: string;
   description?: string;

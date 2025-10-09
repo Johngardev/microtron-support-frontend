@@ -10,9 +10,3 @@ export interface HelpCard {
     popularLinks?: { text: string; url: string }[];
     cards: HelpCard[];
   }
-  
-  export interface Manufacturer {
-    key: string;
-    name: string;
-    topics: HelpTopic[];
-  }

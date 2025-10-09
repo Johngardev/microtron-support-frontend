@@ -16,13 +16,11 @@ const MOCK_INCIDENTS: Incident[] = [
   { id: 'C-1027', status: 'Cerrado', product: 'Anydesk', title: 'Conexión remota inestable', admin: 'Peter Jones', priority: 'Media', creationDate: new Date('2025-10-01') },
 ];
 
-
 export enum IncidentStatus {
   Abierto = 'Abierto',
   Cerrado = 'Cerrado',
   Todos = 'Todos'
 }
-
 
 @Component({
   selector: 'app-incidents',
@@ -42,7 +40,7 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
   totalIncidents: number = 0;
   totalOpenIncidents: number = 0;
   totalClosedIncidents: number = 0;
-
+  
   ngOnInit(): void {
     this.calculateStats();
     this.filterByStatus(IncidentStatus.Abierto);
