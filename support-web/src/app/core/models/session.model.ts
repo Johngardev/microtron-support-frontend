@@ -4,9 +4,10 @@ export interface Session {
   id: string;
   manufacturer: Manufacturer;
   title: string;
-  description: string;
-  host: string;
+  description?: string;
+  admin: string;
   emails: string[];
+  requestDate: Date;
   scheduledDate: Date;
   status: 'Abierta' | 'Cerrada';
 }

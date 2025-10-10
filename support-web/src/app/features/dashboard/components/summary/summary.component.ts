@@ -4,7 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { CreateIncidentComponent } from './components/create-incident/create-incident.component';
 import { HelpTopicComponent } from "../../../../shared/help-topic/help-topic.component";
 import { MatTabsModule } from "@angular/material/tabs";
-import { Manufacturer } from "../../../../core/models/help-topic.model";
+import { Manufacturer } from "../../../../core/models/manufacturer.model";
 import { HelpTopicService } from "../../../../core/services/help-topic.service";
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
