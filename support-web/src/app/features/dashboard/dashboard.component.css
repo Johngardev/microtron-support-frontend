@@ -1,1 +1,5 @@
-
+.nav-link.active{
+     background-color: #adadad;
+      color: white;
+      border-left-color: var(--primary-color);
+}
