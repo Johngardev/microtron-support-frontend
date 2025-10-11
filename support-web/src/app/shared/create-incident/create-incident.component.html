@@ -134,7 +134,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions class="mt-4">
-    <button class="text-black bg-gray-200 hover:bg-gray-300 font-semibold py-2 px-4 rounded-full" (click)="dialogRef.close(false)">Cancelar</button>
+    <button class="text-black bg-gray-200 hover:bg-gray-300 py-2 px-4 rounded-full" (click)="dialogRef.close(false)">Cancelar</button>
     @if (stepper.selectedIndex > 0) {
     <button class="ml-auto text-black bg-gray-200 hover:bg-gray-300 font-semibold py-2 px-4 rounded-full" (click)="stepper.previous()">Atrás</button>
     }
