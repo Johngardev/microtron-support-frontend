@@ -1,7 +1,7 @@
 import { Component, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from "@angular/material/dialog";
-import { CreateIncidentComponent } from './components/create-incident/create-incident.component';
+import { CreateIncidentComponent } from '../../../../shared/create-incident/create-incident.component';
 import { HelpTopicComponent } from "../../../../shared/help-topic/help-topic.component";
 import { MatTabsModule } from "@angular/material/tabs";
 import { Manufacturer } from "../../../../core/models/manufacturer.model";

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ViewChild, inject } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Incident } from '../../../../core/models/incident.model';
 import { MatSort } from '@angular/material/sort';
@@ -7,6 +7,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateIncidentComponent } from '../../../../shared/create-incident/create-incident.component';
 
 // --- Datos de ejemplo (esto vendría de un servicio) ---
 const MOCK_INCIDENTS: Incident[] = [
@@ -31,6 +33,7 @@ export enum IncidentStatus {
   styleUrl: './incidents.component.css'
 })
 export class IncidentsComponent implements OnInit, AfterViewInit {
+  private _dialog = inject(MatDialog);
 
   displayedColumns: string[] = ['id', 'status', 'product', 'title', 'admin', 'priority', 'creationDate'];
 
@@ -41,7 +44,11 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
   totalIncidents: number = 0;
   totalOpenIncidents: number = 0;
   totalClosedIncidents: number = 0;
-  
+
+  openDialog(): void {
+    const dialogRef = this._dialog.open(CreateIncidentComponent);
+  }
+
   ngOnInit(): void {
     this.calculateStats();
     this.filterByStatus(IncidentStatus.Abierto);

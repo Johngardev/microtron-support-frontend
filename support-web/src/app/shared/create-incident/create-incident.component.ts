@@ -10,7 +10,7 @@ import { MatDialogContent, MatDialogActions, MatDialogRef } from "@angular/mater
 import { MatButtonModule } from "@angular/material/button";
 import { inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RangeSliderComponent } from "../../../../../../shared/range-slider/range-slider.component";
+import { RangeSliderComponent } from "../range-slider/range-slider.component";
 
 @Component({
   selector: 'app-create-incident',
