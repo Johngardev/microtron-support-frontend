@@ -9,5 +9,5 @@ export interface Session {
   emails: string[];
   requestDate: Date;
   scheduledDate: Date;
-  status: 'Abierta' | 'Cerrada';
+  status: 'Abierto' | 'Cerrado';
 }
