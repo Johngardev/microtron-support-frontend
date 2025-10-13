@@ -1,5 +1,4 @@
 .nav-link.active{
-     background-color: #adadad;
-      color: white;
+     background-color: #e2e2e2;
       border-left-color: var(--primary-color);
 }

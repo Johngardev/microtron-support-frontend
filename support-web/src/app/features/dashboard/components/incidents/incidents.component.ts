@@ -9,15 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateIncidentComponent } from '../../../../shared/create-incident/create-incident.component';
-
-// --- Datos de ejemplo (esto vendría de un servicio) ---
-const MOCK_INCIDENTS: Incident[] = [
-  { id: 'C-1024', status: 'Cerrado', product: 'Adobe Photoshop', title: 'Error al exportar a PNG', admin: 'John Doe', priority: 'Media', creationDate: new Date('2025-09-15') },
-  { id: 'C-1025', status: 'Cerrado', product: 'Autodesk AutoCAD', title: 'Fallo en la licencia de red', admin: 'Jane Smith', priority: 'Alta', creationDate: new Date('2025-09-20') },
-  { id: 'C-1026', status: 'Cerrado', product: 'Microsoft 365', title: 'No se sincroniza OneDrive', admin: 'John Doe', priority: 'Baja', creationDate: new Date('2025-09-22') },
-  { id: 'C-1027', status: 'Cerrado', product: 'Anydesk', title: 'Conexión remota inestable', admin: 'Peter Jones', priority: 'Media', creationDate: new Date('2025-10-01') },
-  { id: 'C-1028', status: 'Abierto', product: 'Anydesk', title: 'Conexión remota inestable', admin: 'Peter Jones', priority: 'Media', creationDate: new Date('2025-10-01') },
-];
+import { IncidentService } from '../../../../core/services/incident.service';
 
 export enum IncidentStatus {
   Abierto = 'Abierto',
@@ -34,6 +26,7 @@ export enum IncidentStatus {
 })
 export class IncidentsComponent implements OnInit, AfterViewInit {
   private _dialog = inject(MatDialog);
+  private _incidentService = inject(IncidentService);
 
   displayedColumns: string[] = ['id', 'status', 'product', 'title', 'admin', 'priority', 'creationDate'];
 
@@ -50,7 +43,7 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.calculateStats();
+    this.loadStats();
     this.filterByStatus(IncidentStatus.Abierto);
   }
 
@@ -65,23 +58,25 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  // --- Filtrado por estado (usando el servicio) ---
   filterByStatus(status: IncidentStatus): void {
-    if (status === IncidentStatus.Todos) {
-      this.dataSource.data = MOCK_INCIDENTS;
-    } else {
-      this.dataSource.data = MOCK_INCIDENTS.filter((incident) => incident.status === status);
-    }
-
-    if (this.dataSource.filter){
-      this.dataSource.filter = this.dataSource.filter;
-    }
+    this._incidentService.getIncidents(status).subscribe(data => {
+      this.dataSource.data = data;
+      // Re-aplica el filtro de texto si existe
+      if (this.dataSource.filter) {
+        this.dataSource.filter = this.dataSource.filter;
+      }
+    });
   }
 
-  //--- Estadísticas ---
-  calculateStats(): void {
-    this.totalIncidents = MOCK_INCIDENTS.length;
-    this.totalOpenIncidents = MOCK_INCIDENTS.filter((incident) => incident.status === IncidentStatus.Abierto).length;
-    this.totalClosedIncidents = MOCK_INCIDENTS.filter((incident) => incident.status === IncidentStatus.Cerrado).length;
+  // --- Carga de estadísticas (usando el servicio) ---
+  loadStats(): void {
+    this._incidentService.getIncidentStats().subscribe(stats => {
+      this.totalIncidents = stats.total;
+      this.totalOpenIncidents = stats.open;
+      this.totalClosedIncidents = stats.closed;
+    });
   }
 
 }
+ 
