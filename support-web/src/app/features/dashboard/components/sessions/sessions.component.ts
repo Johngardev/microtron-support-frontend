@@ -7,13 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DatePipe } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
-
-const MOCK_SESSIONS: Session[] = [
-    { id: 'S-1024', manufacturer: { key: 'Adobe', name: 'Adobe', topics: [] }, title: 'Adobe Photoshop', description: 'Adobe Photoshop', admin: 'John Doe', emails: ['john.doe@example.com'], requestDate: new Date('2025-09-15'), scheduledDate: new Date('2025-09-15'), status: 'Abierto' },
-    { id: 'S-1025', manufacturer: { key: 'Autodesk', name: 'Autodesk', topics: [] }, title: 'Autodesk AutoCAD', description: 'Autodesk AutoCAD', admin: 'Jane Smith', emails: ['jane.smith@example.com'], requestDate: new Date('2025-09-20'), scheduledDate: new Date('2025-09-20'), status: 'Cerrado' },
-    { id: 'S-1026', manufacturer: { key: 'Microsoft', name: 'Microsoft', topics: [] }, title: 'Microsoft 365', description: 'Microsoft 365', admin: 'John Doe', emails: ['john.doe@example.com'], requestDate: new Date('2025-09-22'), scheduledDate: new Date('2025-09-22'), status: 'Abierto' },
-    { id: 'S-1027', manufacturer: { key: 'Anydesk', name: 'Anydesk', topics: [] }, title: 'Anydesk', description: 'Anydesk', admin: 'Peter Jones', emails: ['peter.jones@example.com'], requestDate: new Date('2025-10-01'), scheduledDate: new Date('2025-10-01'), status: 'Cerrado' },
-];
+import { SessionService } from '../../../../core/services/session.service';
+import { inject } from '@angular/core';
 
 export enum SessionStatus {
     Abierto = 'Abierto',
@@ -29,6 +24,7 @@ export enum SessionStatus {
   styleUrl: './sessions.component.css'
 })
 export class SessionsComponent {
+  private _sessionService = inject(SessionService);
 
   displayedColumns: string[] = ['id', 'manufacturer', 'title', 'description', 'admin', 'requestDate', 'scheduledDate', 'status'];
 
@@ -55,20 +51,19 @@ export class SessionsComponent {
   }
 
   filterByStatus(status: SessionStatus): void {
-    if (status === SessionStatus.Todos) {
-      this.dataSource.data = MOCK_SESSIONS;
-    } else {
-      this.dataSource.data = MOCK_SESSIONS.filter((session) => session.status === status);
-    }
-
-    if (this.dataSource.filter){
-      this.dataSource.filter = this.dataSource.filter;
-    }
+    this._sessionService.getSessions(status).subscribe(data => {
+      this.dataSource.data = data;
+      if (this.dataSource.filter) {
+        this.dataSource.filter = this.dataSource.filter;
+      }
+    })
   }
 
   calculateStats(): void {
-    this.totalSessions = MOCK_SESSIONS.length;
-    this.totalOpenSessions = MOCK_SESSIONS.filter((session) => session.status === SessionStatus.Abierto).length;
-    this.totalClosedSessions = MOCK_SESSIONS.filter((session) => session.status === SessionStatus.Cerrado).length;
+    this._sessionService.getSessionStats().subscribe(stats => {
+      this.totalSessions = stats.total;
+      this.totalOpenSessions = stats.open;
+      this.totalClosedSessions = stats.closed;
+    })
   }
 }
