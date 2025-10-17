@@ -1,32 +1,26 @@
 import { Routes } from '@angular/router';
-import { LayoutComponent } from './features/layout/layout.component';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
-import { IncidentComponent } from './features/dashboard/components/incident/incident.component';
-import { IncidentsComponent } from './features/dashboard/components/incidents/incidents.component';
-import { SessionsComponent } from './features/dashboard/components/sessions/sessions.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent,
+    loadComponent: () => import('./features/layout/layout.component').then(m => m.LayoutComponent),
     children: [
       {
         path: '',
-        component: DashboardComponent
+        loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
       {
         path: 'incidents',
-        component: IncidentsComponent
+        loadComponent: () => import('./features/dashboard/components/incidents/incidents.component').then(m => m.IncidentsComponent)
       },
       {
         path: 'sessions',
-        component: SessionsComponent
+        loadComponent: () => import('./features/dashboard/components/sessions/sessions.component').then(m => m.SessionsComponent)
       },
       {
         path: 'incident/:id',
-        component: IncidentComponent
+        loadComponent: () => import('./features/dashboard/components/incident/incident.component').then(m => m.IncidentComponent)
       }
-
     ]
   }
 ];
