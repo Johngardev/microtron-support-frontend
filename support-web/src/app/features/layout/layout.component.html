@@ -1,6 +1,38 @@
 <app-header></app-header>
-<div>
+<main class="min-h-[calc(100vh-80px)] bg-gray-50 flex">
+  <section class="sidenav md:top-20 md:self-start">
+    <mat-list>
+      <div class="sidenav-content p-3 md:p-4">
+        <ul class="nav flex flex-col gap-1">
+          <li class="nav-item list-none">
+            <a class="nav-link block px-3 py-2 font-semibold rounded-md text-gray-700 hover:bg-gray-200 transition-colors border-l-2 border-transparent hover:cursor-pointer"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}"
+            tabindex="0"
+            >Resumen de soporte técnico</a>
+          </li>
+          <li class="nav-item list-none">
+            <a class="nav-link block px-3 py-2 font-semibold rounded-md text-gray-700 hover:bg-gray-200 transition-colors border-l-2 border-transparent hover:cursor-pointer"
+            routerLink="/incidents"
+            routerLinkActive="active"
+            tabindex="0"
+            >Incidencias de asistencia técnica</a>
+          </li>
+          <li class="nav-item list-none">
+            <a class="nav-link block px-3 py-2 font-semibold rounded-md text-gray-700 hover:bg-gray-200 transition-colors border-l-2 border-transparent hover:cursor-pointer"
+            routerLink="/sessions"
+            routerLinkActive="active"
+            tabindex="0"
+            >Sesiones de soporte técnico</a>
+          </li>
+        </ul>
+      </div>
+    </mat-list>
+  </section>
+  <section class="content bg-transparent">
     <router-outlet></router-outlet>
-</div>
+  </section>
+</main>
 <app-footer></app-footer>
 

@@ -1,0 +1,16 @@
+.nav-link.active {
+  background-color: #e2e2e2;
+  border-left-color: var(--primary-color);
+}
+
+.sidenav {
+  position: sticky;
+  top: 0;
+  height: fit-content;
+  min-width: 250px;
+}
+
+.content {
+  flex: 1;
+  padding: 1rem;
+}

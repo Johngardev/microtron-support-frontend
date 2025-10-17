@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateIncidentComponent } from '../../../../shared/create-incident/create-incident.component';
 import { IncidentService } from '../../../../core/services/incident.service';
+import { RouterLink } from "@angular/router";
 
 export enum IncidentStatus {
   Abierto = 'Abierto',
@@ -20,7 +21,7 @@ export enum IncidentStatus {
 @Component({
   selector: 'app-incidents',
   standalone: true,
-  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe],
+  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink],
   templateUrl: './incidents.component.html',
   styleUrl: './incidents.component.css'
 })

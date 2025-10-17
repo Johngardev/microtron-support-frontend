@@ -32,6 +32,4 @@ export class SessionService {
     const closed = MOCK_SESSIONS.filter(session => session.status === IncidentStatus.Cerrado).length;
     return of({total, open, closed});
   }
-
-
 }

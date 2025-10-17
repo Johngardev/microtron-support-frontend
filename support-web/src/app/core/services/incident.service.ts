@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Incident } from '../models/incident.model';
 import { IncidentStatus } from '../../features/dashboard/components/incidents/incidents.component';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 const MOCK_INCIDENTS: Incident[] = [
   { id: 'C-1024', status: 'Cerrado', product: 'Adobe Photoshop', title: 'Error al exportar a PNG', admin: 'John Doe', priority: 'Media', creationDate: new Date('2025-09-15') },
@@ -17,6 +17,18 @@ const MOCK_INCIDENTS: Incident[] = [
 export class IncidentService {
 
   constructor() { }
+
+  // Método para obtener todos los incidentes
+  getAllIncidents(): Observable<Incident[]> {
+    return of(MOCK_INCIDENTS);
+  }
+
+  // Método para obtener un incidente por su ID
+  getIncidentById(id: string): Observable<Incident | undefined> {
+    return this.getAllIncidents().pipe(
+      map(incidents => incidents.find(incident => incident.id === id))
+    );
+  }
 
   /**
    * Obtiene los incidentes, opcionalmente filtrados por estado.
