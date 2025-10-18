@@ -6,14 +6,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { CreateIncidentComponent } from '../../../../shared/create-incident/create-incident.component';
 import { RouterLink } from "@angular/router";
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-incident',
   standalone: true,
-  imports: [MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink],
+  imports: [MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink, NgClass],
   templateUrl: './incident.component.html',
   styleUrl: './incident.component.css'
 })

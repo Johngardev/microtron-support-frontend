@@ -2,6 +2,7 @@ import { Component, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from "@angular/material/dialog";
 import { CreateIncidentComponent } from '../../../../shared/create-incident/create-incident.component';
+import { CreateSessionComponent } from '../../../../shared/create-session/create-session.component';
 import { HelpTopicComponent } from "../../../../shared/help-topic/help-topic.component";
 import { MatTabsModule } from "@angular/material/tabs";
 import { Manufacturer } from "../../../../core/models/manufacturer.model";
@@ -12,12 +13,13 @@ import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-summary',
   standalone: true,
-  imports: [CommonModule, HelpTopicComponent, MatTabsModule, AsyncPipe],
+  imports: [CommonModule, HelpTopicComponent, MatTabsModule, AsyncPipe, CreateSessionComponent],
   templateUrl: './summary.component.html',
   styleUrl: './summary.component.css'
 })
 export class SummaryComponent {
   readonly createIncident = inject(MatDialog);
+  readonly createSession = inject(MatDialog);
   private readonly helpTopicService = inject(HelpTopicService);
 
   public manufacturers!: Observable<Manufacturer[]>;
@@ -26,8 +28,12 @@ export class SummaryComponent {
     this.manufacturers = this.helpTopicService.getManufacturers();
   }
 
-  opendialog() {
+  opendialogIncident() {
     const dialogRef = this.createIncident.open(CreateIncidentComponent);
+  }
+
+  opendialogSession() {
+    const dialogRef = this.createSession.open(CreateSessionComponent);
   }
   constructor() {}
 }

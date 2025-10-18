@@ -7,7 +7,7 @@
       <div class="flex items-center gap-3">
         <button
           class="inline-flex items-center px-4 py-2 rounded-full bg-primary hover:bg-primary/80 text-white shadow-sm"
-          (click)="opendialog()"
+          (click)="opendialogIncident()"
           >Crear incidencia</button>
         <button
           class="inline-flex items-center px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-50 text-gray-800"
@@ -15,16 +15,18 @@
       </div>
     </div>
 
-    <!-- Card: Sesiones con expertos -->
+    <!-- Card: Sesion especializada -->
     <div class="bg-white rounded-md border border-gray-200 p-6">
-      <h2 class="text-lg font-semibold text-gray-800 mb-4">Agenda sesion</h2>
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">Agenda sesion especializada</h2>
       <div class="flex items-center gap-3 mb-3 mt-14">
         <button
-          class="inline-flex items-center px-4 py-2 rounded-full border border-gray-800 text-gray-900 hover:bg-gray-900 hover:text-white font-medium transition">Agendar
-          sesion con soporte</button>
+          class="inline-flex items-center px-4 py-2 rounded-full border border-gray-300 text-gray-900 hover:bg-gray-50 hover:text-gray-800 transition"
+          (click)="opendialogSession()"
+          >Agendar
+          sesion con un especialista</button>
       </div>
       <a class="text-sm text-blue-700 hover:underline cursor-pointer">Más información sobre la asistencia y las
-        sesiones con expertos</a>
+        sesiones con especialistas</a>
     </div>
   </div>
 
