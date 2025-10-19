@@ -9,6 +9,8 @@ import { DatePipe } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
 import { SessionService } from '../../../../core/services/session.service';
 import { inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateSessionComponent } from '../../../../shared/create-session/create-session.component';
 
 export enum SessionStatus {
     Abierto = 'Abierto',
@@ -19,12 +21,13 @@ export enum SessionStatus {
 @Component({
   selector: 'app-sessions',
   standalone: true,
-  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe],
+  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, CreateSessionComponent],
   templateUrl: './sessions.component.html',
   styleUrl: './sessions.component.css'
 })
 export class SessionsComponent {
   private _sessionService = inject(SessionService);
+  private readonly createSession = inject(MatDialog);
 
   displayedColumns: string[] = ['id', 'manufacturer', 'title', 'description', 'admin', 'requestDate', 'scheduledDate', 'status'];
 
@@ -65,5 +68,9 @@ export class SessionsComponent {
       this.totalOpenSessions = stats.open;
       this.totalClosedSessions = stats.closed;
     })
+  }
+
+  opendialogSession() {
+    const dialogRef = this.createSession.open(CreateSessionComponent);
   }
 }

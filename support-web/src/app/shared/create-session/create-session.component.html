@@ -1,1 +1,72 @@
-<p>create-session works!</p>
+<section class="flex flex-col m-6">
+  <h2 mat-dialog-title class="text-xl font-semibold mb-4">Agendar Sesión</h2>
+
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="sessionForm">
+      <div class="m-4">
+        <p class="font-semibold">Seleccione el fabricante en que requiere enfocar la sesion:</p>
+        <p class="text-sm text-gray-500">Selecciona el fabricante en que requieres enfocar la sesion.</p>
+        <mat-form-field class="w-full">
+          <mat-label>Fabricante</mat-label>
+          <mat-select formControlName="manufacturer" required>
+            <mat-option value="adobe">Adobe</mat-option>
+            <mat-option value="anydesk">Anydesk</mat-option>
+            <mat-option value="atlasti">Atlas.ti</mat-option>
+            <mat-option value="autodesk">Autodesk</mat-option>
+            <mat-option value="claris">Claris</mat-option>
+            <mat-option value="corel">Corel</mat-option>
+            <mat-option value="graphisoft">Graphisoft</mat-option>
+            <mat-option value="kaspersky">Kaspersky</mat-option>
+            <mat-option value="microsoft">Microsoft</mat-option>
+            <mat-option value="panopto">Panopto</mat-option>
+            <mat-option value="sketchup">SketchUp</mat-option>
+            <mat-option value="starlab">Starlab</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="m-4">
+        <p class="font-semibold">Escribe el producto especifico que requieres enfocar la sesion:</p>
+        <p class="text-sm text-gray-500">Escribe el producto especifico que requieres enfocar la sesion.</p>
+        <mat-form-field class="w-full">
+          <mat-label>Producto</mat-label>
+          <input matInput formControlName="product">
+        </mat-form-field>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="m-4">
+        <p class="font-semibold">Describe el tema</p>
+        <p class="text-sm text-gray-500">Describe el tema que requieres enfocar la sesion.</p>
+        <mat-form-field class="w-full">
+          <mat-label>Introducir tema</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="m-4">
+        <p class="font-semibold">Planear horario para la sesion:</p>
+        <p class="text-sm text-gray-500">Nos pondremos en contacto contigo dentro del siguiente día hábil para confirmar la programación. La selección de la hora de la reunión debe tener una diferencia de 2 horas, con intervalos de 30 minutos.</p>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="m-4">
+        <p class="font-semibold">Correo electronico.</p>
+        <p class="text-sm text-gray-500">Se te enviarán comunicaciones y actualizaciones sobre la sesión a esta dirección.</p>
+        <p class="text-xl font-semibold">johnmicrotron.com</p>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="m-4">
+        <p class="font-semibold">Introduce tu numero de telefono:</p>
+        <p class="text-sm text-gray-500">Introduce tu numero de telefono para que podamos contactarte.</p>
+        <mat-form-field class="w-full">
+          <mat-label>Introducir numero de telefono</mat-label>
+          <input matInput formControlName="phone">
+        </mat-form-field>
+      </div>
+      <mat-divider></mat-divider>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions class="mt-4">
+    <button class="ml-auto bg-gray-200 text-gray-800 hover:bg-gray-300 rounded-full px-4 py-2 font-semibold" mat-dialog-close>Cancelar</button>
+    <button class="ml-auto bg-primary text-white hover:bg-primary/80 rounded-full px-4 py-2 font-semibold" [mat-dialog-close]="sessionForm.value" cdkFocusInitial>Confirmar</button>
+  </mat-dialog-actions>
+</section>
