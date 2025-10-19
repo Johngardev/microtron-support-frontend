@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDivider } from "@angular/material/divider";
-import { MatDialogContent, MatDialogActions, MatDialogRef } from "@angular/material/dialog";
+import { MatDialogContent, MatDialogActions } from "@angular/material/dialog";
 import { MatButtonModule } from "@angular/material/button";
 import { CommonModule } from '@angular/common';
 import { MatIcon } from "@angular/material/icon";
@@ -14,7 +14,18 @@ import { MatIcon } from "@angular/material/icon";
 @Component({
   selector: 'app-create-session',
   standalone: true,
-  imports: [MatDialogModule, ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDivider, MatDialogContent, MatDialogActions, MatButtonModule, CommonModule, MatIcon],
+  imports: [MatDialogModule, 
+    ReactiveFormsModule, 
+    MatStepperModule, 
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatSelectModule, 
+    MatDivider, 
+    MatDialogContent, 
+    MatDialogActions, 
+    MatButtonModule, 
+    CommonModule, 
+    MatIcon],
   templateUrl: './create-session.component.html',
   styleUrl: './create-session.component.css'
 })

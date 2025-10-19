@@ -46,6 +46,18 @@
       <div class="m-4">
         <p class="font-semibold">Planear horario para la sesion:</p>
         <p class="text-sm text-gray-500">Nos pondremos en contacto contigo dentro del siguiente día hábil para confirmar la programación. La selección de la hora de la reunión debe tener una diferencia de 2 horas, con intervalos de 30 minutos.</p>
+        <mat-form-field class="w-full">
+          <mat-label>Introducir Fecha y hora 1. (Formato: dd/mm/yyyy hh:mm)</mat-label>
+          <input matInput formControlName="scheduledTime1">
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label>Introducir Fecha y hora 2. (Formato: dd/mm/yyyy hh:mm)</mat-label>
+          <input matInput formControlName="scheduledTime2">
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label>Introducir Fecha y hora 3. (Formato: dd/mm/yyyy hh:mm)</mat-label>
+          <input matInput formControlName="scheduledTime3">
+        </mat-form-field>
       </div>
       <mat-divider></mat-divider>
       <div class="m-4">
