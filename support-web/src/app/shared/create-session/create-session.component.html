@@ -44,29 +44,6 @@
       </div>
       <mat-divider></mat-divider>
       <div class="m-4">
-        <p class="font-semibold">Planear horario para la sesion:</p>
-        <p class="text-sm text-gray-500">Nos pondremos en contacto contigo dentro del siguiente día hábil para confirmar la programación. La selección de la hora de la reunión debe tener una diferencia de 2 horas, con intervalos de 30 minutos.</p>
-        <mat-form-field class="w-full">
-          <mat-label>Introducir Fecha y hora 1. (Formato: dd/mm/yyyy hh:mm)</mat-label>
-          <input matInput formControlName="scheduledTime1">
-        </mat-form-field>
-        <mat-form-field class="w-full">
-          <mat-label>Introducir Fecha y hora 2. (Formato: dd/mm/yyyy hh:mm)</mat-label>
-          <input matInput formControlName="scheduledTime2">
-        </mat-form-field>
-        <mat-form-field class="w-full">
-          <mat-label>Introducir Fecha y hora 3. (Formato: dd/mm/yyyy hh:mm)</mat-label>
-          <input matInput formControlName="scheduledTime3">
-        </mat-form-field>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="m-4">
-        <p class="font-semibold">Correo electronico.</p>
-        <p class="text-sm text-gray-500">Se te enviarán comunicaciones y actualizaciones sobre la sesión a esta dirección.</p>
-        <p class="text-xl font-semibold">johnmicrotron.com</p>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="m-4">
         <p class="font-semibold">Introduce tu numero de telefono:</p>
         <p class="text-sm text-gray-500">Introduce tu numero de telefono para que podamos contactarte.</p>
         <mat-form-field class="w-full">
@@ -75,10 +52,43 @@
         </mat-form-field>
       </div>
       <mat-divider></mat-divider>
+      <div class="m-4">
+        <p class="font-semibold">Correo electronico:</p>
+        <p class="text-sm text-gray-500">Se te enviarán comunicaciones a esta dirección.</p>
+        <p class="text-xl font-semibold">{{ currentUser }}</p>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="m-4">
+        <p class="font-semibold">Planear horario para la sesion:</p>
+        <p class="text-sm text-gray-500">
+          Primero completa los campos anteriores y luego haz clic para seleccionar
+          fecha y hora en Calendly.
+        </p>
+
+        <button mat-stroked-button color="primary" class="w-full mt-2" (click)="scheduleSession()"
+          [disabled]="!isFormPrefilled">
+          <mat-icon>calendar_month</mat-icon>
+          Seleccionar Fecha y Hora
+        </button>
+
+        @if (sessionForm.controls.calendlyEventUri.valid) {
+        <div class="text-green-600 font-semibold mt-4 p-3 bg-green-50 rounded-md flex items-center">
+          <mat-icon>check_circle</mat-icon>
+          <span class="ml-2">¡Sesión programada con éxito!</span>
+        </div>
+        }
+
+      </div>
+      <mat-divider></mat-divider>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions class="mt-4">
-    <button class="ml-auto bg-gray-200 text-gray-800 hover:bg-gray-300 rounded-full px-4 py-2 font-semibold" mat-dialog-close>Cancelar</button>
-    <button class="ml-auto bg-primary text-white hover:bg-primary/80 rounded-full px-4 py-2 font-semibold" [mat-dialog-close]="sessionForm.value" cdkFocusInitial>Confirmar</button>
+    <button class="ml-auto bg-gray-200 text-gray-800 hover:bg-gray-300 rounded-full px-4 py-2 font-semibold"
+      mat-dialog-close>Cancelar</button>
+    <button class="ml-auto bg-primary text-white hover:bg-primary/80 rounded-full px-4 py-2 font-semibold"
+      [mat-dialog-close]="sessionForm.value" cdkFocusInitial
+      [disabled]="!sessionForm.valid">
+      Confirmar Sesión
+    </button>
   </mat-dialog-actions>
 </section>
