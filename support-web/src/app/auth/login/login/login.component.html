@@ -1,1 +1,79 @@
-<p>login works!</p>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="flex justify-center mb-4">
+        <img class="h-16" src="../../assets/logoMicrotron.jpg" alt="Logo">
+      </div>
+      <h2>Gestion de incidencias Microtrón SAS</h2>
+      <p>Inicia sesión para continuar</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" formControlName="email"
+          [class.error]="email?.invalid && (email?.dirty || email?.touched)">
+        @if (email?.invalid && (email?.dirty || email?.touched)) {
+        <div class="error-message">
+          @if (email?.errors?.['required']) {
+          <span>El correo es requerido</span>
+          }
+          @if (email?.errors?.['email']) {
+          <span>Ingresa un correo válido</span>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="password-input">
+          <input [type]="showPassword() ? 'text' : 'password'" id="password" formControlName="password"
+            [class.error]="password?.invalid && (password?.dirty || password?.touched)">
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+            @if (showPassword()) {
+            <span class="icon">👁️</span>
+            } @else {
+            <span class="icon">👁️</span>
+            }
+          </button>
+        </div>
+        @if (password?.invalid && (password?.dirty || password?.touched)) {
+        <div class="error-message">
+          @if (password?.errors?.['required']) {
+          <span>La contraseña es requerida</span>
+          }
+          @if (password?.errors?.['minlength']) {
+          <span>Mínimo 6 caracteres</span>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="form-group remember-me justify-center">
+        <input type="checkbox" id="rememberMe" formControlName="rememberMe">
+        <label for="rememberMe">Recordar mi sesión</label>
+      </div>
+
+      <button type="submit" class="login-button" [disabled]="isLoading() || loginForm.invalid">
+        @if (isLoading()) {
+        <span class="loading-spinner"></span>
+        } @else {
+        <span>Iniciar sesión</span>
+        }
+      </button>
+
+      @if (errorMessage()) {
+      <div class="error-message server-error">
+        {{ errorMessage() }}
+      </div>
+      }
+    </form>
+
+    <div class="login-footer">
+      <a class="forgot-password hover:pointer">
+        ¿Olvidaste tu contraseña?
+      </a>
+    </div>
+  </div>
+</div>
