@@ -26,5 +26,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/dashboard/components/summary/summary.component').then(m => m.SummaryComponent)
       }
     ]
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./auth/login/login/login.component').then(m => m.LoginComponent),
+    title: 'Iniciar sesión - Microtrón Support',
+    data: { animation: 'login' }
   }
 ];
