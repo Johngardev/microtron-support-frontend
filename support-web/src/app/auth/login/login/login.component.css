@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #DD0B26;
+  background: linear-gradient(180deg, #DD0B26 10%, #16191f 90%);
   padding: 20px;
   opacity: 0;
   transform: translateY(20px);
@@ -32,7 +32,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #DD0B26 0%, #FF6F00 100%);
+    background: linear-gradient(90deg, #DD0B26 0%, #16191f 100%);
   }
 }
 
@@ -90,7 +90,19 @@
   .password-input {
     position: relative;
 
-    .toggle-password {
+      .icon {
+        font-size: 1.2rem;
+        display: inline-block;
+        transition: transform 0.2s;
+
+        &.visible {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+
+.toggle-password {
       position: absolute;
       right: 12px;
       top: 50%;
@@ -105,19 +117,7 @@
       &:hover {
         color: #DD0B26;
       }
-
-      .icon {
-        font-size: 1.2rem;
-        display: inline-block;
-        transition: transform 0.2s;
-
-        &.visible {
-          opacity: 0.7;
-        }
-      }
     }
-  }
-}
 
 .error-message {
   color: #e53e3e;
@@ -135,7 +135,7 @@
 .login-button {
   width: 100%;
   padding: 0.9rem;
-  background: linear-gradient(90deg, #DD0B26 0%, #FF6F00 100%);
+  background: linear-gradient(90deg, #DD0B26 0%, #16191f 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -182,8 +182,9 @@
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid #edf2f7;
+}
 
-  .forgot-password {
+.forgot-password {
     color: #718096;
     text-decoration: none;
     font-size: 0.9rem;
@@ -192,9 +193,9 @@
     &:hover {
       color: #DD0B26;
       text-decoration: underline;
+      cursor: pointer;
     }
   }
-}
 
 
 @keyframes fadeIn {

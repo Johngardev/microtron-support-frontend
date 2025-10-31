@@ -32,5 +32,11 @@ export const routes: Routes = [
     loadComponent: () => import('./auth/login/login/login.component').then(m => m.LoginComponent),
     title: 'Iniciar sesión - Microtrón Support',
     data: { animation: 'login' }
+  },
+  {
+    path: 'forgot-password',
+    loadComponent: () => import('./auth/login/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
+    title: 'Recuperar contraseña - Microtrón Support',
+    data: { animation: 'forgot-password' }
   }
 ];
