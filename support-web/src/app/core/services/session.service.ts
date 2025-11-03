@@ -3,6 +3,7 @@ import { Session } from '../models/session.model';
 import { IncidentStatus } from '../../features/dashboard/components/incidents/incidents.component';
 import { Observable, of } from 'rxjs';
 import { SessionStatus } from '../../features/dashboard/components/sessions/sessions.component';
+import { map } from 'rxjs/operators';
 
 const MOCK_SESSIONS: Session[] = [
     { id: 'S-1024', manufacturer: { key: 'Adobe', name: 'Adobe', topics: [] }, title: 'Adobe Photoshop', description: 'Adobe Photoshop', admin: 'John Doe', emails: ['john.doe@example.com'], requestDate: new Date('2025-09-15'), scheduledDate: new Date('2025-09-15'), status: 'Abierto' },
@@ -18,6 +19,16 @@ export class SessionService {
 
   constructor() { }
 
+  getAllSessions(): Observable<Session[]> {
+    return of(MOCK_SESSIONS);
+  }
+
+  getSessionById(id: string): Observable<Session | undefined> {
+    return this.getAllSessions().pipe(
+      map(sessions => sessions.find(session => session.id === id))
+    );
+  }
+
   getSessions(status: SessionStatus): Observable<Session[]> {
     if (status === SessionStatus.Todos) {
       return of(MOCK_SESSIONS);
@@ -32,4 +43,5 @@ export class SessionService {
     const closed = MOCK_SESSIONS.filter(session => session.status === IncidentStatus.Cerrado).length;
     return of({total, open, closed});
   }
+
 }
