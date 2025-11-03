@@ -11,6 +11,7 @@ import { SessionService } from '../../../../core/services/session.service';
 import { inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateSessionComponent } from '../../../../shared/create-session/create-session.component';
+import { RouterLink } from "@angular/router";
 
 export enum SessionStatus {
     Abierto = 'Abierto',
@@ -21,7 +22,7 @@ export enum SessionStatus {
 @Component({
   selector: 'app-sessions',
   standalone: true,
-  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, CreateSessionComponent],
+  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, CreateSessionComponent, RouterLink],
   templateUrl: './sessions.component.html',
   styleUrl: './sessions.component.css'
 })
