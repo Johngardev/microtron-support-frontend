@@ -6,9 +6,10 @@ import { map, Observable, of } from 'rxjs';
 const MOCK_INCIDENTS: Incident[] = [
   { id: 'C-1024', status: 'Cerrado', product: 'Adobe Photoshop', title: 'Error al exportar a PNG', admin: 'John Doe', priority: 'Media', creationDate: new Date('2025-09-15') },
   { id: 'C-1025', status: 'Cerrado', product: 'Autodesk AutoCAD', title: 'Fallo en la licencia de red', admin: 'Jane Smith', priority: 'Alta', creationDate: new Date('2025-09-20') },
-  { id: 'C-1026', status: 'Cerrado', product: 'Microsoft 365', title: 'No se sincroniza OneDrive', admin: 'John Doe', priority: 'Baja', creationDate: new Date('2025-09-22') },
-  { id: 'C-1027', status: 'Cerrado', product: 'Anydesk', title: 'Conexión remota inestable', admin: 'Peter Jones', priority: 'Media', creationDate: new Date('2025-10-01') },
+  { id: 'C-1026', status: 'Abierto', product: 'Microsoft 365', title: 'No se sincroniza OneDrive', admin: 'John Doe', priority: 'Baja', creationDate: new Date('2025-09-22') },
+  { id: 'C-1027', status: 'Abierto', product: 'Anydesk', title: 'Conexión remota inestable', admin: 'Peter Jones', priority: 'Media', creationDate: new Date('2025-10-01') },
   { id: 'C-1028', status: 'Abierto', product: 'Anydesk', title: 'Conexión remota inestable', admin: 'Peter Jones', priority: 'Media', creationDate: new Date('2025-10-01') },
+  { id: 'C-1029', status: 'Abierto', product: 'Kaspersky', title: 'Error al instalar', admin: 'John Doe', priority: 'Alta', creationDate: new Date('2025-11-01') },
 ];
 
 @Injectable({

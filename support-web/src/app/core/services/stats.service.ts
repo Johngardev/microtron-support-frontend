@@ -22,7 +22,7 @@ export class StatsService {
     // Datos de ejemplo para desarrollo
     return of({
       totalIncidents: 125,
-      openIncidents: 24,
+      openIncidents: 10,
       closedIncidents: 101,
       totalSessions: 45,
       upcomingSessions: 7,

@@ -15,3 +15,9 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Estilos para la lista de incidentes */
+.incident-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
