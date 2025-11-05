@@ -28,8 +28,14 @@ export const routes: Routes = [
       {
         path: 'summary',
         loadComponent: () => import('./features/dashboard/components/summary/summary.component').then(m => m.SummaryComponent)
+      },
+      {
+        path: 'admin-dashboard',
+        loadComponent: () => import('./features/admin-dashboard/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent),
+        title: 'Admin Dashboard - Microtrón Support',
+        data: { animation: 'admin-dashboard' }
       }
-    ]
+    ],
   },
   {
     path: 'login',
@@ -42,5 +48,5 @@ export const routes: Routes = [
     loadComponent: () => import('./auth/login/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
     title: 'Recuperar contraseña - Microtrón Support',
     data: { animation: 'forgot-password' }
-  }
+  },
 ];

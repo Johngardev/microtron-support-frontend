@@ -1,0 +1,17 @@
+/* Estilos personalizados para el dashboard de administración */
+:host {
+  display: block;
+  min-height: calc(100vh - 64px);
+  background-color: #f9fafb;
+}
+
+.shadow {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

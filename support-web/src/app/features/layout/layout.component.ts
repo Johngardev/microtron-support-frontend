@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from "../../shared/header/header.component";
-import { RouterOutlet, RouterLink, RouterLinkActive } from "@angular/router";
+import { Router, RouterOutlet, RouterLink, RouterLinkActive, NavigationEnd } from "@angular/router";
 import { FooterComponent } from "../../shared/footer/footer.component";
 import { MatList } from "@angular/material/list";
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-layout',
@@ -11,6 +12,22 @@ import { MatList } from "@angular/material/list";
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
+  isAdminDashboard = false;
 
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    this.checkRoute(this.router.url);
+    
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.checkRoute(event.url);
+    });
+  }
+
+  private checkRoute(url: string) {
+    this.isAdminDashboard = url.includes('admin-dashboard');
+  }
 }
