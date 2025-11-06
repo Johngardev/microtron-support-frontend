@@ -34,7 +34,19 @@ export const routes: Routes = [
         loadComponent: () => import('./features/admin-dashboard/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent),
         title: 'Admin Dashboard - Microtrón Support',
         data: { animation: 'admin-dashboard' }
-      }
+      },
+      {
+        path: 'admin-incidents',
+        loadComponent: () => import('./features/admin-dashboard/admin-dashboard/components/admin-incidents/admin-incidents.component').then(m => m.AdminIncidentsComponent),
+        title: 'Admin Incidents - Microtrón Support',
+        data: { animation: 'admin-incidents' }
+      },
+      {
+        path: 'admin-sessions',
+        loadComponent: () => import('./features/admin-dashboard/admin-dashboard/components/admin-sessions/admin-sessions.component').then(m => m.AdminSessionsComponent),
+        title: 'Admin Sessions - Microtrón Support',
+        data: { animation: 'admin-sessions' }
+      },
     ],
   },
   {

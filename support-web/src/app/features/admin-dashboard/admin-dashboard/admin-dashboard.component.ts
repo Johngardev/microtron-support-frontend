@@ -6,11 +6,12 @@ import { Stats } from '../../../core/models/stats.model';
 import { IncidentService } from '../../../core/services/incident.service';
 import { Incident } from '../../../core/models/incident.model';
 import { IncidentStatus } from '../../dashboard/components/incidents/incidents.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })
