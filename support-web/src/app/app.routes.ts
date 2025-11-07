@@ -53,6 +53,12 @@ export const routes: Routes = [
         title: 'Admin Session - Microtrón Support',
         data: { animation: 'admin-session' }
       },
+      {
+        path: 'admin-incident/:id',
+        loadComponent: () => import('./features/admin-dashboard/admin-dashboard/components/admin-incident/admin-incident.component').then(m => m.AdminIncidentComponent),
+        title: 'Admin Incident - Microtrón Support',
+        data: { animation: 'admin-incident' }
+      },
     ],
   },
   {
