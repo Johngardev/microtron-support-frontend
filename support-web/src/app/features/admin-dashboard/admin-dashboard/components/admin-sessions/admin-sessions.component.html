@@ -52,7 +52,7 @@
 
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>ID de sesión</th>
-          <td mat-cell *matCellDef="let session"><a [routerLink]="['/session', session.id]" class="text-blue-600 hover:underline cursor-pointer">{{ session.id }}</a></td>
+          <td mat-cell *matCellDef="let session"><a [routerLink]="['/admin-session', session.id]" class="text-blue-600 hover:underline cursor-pointer">{{ session.id }}</a></td>
         </ng-container>
 
         <ng-container matColumnDef="manufacturer">
