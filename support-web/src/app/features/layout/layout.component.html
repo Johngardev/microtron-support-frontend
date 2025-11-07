@@ -1,5 +1,5 @@
-<main class="min-h-[calc(100vh-80px)] bg-gray-50" [class.flex]="!isAdminDashboard && !isAdminIncidents && !isAdminSessions">
-  @if (!isAdminDashboard && !isAdminIncidents && !isAdminSessions) {
+<main class="min-h-[calc(100vh-80px)] bg-gray-50" [class.flex]="!isAdminDashboard && !isAdminIncidents && !isAdminSessions && !isAdminSession && !isAdminIncident">
+  @if (!isAdminDashboard && !isAdminIncidents && !isAdminSessions && !isAdminSession && !isAdminIncident) {
     <section class="sidenav md:top-20 md:self-start">
       <mat-list>
         <div class="sidenav-content p-3 md:p-4">
@@ -31,7 +31,7 @@
     </mat-list>
   </section>
   }
-  <section class="content bg-transparent" [class.w-full]="isAdminDashboard || isAdminIncidents || isAdminSessions">
+  <section class="content bg-transparent" [class.w-full]="isAdminDashboard || isAdminIncidents || isAdminSessions || isAdminSession || isAdminIncident">
     <router-outlet></router-outlet>
   </section>
 </main>

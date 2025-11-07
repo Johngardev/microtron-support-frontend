@@ -3,11 +3,12 @@ import { Session } from '../../../../../core/models/session.model';
 import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../../../../../core/services/session.service';
 import { RouterLink } from '@angular/router';
+import { DatePipe, CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin-session',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe, CommonModule],
   templateUrl: './admin-session.component.html',
   styleUrl: './admin-session.component.css'
 })
