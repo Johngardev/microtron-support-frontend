@@ -21,7 +21,7 @@ import { IncidentStatus } from '../../../../dashboard/components/incidents/incid
 export class AdminIncidentsComponent {
   private _incidentService = inject(IncidentService);
 
-  displayedColumns: string[] = ['id', 'title', 'product', 'title', 'admin', 'priority', 'status'];
+  displayedColumns: string[] = ['id', 'product', 'title', 'admin', 'priority', 'status'];
 
   dataSource = new MatTableDataSource<Incident>();
 

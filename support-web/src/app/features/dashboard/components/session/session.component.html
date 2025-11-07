@@ -1,15 +1,15 @@
 <section class="p-4 md:p-8 bg-gray-50 min-h-screen">
   @if (session) {
-   <div class="mb-6">
+  <div class="mb-6">
     <nav class="text-sm text-gray-500">
       <a routerLink="/sessions" class="hover:underline">Sesiones de asistencia técnica</a>
       <span class="mx-2 font-bold">></span>
       <span>{{ session.title }}</span>
     </nav>
     <h1 class="text-3xl text-gray-800 mt-2">{{ session.title }}</h1>
-   </div> 
+  </div>
 
-   <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
     <main class="lg:col-span-2">
       <div class="bg-white border rounded-lg p-6">
         <div class="flex justify-between items-center border-b pb-4 mb-4">
@@ -49,8 +49,12 @@
       <div class="bg-white border rounded-lg p-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Acciones</h3>
         <div class="flex flex-col gap-3 ">
-          <button class="bg-gray-100 text-gray-800 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-200">Reabrir sesión</button>
-          <button class="bg-gray-100 text-gray-800 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-200">Realizar encuesta</button>
+          <button
+            class="bg-gray-100 text-gray-800 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-200">Reabrir
+            sesión</button>
+          <button
+            class="bg-gray-100 text-gray-800 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-200">Realizar
+            encuesta</button>
         </div>
       </div>
 
@@ -64,7 +68,7 @@
         </div>
       </div>
     </aside>
-   </div>
+  </div>
   } @else {
   <p class="text-center text-gray-500">Cargando datos de la sesión...</p>
   }
