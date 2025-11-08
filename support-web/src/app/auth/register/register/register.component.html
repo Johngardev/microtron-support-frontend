@@ -1,0 +1,96 @@
+<div class="register-container">
+  <div class="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+
+    <div class="mb-6 text-center">
+      <div class="flex justify-center mb-4">
+        <img class="h-16 " src="../../assets/logoMicrotron.jpg" alt="Logo">
+      </div>
+      <h2 class="pb-2 text-xl font-semibold">Crea tu cuenta de gestion de incidencias con Microtrón SAS</h2>
+      <p class="text-gray-600 text-sm">Completa el formulario para registrarte</p>
+    </div>
+
+    <form [formGroup]="registerForm"
+          (ngSubmit)="onSubmit()"
+          class="space-y-5">
+
+      <!-- Nombre -->
+      <div class="mb-4">
+        <label for="name">Nombre</label>
+        <input type="text"
+               id="name"
+               class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+               formControlName="name"
+               [class.error]="registerForm.get('name')?.invalid && (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)">
+        @if (registerForm.get('name')?.invalid && (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)) {
+          <div class="error-message">
+            @if (registerForm.get('name')?.errors?.['required']) { <span class="text-sm text-red-500">El nombre es requerido</span> }
+            @if (registerForm.get('name')?.errors?.['minlength']) { <span class="text-sm text-red-500">Mínimo 3 caracteres</span> }
+          </div>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="mb-4">
+        <label for="email">Correo electrónico</label>
+        <input type="email"
+               id="email"
+               class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+               formControlName="email"
+               [class.error]="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">
+        @if (registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)) {
+          <div class="error-message">
+            @if (registerForm.get('email')?.errors?.['required']) { <span class="text-sm text-red-500">El correo es requerido</span> }
+            @if (registerForm.get('email')?.errors?.['email'])    { <span class="text-sm text-red-500">Ingresa un correo válido</span> }
+          </div>
+        }
+      </div>
+
+      <!-- Password -->
+      <div class="mb-4">
+        <label for="password">Contraseña</label>
+        <div class="relative">
+          <input [type]="showPassword() ? 'text' : 'password'"
+                 id="password"
+                 class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                 formControlName="password"
+                 [class.error]="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
+          <button type="button"
+                  class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
+                  (click)="togglePasswordVisibility()">
+            @if (showPassword()) { <span class="icon">👁️</span> }
+            @else                { <span class="icon">👁️</span> }
+          </button>
+        </div>
+        @if (registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)) {
+          <div class="error-message">
+            @if (registerForm.get('password')?.errors?.['required'])  { <span class="text-sm text-red-500">La contraseña es requerida</span> }
+            @if (registerForm.get('password')?.errors?.['minlength']) { <span class="text-sm text-red-500">Mínimo 8 caracteres</span> }
+          </div>
+        }
+      </div>
+
+      <!-- Confirmar password -->
+      <div class="mb-4">
+        <label for="confirmPassword">Confirmar contraseña</label>
+        <input [type]="showPassword() ? 'text' : 'password'"
+               id="confirmPassword"
+               class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+               formControlName="confirmPassword"
+               [class.error]="registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched) && registerForm.hasError('mismatch')">
+        @if ((registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched) && registerForm.hasError('mismatch')) {
+          <div class="error-message">
+            <span class="text-sm text-red-500">Las contraseñas no coinciden</span>
+          </div>
+        }
+      </div>
+
+      <!-- Botón -->
+      <button type="submit"
+              class="w-full rounded-full bg-primary px-4 py-2 text-white hover:bg-primary/80"
+              [disabled]="registerForm.invalid">
+        <span>Crear cuenta</span>
+      </button>
+    </form>
+
+  </div>
+</div>

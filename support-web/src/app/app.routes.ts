@@ -73,4 +73,10 @@ export const routes: Routes = [
     title: 'Recuperar contraseña - Microtrón Support',
     data: { animation: 'forgot-password' }
   },
+  {
+    path: 'register',
+    loadComponent: () => import('./auth/register/register/register.component').then(m => m.RegisterComponent),
+    title: 'Registrarse - Microtrón Support',
+    data: { animation: 'register' }
+  }
 ];

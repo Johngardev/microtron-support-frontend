@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-
-import { tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import { delay, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // Use the API URL from your environment file
-  private apiUrl = 'http://localhost:3000';
+
+  private apiUrl = environment.apiUrl;
 
   // Use a BehaviorSubject to keep track of the login state
   // This allows other components to "subscribe" to the login status
@@ -67,4 +67,11 @@ export class AuthService {
   isAuthenticated(): boolean {
     return this.hasToken();
   }
+
+  register(credentials: { name?: string | null; email?: string | null; password?: string | null }): Observable<any> {
+  if (!this.apiUrl) {
+    return of({ message: 'registered', token: 'mock-token' }).pipe(delay(1000));
+  }
+  return this.http.post(`${this.apiUrl}/register`, credentials);
+}
 }
