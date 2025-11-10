@@ -2,7 +2,9 @@ import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +19,7 @@ export class LoginComponent {
   errorMessage = signal('');
   showPassword = signal(false);
   
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.nonNullable.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -36,12 +38,23 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading.set(true);
+      this.errorMessage.set('');
       
-      // Simulación de autenticación
-      setTimeout(() => {
-        console.log('Login data:', this.loginForm.value);
-        this.isLoading.set(false);
-      }, 2000);
+      const { email, password } = this.loginForm.value;
+
+      this.authService.login({ email, password })
+      .pipe(
+        finalize(() => this.isLoading.set(false))
+      )
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          this.errorMessage.set('Credenciales invalidas. Por favor, intente de nuevo.');
+          console.error('Error al iniciar sesión:', error);
+        }
+      });
     }
   }
 
