@@ -1,0 +1,11 @@
+@if (isLoading) {
+<div class="loading-overlay">
+  <div class="spinner">
+    @if (message) {
+      <div class="loading-message">
+        {{ message }}
+      </div>
+    }
+  </div>
+</div>
+}

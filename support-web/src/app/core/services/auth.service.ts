@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { catchError, delay, tap } from 'rxjs/operators';
+import { NotificationService } from '../services/notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private notificationService: NotificationService) {
     const user = localStorage.getItem(this.USER_KEY);
 
     if (user) {
@@ -39,10 +40,20 @@ export class AuthService {
       tap((response: any) => {
         if (response.access_token) {
           this.setAuthData(response);
+          this.notificationService.show({
+            id: 'login-success',
+            message: 'Login successful',
+            type: 'success'
+          });
         }
       }),
       catchError(error => {
         this.clearAuthData();
+        this.notificationService.show({
+          id: 'login-error',
+          message: 'Login failed',
+          type: 'error'
+        });
         return throwError(() => error);
       })
     );
@@ -55,14 +66,50 @@ export class AuthService {
     if (!this.apiUrl) {
       return of({ message: 'registered', token: 'mock-token' }).pipe(delay(1000));
     }
-    return this.http.post(`${this.apiUrl}/register`, credentials);
+    return this.http.post(`${this.apiUrl}/register`, credentials).pipe(
+      tap((response: any) => {
+        if (response.access_token) {
+          this.setAuthData(response);
+          this.notificationService.show({
+            id: 'register-success',
+            message: 'Register successful',
+            type: 'success'
+          });
+        }
+      }),
+      catchError(error => {
+        this.clearAuthData();
+        this.notificationService.show({
+          id: 'register-error',
+          message: 'Register failed',
+          type: 'error'
+        });
+        return throwError(() => error);
+      })
+    );
   }
 
   /**
    * Handles the "Forgot Password" request.
    */
   forgotPassword(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email }).pipe(
+      tap((response: any) => {
+        this.notificationService.show({
+          id: 'forgot-password-success',
+          message: 'Forgot password successful',
+          type: 'success'
+        });
+      }),
+      catchError(error => {
+        this.notificationService.show({
+          id: 'forgot-password-error',
+          message: 'Forgot password failed',
+          type: 'error'
+        });
+        return throwError(() => error);
+      })
+    );
   }
 
   /**
@@ -70,13 +117,34 @@ export class AuthService {
    */
   logout(): void {
     this.clearAuthData();
+    this.notificationService.show({
+      id: 'logout-success',
+      message: 'Logout successful',
+      type: 'success'
+    });
   }
 
   /**
    * Requests a password reset by sending the user's email to the backend.
    */
   requestPasswordReset(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/password/request-reset`, { email });
+    return this.http.post(`${this.apiUrl}/auth/password/request-reset`, { email }).pipe(
+      tap((response: any) => {
+        this.notificationService.show({
+          id: 'request-password-reset-success',
+          message: 'Request password reset successful',
+          type: 'success'
+        });
+      }),
+      catchError(error => {
+        this.notificationService.show({
+          id: 'request-password-reset-error',
+          message: 'Request password reset failed',
+          type: 'error'
+        });
+        return throwError(() => error);
+      })
+    );
   }
 
   /**
@@ -86,7 +154,23 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/auth/password/reset`, {
       token,
       newPassword
-    });
+    }).pipe(
+      tap((response: any) => {
+        this.notificationService.show({
+          id: 'reset-password-success',
+          message: 'Reset password successful',
+          type: 'success'
+        });
+      }),
+      catchError(error => {
+        this.notificationService.show({
+          id: 'reset-password-error',
+          message: 'Reset password failed',
+          type: 'error'
+        });
+        return throwError(() => error);
+      })
+    );
   }
 
   private setAuthData(authData: any): void {

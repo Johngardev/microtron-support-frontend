@@ -1,0 +1,38 @@
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  border-radius: 4px;
+  color: white;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notification-success {
+  background-color: #4caf50;
+}
+
+.notification-error {
+  background-color: #f44336;
+}
+
+.notification-info {
+  background-color: #2196f3;
+}
+
+.notification-warning {
+  background-color: #ff9800;
+}
+
+.close-btn {
+  margin-left: 15px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 5px;
+}
