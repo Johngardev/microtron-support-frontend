@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { catchError, delay, tap } from 'rxjs/operators';
+import { catchError, delay, map, tap } from 'rxjs/operators';
 import { NotificationService } from '../services/notification.service';
+import { AuthResponse, User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,17 +36,19 @@ export class AuthService {
   /**
    * Logs the user in by sending credentials to the backend.
    */
-  login(credentials: { email: string, password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/login`, credentials).pipe(
-      tap((response: any) => {
+  login(credentials: { email: string, password: string }): Observable<User> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials).pipe(
+      map(response => {
+        const user = User.fromObject(response.user);
         if (response.access_token) {
-          this.setAuthData(response);
+          this.setAuthData(response.access_token, user);
           this.notificationService.show({
             id: 'login-success',
             message: 'Login successful',
             type: 'success'
           });
         }
+        return user;
       }),
       catchError(error => {
         this.clearAuthData();
@@ -62,20 +65,17 @@ export class AuthService {
   /**
    * Registers a new user by sending credentials to the backend.
    */
-  register(credentials: { name?: string | null; email?: string | null; password?: string | null }): Observable<any> {
-    if (!this.apiUrl) {
-      return of({ message: 'registered', token: 'mock-token' }).pipe(delay(1000));
-    }
-    return this.http.post(`${this.apiUrl}/register`, credentials).pipe(
-      tap((response: any) => {
-        if (response.access_token) {
-          this.setAuthData(response);
-          this.notificationService.show({
-            id: 'register-success',
-            message: 'Register successful',
-            type: 'success'
-          });
-        }
+  register(userData: { name: string; email: string; password: string }): Observable<User> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, userData).pipe(
+      map(response => {
+        const user = User.fromObject(response.user);
+        this.setAuthData(response.access_token, user);
+        this.notificationService.show({
+          id: 'register-success',
+          message: 'Register successful',
+          type: 'success'
+        });
+        return user;
       }),
       catchError(error => {
         this.clearAuthData();
@@ -110,18 +110,6 @@ export class AuthService {
         return throwError(() => error);
       })
     );
-  }
-
-  /**
-   * Logs the user out.
-   */
-  logout(): void {
-    this.clearAuthData();
-    this.notificationService.show({
-      id: 'logout-success',
-      message: 'Logout successful',
-      type: 'success'
-    });
   }
 
   /**
@@ -173,10 +161,10 @@ export class AuthService {
     );
   }
 
-  private setAuthData(authData: any): void {
-    localStorage.setItem(this.TOKEN_KEY, authData.access_token);
-    localStorage.setItem(this.USER_KEY, JSON.stringify(authData.user));
-    this.currentUserSubject.next(authData.user);
+  private setAuthData(token: string, user: User): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+    localStorage.setItem(this.USER_KEY, JSON.stringify(user.toJSON()));
+    this.currentUserSubject.next(user);
   }
 
   private clearAuthData(): void {
@@ -194,13 +182,16 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const token = this.getToken();
-    if (!token) return false;
-    
-    // Aquí podrías añadir lógica para verificar si el token está expirado
-    // usando librerías como jwt-decode
-    
-    return true;
+    return !!this.getToken();
+  }
+
+  logout(): void {
+    this.clearAuthData();
+    this.notificationService.show({
+      id: 'logout-success',
+      message: 'Logout successful',
+      type: 'success'
+    });
   }
 
 }
