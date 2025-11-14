@@ -47,8 +47,12 @@ export class LoginComponent {
         finalize(() => this.isLoading.set(false))
       )
       .subscribe({
-        next: () => {
-          this.router.navigate(['/dashboard']);
+        next: (user) => {
+          if (user.isAdmin()) {
+            this.router.navigate(['/dashboard-admin']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         },
         error: (error) => {
           this.errorMessage.set('Credenciales invalidas. Por favor, intente de nuevo.');

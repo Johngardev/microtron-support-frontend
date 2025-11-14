@@ -23,17 +23,28 @@ export class RegisterComponent {
   });
 
   onSubmit() {
-    if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value).subscribe({
-        next: (response) => {
-          console.log(response);
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
+  if (this.registerForm.valid) {
+    const { name, email, password } = this.registerForm.value;
+    
+    if (!name || !email || !password) {
+      console.error('Form values are missing');
+      return;
     }
+
+    this.authService.register({ 
+      name, 
+      email, 
+      password 
+    }).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
   }
+}
 
   showPassword() {
     return this.showPassword$?.value;

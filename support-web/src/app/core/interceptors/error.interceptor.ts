@@ -21,7 +21,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           // Auto logout si la respuesta es 401 Unauthorized
           this.authService.logout();
-          this.router.navigate(['/auth/login'], { 
+          this.router.navigate(['/login'], { 
             queryParams: { returnUrl: this.router.url } 
           });
         }

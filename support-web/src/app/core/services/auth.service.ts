@@ -42,11 +42,6 @@ export class AuthService {
         const user = User.fromObject(response.user);
         if (response.access_token) {
           this.setAuthData(response.access_token, user);
-          this.notificationService.show({
-            id: 'login-success',
-            message: 'Login successful',
-            type: 'success'
-          });
         }
         return user;
       }),
