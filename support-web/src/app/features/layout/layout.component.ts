@@ -32,10 +32,10 @@ export class LayoutComponent implements OnInit {
   }
 
   private checkRoute(url: string) {
-    this.isAdminDashboard = url.includes('admin-dashboard');
-    this.isAdminIncidents = url.includes('admin-incidents');
-    this.isAdminSessions = url.includes('admin-sessions');
-    this.isAdminSession = url.includes('admin-session');
-    this.isAdminIncident = url.includes('admin-incident');
+    this.isAdminDashboard = url.includes('/admin/dashboard');
+    this.isAdminIncidents = url.includes('/admin/incidents');
+    this.isAdminSessions = url.includes('/admin/sessions');
+    this.isAdminSession = url.includes('/admin/session');
+    this.isAdminIncident = url.includes('/admin/incident');
   }
 }

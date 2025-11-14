@@ -76,7 +76,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard, AdminGuard],
     children: [
       {
-        path: 'dashboard-admin',
+        path: 'dashboard',
         loadComponent: () => import('./features/admin-dashboard/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent),
         title: 'Admin Dashboard - Microtrón Support',
         data: { animation: 'admin-dashboard' }

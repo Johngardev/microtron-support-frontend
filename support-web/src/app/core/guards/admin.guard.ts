@@ -21,7 +21,7 @@ export class AdminGuard implements CanActivate {
         }
         
         // Redirige al dashboard si no es administrador
-        return this.router.createUrlTree(['/dashboard-admin']);
+        return this.router.createUrlTree(['/admin/dashboard']);
       })
     );
   }

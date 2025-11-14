@@ -16,10 +16,35 @@ export class HeaderComponent {
   private _authService = inject(AuthService);
 
   currentUser$ = this._authService.currentUser$;
-  isAuthenticated= this._authService.isAuthenticated();
+  isAuthenticated = this._authService.isAuthenticated();
+  isUserMenuOpen = false;
+
+  constructor() {
+    // Cerrar el menú al hacer clic fuera de él
+    document.addEventListener('click', this.onClickOutside.bind(this));
+  }
+
+  ngOnDestroy() {
+    // Limpiar el event listener al destruir el componente
+    document.removeEventListener('click', this.onClickOutside.bind(this));
+  }
 
   isAdmin(role: string): boolean {
     return role === 'admin';
+  }
+
+  toggleUserMenu(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+  }
+
+  onClickOutside(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.relative')) {
+      this.isUserMenuOpen = false;
+    }
   }
 
   onLogout(): void {

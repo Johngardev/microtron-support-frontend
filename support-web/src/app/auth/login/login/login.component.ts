@@ -49,7 +49,7 @@ export class LoginComponent {
       .subscribe({
         next: (user) => {
           if (user.isAdmin()) {
-            this.router.navigate(['/dashboard-admin']);
+            this.router.navigate(['/admin/dashboard']);
           } else {
             this.router.navigate(['/dashboard']);
           }
