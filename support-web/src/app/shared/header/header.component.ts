@@ -16,8 +16,11 @@ export class HeaderComponent {
   private _authService = inject(AuthService);
 
   currentUser$ = this._authService.currentUser$;
-  isAuthenticated = this._authService.isAuthenticated();
   isUserMenuOpen = false;
+
+  get isAuthenticated(): boolean {
+    return this._authService.isAuthenticated();
+  }
 
   constructor() {
     // Cerrar el menú al hacer clic fuera de él
