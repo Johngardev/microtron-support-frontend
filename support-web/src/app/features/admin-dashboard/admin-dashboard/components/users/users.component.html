@@ -1,1 +1,113 @@
-<p>users works!</p>
+<div class="users-container">
+  <div class="header-actions">
+    <h2 class="text-4xl font-bold">Gestión de Usuarios</h2>
+    <button class="bg-primary text-white px-4 py-2 rounded-full" (click)="openAddUserDialog()">
+      Nuevo Usuario
+    </button>
+  </div>
+
+  <!--TODO: Loading State -->
+
+  <!-- Error State -->
+  @if (error) {
+  <div class="error-message">
+    <mat-icon color="warn">error_outline</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-button color="primary" (click)="loadUsers()">
+      <mat-icon>refresh</mat-icon>
+      Reintentar
+    </button>
+  </div>
+  }
+
+  <!-- Users Table -->
+  @if (!loading && !error) {
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let user" class="user-cell">
+          <div class="user-avatar">
+            <mat-icon>account_circle</mat-icon>
+          </div>
+          <div class="user-info">
+            <div class="user-name">{{ user.name }}</div>
+            <div class="user-company" *ngIf="user.company">{{ user.company }}</div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Correo Electrónico</th>
+        <td mat-cell *matCellDef="let user">
+          <a [href]="'mailto:' + user.email" class="email-link">
+            {{ user.email }}
+          </a>
+        </td>
+      </ng-container>
+
+      <!-- Phone Column -->
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+        <td mat-cell *matCellDef="let user">
+          <a *ngIf="user.phone" [href]="'tel:' + user.phone">
+            {{ user.phone }}
+          </a>
+          <span *ngIf="!user.phone">No especificado</span>
+        </td>
+      </ng-container>
+
+      <!-- Role Column -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Rol</th>
+        <td mat-cell *matCellDef="let user">
+          <span class="role-badge" [class]="'role-' + user.role.toLowerCase()">
+            {{ user.role === 'admin' ? 'Administrador' : 'Usuario' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let user">
+          <span class="status-badge" [class]="'status-' + user.status.toLowerCase()">
+            {{ user.status === 'active' ? 'Activo' : 'Inactivo' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- TODO: Last Login Column -->
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actions-header">Acciones</th>
+        <td mat-cell *matCellDef="let user" class="actions-cell">
+          <button mat-icon-button color="primary" (click)="editUser(user)" matTooltip="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteUser(user)" matTooltip="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  }
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !error && dataSource.length === 0" class="empty-state">
+    <mat-icon>group_off</mat-icon>
+    <h3>No hay usuarios registrados</h3>
+    <p>Comienza agregando tu primer usuario</p>
+    <button mat-raised-button color="primary" (click)="openAddUserDialog()">
+      <mat-icon>person_add</mat-icon>
+      Agregar Usuario
+    </button>
+  </div>
+</div>
