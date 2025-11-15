@@ -18,6 +18,8 @@ export class LayoutComponent implements OnInit {
   isAdminSessions = false;
   isAdminSession = false;
   isAdminIncident = false;
+  isAdminSettings = false;
+  isAdminUsers = false;
 
   constructor(private router: Router) {}
 
@@ -37,5 +39,7 @@ export class LayoutComponent implements OnInit {
     this.isAdminSessions = url.includes('/admin/sessions');
     this.isAdminSession = url.includes('/admin/session');
     this.isAdminIncident = url.includes('/admin/incident');
+    this.isAdminSettings = url.includes('/admin/settings');
+    this.isAdminUsers = url.includes('/admin/users');
   }
 }

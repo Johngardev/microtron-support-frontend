@@ -104,6 +104,18 @@ export const routes: Routes = [
         loadComponent: () => import('./features/admin-dashboard/admin-dashboard/components/admin-incident/admin-incident.component').then(m => m.AdminIncidentComponent),
         title: 'Admin Incidencia - Microtrón Support',
         data: { animation: 'admin-incident' }
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./features/admin-dashboard/admin-dashboard/components/users/users.component').then(m => m.UsersComponent),
+        title: 'Admin Usuarios - Microtrón Support',
+        data: { animation: 'admin-users' }
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./features/admin-dashboard/admin-dashboard/components/settings/settings.component').then(m => m.SettingsComponent),
+        title: 'Admin Configuración - Microtrón Support',
+        data: { animation: 'admin-settings' }
       }
     ]
   },
