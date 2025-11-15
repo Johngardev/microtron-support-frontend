@@ -21,12 +21,12 @@ export class StatsService {
 
     // Datos de ejemplo para desarrollo
     return of({
-      totalIncidents: 125,
       openIncidents: 10,
       closedIncidents: 101,
       totalSessions: 45,
       upcomingSessions: 7,
-      activeUsers: 32
+      activeUsers: 32,
+      totalIncidents: 10 + 101
     });
   }
 
@@ -83,7 +83,9 @@ export class StatsService {
       'Incidencia resuelta': 'check_circle',
       'Nuevo usuario registrado': 'person_add',
       'Sesión programada': 'event',
-      'Comentario añadido': 'comment'
+      'Comentario añadido': 'chat',
+      'Sesión iniciada': 'event',
+      'Sesión finalizada': 'event',
     };
     return icons[activity] || 'notifications';
   }

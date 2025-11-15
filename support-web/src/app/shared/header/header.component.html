@@ -3,41 +3,49 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
 
     <div class="flex items-center">
-      <a [routerLink]="(currentUser$ | async)?.role === 'admin' ? '/admin/dashboard' : '/dashboard'" class="text-xl font-bold text-gray-800">
+      <a [routerLink]="(currentUser$ | async)?.role === 'admin' ? '/admin/dashboard' : '/dashboard'"
+        class="text-xl font-bold text-gray-800">
         <img src="assets/logoMicrotron.jpg" alt="Logo" class="h-10 md:h-12 w-auto m-0">
       </a>
     </div>
-    
+
     <nav class="flex items-center">
       @if (isAuthenticated && currentUser$) {
       <!-- User menu dropdown -->
       <div class="relative ml-4">
         <button (click)="toggleUserMenu()" class="flex items-center focus:outline-none" type="button">
           <span class="text-sm font-medium text-gray-700 mr-2">{{ (currentUser$ | async)?.name }}</span>
-          <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600">
+          <div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white border border-gray-400">
             {{ (currentUser$ | async)?.name?.charAt(0)?.toUpperCase() }}
           </div>
-          <svg class="w-4 h-4 ml-1 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <svg class="w-4 h-4 ml-1 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </button>
-        
+
         <!-- Dropdown menu -->
-         @if (isUserMenuOpen) {
-        <div class="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50" role="menu" aria-orientation="vertical" tabindex="-1">
+        @if (isUserMenuOpen) {
+        <div
+          class="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+          role="menu" aria-orientation="vertical" tabindex="-1">
           <div class="py-1" role="none">
             @if (isAdmin((currentUser$ | async)?.role)) {
-            <a routerLink="/admin/users" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+            <a routerLink="/admin/users" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
+              tabindex="-1">
               Usuarios
             </a>
-            <a routerLink="/admin/config" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+            <a routerLink="/admin/config" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              role="menuitem" tabindex="-1">
               Configuración
             </a>
             }
-            <a routerLink="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+            <a routerLink="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
+              tabindex="-1">
               Perfil
             </a>
-            <button (click)="onLogout()" class="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100" role="menuitem" tabindex="-1">
+            <button (click)="onLogout()" class="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+              role="menuitem" tabindex="-1">
               Cerrar sesión
             </button>
           </div>
