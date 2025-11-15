@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,10 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { User } from '../../../../../core/models/user.model';
 import { UsersService } from '../../../../../core/services/users.service';
 import { UserFormComponent } from '../user-form/user-form.component';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatFormField, MatLabel } from "@angular/material/form-field";
 
 @Component({
   selector: 'app-users',
@@ -19,41 +23,57 @@ import { UserFormComponent } from '../user-form/user-form.component';
     MatIconModule,
     MatDialogModule,
     MatSnackBarModule,
-  ],
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormField,
+    MatLabel
+],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     'name',
     'email',
-    'phone',
     'role',
     'status',
-    'lastLogin',
     'actions'
   ];
-  dataSource: User[] = [];
+  dataSource: MatTableDataSource<User>;
   loading = true;
   error: string | null = null;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private usersService: UsersService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    this.dataSource = new MatTableDataSource<User>();
+  }
 
   ngOnInit() {
     this.loadUsers();
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
   loadUsers() {
     this.loading = true;
     this.error = null;
-    
+
     this.usersService.getUsers().subscribe({
       next: (users) => {
-        this.dataSource = users;
+        this.dataSource.data = users;
         this.loading = false;
       },
       error: (err) => {
@@ -107,6 +127,31 @@ export class UsersComponent implements OnInit {
         }
       });
     }
+  }
+
+  getHeaderText(column: string): string {
+    const headers: { [key: string]: string } = {
+      'name': 'Nombre',
+      'email': 'Correo Electrónico',
+      'role': 'Rol',
+      'status': 'Estado',
+      'actions': 'Acciones'
+    };
+    return headers[column] || column;
+  }
+
+  getRoleBadgeClass(role: string): string {
+    const baseClasses = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium';
+    return role === 'admin'
+      ? `${baseClasses} bg-purple-100 text-purple-800`
+      : `${baseClasses} bg-green-100 text-green-800`;
+  }
+
+  getStatusBadgeClass(status: string): string {
+    const baseClasses = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium';
+    return status === 'active'
+      ? `${baseClasses} bg-green-100 text-green-800`
+      : `${baseClasses} bg-yellow-100 text-yellow-800`;
   }
 
 }

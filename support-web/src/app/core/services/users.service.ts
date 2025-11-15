@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../models/user.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,15 +10,18 @@ import { User } from '../models/user.model';
 export class UsersService {
   private apiUrl = `${environment.apiUrl}/users`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   /**
    * Obtiene todos los usuarios
    * @returns Observable<User[]>
    */
   getUsers() {
-    return this.http.get<User[]>(this.apiUrl);
-  }
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${this.authService.getToken()}`
+  });
+  return this.http.get<User[]>('http://localhost:3000/users', { headers });
+}
 
   /**
    * Obtiene un usuario por su ID
