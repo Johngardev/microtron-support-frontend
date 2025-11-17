@@ -5,10 +5,8 @@
       <h1 class="text-2xl font-bold text-gray-900">Gestión de Usuarios</h1>
       <p class="text-gray-600">Administra los usuarios del sistema</p>
     </div>
-    <button 
-      (click)="openAddUserDialog()"
-      class="inline-flex items-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-    >
+    <button (click)="openAddUserDialog()"
+      class="inline-flex items-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
       <mat-icon class="mr-2">person_add</mat-icon>
       Nuevo Usuario
     </button>
@@ -18,126 +16,120 @@
 
   <!-- Error State -->
   @if (error && !loading) {
-    <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
-      <div class="flex">
-        <div class="flex-shrink-0">
-          <mat-icon class="h-5 w-5 text-red-400">error_outline</mat-icon>
-        </div>
-        <div class="ml-3">
-          <p class="text-sm text-red-700">
-            Error al cargar los usuarios. Por favor, inténtalo de nuevo.
-          </p>
-        </div>
+  <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <mat-icon class="h-5 w-5 text-red-400">error_outline</mat-icon>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm text-red-700">
+          Error al cargar los usuarios. Por favor, inténtalo de nuevo.
+        </p>
       </div>
     </div>
+  </div>
   }
 
   <!-- Users Table -->
   @if (!loading && !error && dataSource.data.length > 0) {
-    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              @for (column of displayedColumns; track $index) {
-                <th 
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {{ getHeaderText(column) }}
-              </th>
-              }
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            @for (user of dataSource.data ; track $index) {
-            <tr 
-                class="hover:bg-gray-50 transition-colors duration-150">
-              
-              <!-- Name Column -->
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
-                  <div class="flex-shrink-10 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <mat-icon class="text-primary">person</mat-icon>
-                  </div>
-                  <div class="ml-4">
-                    <div class="text-sm font-medium text-gray-900">
-                      {{ user.name }}
-                    </div>
-                    <div class="text-sm text-gray-500">
-                      {{ user.email }}
-                    </div>
-                  </div>
-                </div>
-              </td>
-
-              <!-- Email Column -->
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-500">{{ user.email }}</div>
-              </td>
-
-              <!-- Role Column -->
-              <td class="px-6 py-4 whitespace-nowrap text-sm">
-                <span [class]="getRoleBadgeClass(user.role)">
-                  {{ user.role === 'admin' ? 'Administrador' : 'Usuario' }}
-                </span>
-              </td>
-
-              <!-- Status Column -->
-              <td class="px-6 py-4 whitespace-nowrap text-sm">
-                <span [class]="getStatusBadgeClass(user.isActive ? 'active' : 'inactive')">
-                  {{ user.isActive ? 'Activo' : 'Inactivo' }}
-                </span>
-              </td>
-
-              <!-- Actions Column -->
-              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <div class="flex items-center space-x-2 justify-end">
-                  <button (click)="editUser(user)" 
-                          class="text-primary hover:text-primary/80 p-1 rounded-full hover:bg-primary/10"
-                          matTooltip="Editar usuario">
-                    <mat-icon class="h-5 w-5">edit</mat-icon>
-                  </button>
-                  <button (click)="deleteUser(user)"
-                          class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-10"
-                          matTooltip="Eliminar usuario">
-                    <mat-icon class="h-5 w-5">delete</mat-icon>
-                  </button>
-                </div>
-              </td>
-            </tr>
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            @for (column of displayedColumns; track $index) {
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {{ getHeaderText(column) }}
+            </th>
             }
-          </tbody>
-        </table>
-      </div>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          @for (user of dataSource.data ; track $index) {
+          <tr class="hover:bg-gray-50 transition-colors duration-150">
+
+            <!-- Name Column -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-10 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <mat-icon class="text-primary">person</mat-icon>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">
+                    {{ user.name }}
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    {{ user.email }}
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Email Column -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-500">{{ user.email }}</div>
+            </td>
+
+            <!-- Role Column -->
+            <td class="px-6 py-4 whitespace-nowrap text-xs">
+              <span [class]="getRoleBadgeClass(user.role)">
+                {{ user.role === 'admin' ? 'Administrador' : 'Usuario' }}
+              </span>
+            </td>
+
+            <!-- Status Column -->
+            <td class="px-6 py-4 whitespace-nowrap text-xs">
+              <span [class]="getStatusBadgeClass(user.isActive ? 'active' : 'inactive')">
+                {{ user.isActive ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+
+            <!-- Actions Column -->
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex items-center space-x-2 justify-end">
+                <button (click)="editUser(user)"
+                  class="text-primary hover:text-primary/80 p-1 rounded-full hover:bg-primary/10"
+                  matTooltip="Editar usuario">
+                  <mat-icon class="h-5 w-5">edit</mat-icon>
+                </button>
+                <button (click)="deleteUser(user)"
+                  class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-10"
+                  matTooltip="Eliminar usuario">
+                  <mat-icon class="h-5 w-5">delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
     </div>
+  </div>
   }
 
   <!-- Empty State -->
   @if (!loading && !error && dataSource.data.length === 0) {
-    <div class="text-center py-12 px-4 sm:px-6 lg:px-8 bg-white rounded-lg shadow">
-      <mat-icon class="mx-auto h-12 w-12 text-gray-400" [inline]="true">group_off</mat-icon>
-      <h3 class="mt-2 text-lg font-medium text-gray-900">No hay usuarios registrados</h3>
-      <p class="mt-1 text-sm text-gray-500">Comienza agregando tu primer usuario al sistema.</p>
-      <div class="mt-6">
-        <button (click)="openAddUserDialog()"
-                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-          <mat-icon class="mr-2" [inline]="true">person_add</mat-icon>
-          Agregar Usuario
-        </button>
-      </div>
+  <div class="text-center py-12 px-4 sm:px-6 lg:px-8 bg-white rounded-lg shadow">
+    <mat-icon class="mx-auto h-12 w-12 text-gray-400" [inline]="true">group_off</mat-icon>
+    <h3 class="mt-2 text-lg font-medium text-gray-900">No hay usuarios registrados</h3>
+    <p class="mt-1 text-sm text-gray-500">Comienza agregando tu primer usuario al sistema.</p>
+    <div class="mt-6">
+      <button (click)="openAddUserDialog()"
+        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+        <mat-icon class="mr-2" [inline]="true">person_add</mat-icon>
+        Agregar Usuario
+      </button>
     </div>
+  </div>
   }
 
   <!-- Pagination -->
-  @if (!loading && dataSource.data.length > 0) {
-    <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-4 rounded-b-lg">
-      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-        <mat-paginator 
-          [pageSizeOptions]="[5, 10, 25, 100]"
-          [pageSize]="10"
-          showFirstLastButtons
-          aria-label="Select page of users">
-        </mat-paginator>
-      </div>
+  <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-4 rounded-b-lg">
+    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons
+        aria-label="Select page of users">
+      </mat-paginator>
     </div>
-  }
+  </div>
+
 </div>

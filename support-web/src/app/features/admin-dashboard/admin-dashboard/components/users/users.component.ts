@@ -63,6 +63,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initializeTable();
+    setTimeout(() => this.initializeTable(), 0);
   }
 
   ngOnDestroy(): void {
@@ -71,10 +72,16 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
 
   private initializeTable(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  if (this.sort) {
     this.sort.sort({ id: 'name', start: 'asc', disableClear: false });
   }
+  if (this.paginator) {
+    this.dataSource.paginator = this.paginator;
+  }
+  if (this.sort) {
+    this.dataSource.sort = this.sort;
+  }
+}
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -95,8 +102,6 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   private handleUsersLoaded(users: User[]): void {
     this.dataSource.data = users;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
     this.setLoadingState(false);
   }
 
