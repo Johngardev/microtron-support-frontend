@@ -35,6 +35,7 @@ export class UserFormComponent {
     private fb: FormBuilder,
     private usersService: UsersService,
     private dialogRef: MatDialogRef<UserFormComponent>,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: { user?: User }
   ) {
     this.userForm = this.fb.group({
@@ -68,9 +69,21 @@ export class UserFormComponent {
     request.subscribe({
       next: () => {
         this.dialogRef.close(true);
+        this.snackBar.open('Usuario guardado correctamente', 'Close', {
+          duration: 5000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['success-snackbar']
+        });
+        this.dialogRef.close(true);
       },
       error: (error) => {
-        console.error('Error saving user:', error);
+        this.snackBar.open('Error guardando usuario', 'Close', {
+          duration: 5000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['error-snackbar']
+        });
         this.loading = false;
       }
     });

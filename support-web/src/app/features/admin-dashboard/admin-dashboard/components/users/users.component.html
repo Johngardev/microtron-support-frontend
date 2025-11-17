@@ -75,14 +75,14 @@
               </td>
 
               <!-- Role Column -->
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td class="px-6 py-4 whitespace-nowrap text-sm">
                 <span [class]="getRoleBadgeClass(user.role)">
                   {{ user.role === 'admin' ? 'Administrador' : 'Usuario' }}
                 </span>
               </td>
 
               <!-- Status Column -->
-              <td class="px-6 py-4 whitespace-nowrap">
+              <td class="px-6 py-4 whitespace-nowrap text-sm">
                 <span [class]="getStatusBadgeClass(user.isActive ? 'active' : 'inactive')">
                   {{ user.isActive ? 'Activo' : 'Inactivo' }}
                 </span>
@@ -130,12 +130,13 @@
   <!-- Pagination -->
   @if (!loading && dataSource.data.length > 0) {
     <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 mt-4 rounded-b-lg">
-      <div class="flex-1 flex justify-between sm:hidden">
-        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"> Anterior </a>
-        <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"> Siguiente </a>
-      </div>
       <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+        <mat-paginator 
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          [pageSize]="10"
+          showFirstLastButtons
+          aria-label="Select page of users">
+        </mat-paginator>
       </div>
     </div>
   }

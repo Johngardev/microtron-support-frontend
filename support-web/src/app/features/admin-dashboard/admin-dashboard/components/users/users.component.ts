@@ -12,6 +12,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatFormField, MatLabel } from "@angular/material/form-field";
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-users',
@@ -32,16 +33,21 @@ import { MatFormField, MatLabel } from "@angular/material/form-field";
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = [
-    'name',
-    'email',
-    'role',
-    'status',
-    'actions'
-  ];
-  dataSource: MatTableDataSource<User>;
+  private destroy$ = new Subject<void>();
+  
+  // Table configuration
+  displayedColumns: string[] = ['name', 'email', 'role', 'status', 'actions'];
+  dataSource = new MatTableDataSource<User>();
+  
+  // Pagination
+  pageSize = 10;
+  pageSizeOptions = [5, 10, 25, 100];
+  
+  // State
   loading = true;
   error: string | null = null;
+  
+  // View children
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -49,84 +55,131 @@ export class UsersComponent implements OnInit, AfterViewInit {
     private usersService: UsersService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {
-    this.dataSource = new MatTableDataSource<User>();
-  }
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadUsers();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  ngAfterViewInit(): void {
+    this.initializeTable();
   }
 
-  applyFilter(event: Event) {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private initializeTable(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.sort.sort({ id: 'name', start: 'asc', disableClear: false });
+  }
+
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  loadUsers() {
-    this.loading = true;
+  private loadUsers(): void {
+    this.setLoadingState(true);
     this.error = null;
 
-    this.usersService.getUsers().subscribe({
-      next: (users) => {
-        this.dataSource.data = users;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Error al cargar los usuarios. Por favor, intente de nuevo.';
-        this.loading = false;
-        console.error('Error loading users:', err);
-      }
-    });
+    this.usersService.getUsers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (users) => this.handleUsersLoaded(users),
+        error: (err) => this.handleLoadError(err)
+      });
   }
 
-  openAddUserDialog() {
+  private handleUsersLoaded(users: User[]): void {
+    this.dataSource.data = users;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.setLoadingState(false);
+  }
+
+  private handleLoadError(error: any): void {
+    this.error = 'Error al cargar los usuarios. Por favor, intente de nuevo.';
+    this.setLoadingState(false);
+    console.error('Error loading users:', error);
+  }
+
+  private setLoadingState(isLoading: boolean): void {
+    this.loading = isLoading;
+  }
+
+  openAddUserDialog(): void {
     const dialogRef = this.dialog.open(UserFormComponent, {
       width: '600px',
       data: { user: null }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadUsers();
-      }
-    });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        if (result) {
+          this.loadUsers();
+        }
+      });
   }
 
-  editUser(user: User) {
+  editUser(user: User): void {
     const dialogRef = this.dialog.open(UserFormComponent, {
       width: '600px',
-      data: { user: { ...user } }
+      data: { user }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadUsers();
-      }
-    });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        if (result) {
+          this.loadUsers();
+        }
+      });
   }
 
-  deleteUser(user: User) {
-    if (confirm(`¿Está seguro de eliminar al usuario ${user.name}?`)) {
-      this.usersService.deleteUser(user._id).subscribe({
+  deleteUser(user: User): void {
+  this.usersService.deleteUser(user._id)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: () => {
+        this.snackBar.open('Usuario eliminado correctamente', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
+        this.loadUsers();
+      },
+      error: (err) => {
+        this.snackBar.open('Error al eliminar el usuario', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        });
+        console.error('Error deleting user:', err);
+      }
+    });
+}
+
+  private confirmDeleteUser(user: User): void {
+    this.usersService.deleteUser(user._id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
         next: () => {
           this.snackBar.open('Usuario eliminado correctamente', 'Cerrar', {
-            duration: 3000
+            duration: 3000,
+            panelClass: ['success-snackbar']
           });
           this.loadUsers();
         },
         error: (err) => {
           this.snackBar.open('Error al eliminar el usuario', 'Cerrar', {
-            duration: 3000
+            duration: 3000,
+            panelClass: ['error-snackbar']
           });
           console.error('Error deleting user:', err);
         }
       });
-    }
   }
 
   getHeaderText(column: string): string {
@@ -141,17 +194,14 @@ export class UsersComponent implements OnInit, AfterViewInit {
   }
 
   getRoleBadgeClass(role: string): string {
-    const baseClasses = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium';
-    return role === 'admin'
-      ? `${baseClasses} bg-purple-100 text-purple-800`
-      : `${baseClasses} bg-green-100 text-green-800`;
+    return role === 'admin' 
+      ? 'bg-blue-100 text-blue-800 rounded-full px-2 py-1' 
+      : 'bg-green-100 text-green-800 rounded-full px-2 py-1';
   }
 
   getStatusBadgeClass(status: string): string {
-    const baseClasses = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium';
     return status === 'active'
-      ? `${baseClasses} bg-green-100 text-green-800`
-      : `${baseClasses} bg-yellow-100 text-yellow-800`;
+      ? 'bg-green-100 text-green-800 rounded-full px-2 py-1'
+      : 'bg-red-100 text-red-800 rounded-full px-2 py-1';
   }
-
 }
