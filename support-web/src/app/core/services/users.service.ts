@@ -38,7 +38,10 @@ export class UsersService {
    * @returns Observable<User>
    */
   createUser(user: User) {
-    return this.http.post<User>(this.apiUrl, user);
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+    return this.http.post<User>(this.apiUrl, user, { headers });
   }
 
   /**

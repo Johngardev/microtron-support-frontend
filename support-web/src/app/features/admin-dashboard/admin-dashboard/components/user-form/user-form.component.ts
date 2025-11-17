@@ -42,6 +42,8 @@ export class UserFormComponent {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.pattern('^[0-9+\\-\\s()]*$')]],
       company: [''],
+      password: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]],
       role: ['user', Validators.required],
       isActive: [true]
     });
