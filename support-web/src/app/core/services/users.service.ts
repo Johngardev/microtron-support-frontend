@@ -48,7 +48,10 @@ export class UsersService {
    * @returns Observable<User>
    */
   updateUser(id: string, user: User) {
-    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+    return this.http.put<User>(`${this.apiUrl}/${id}`, user, { headers });
   }
 
   /**
