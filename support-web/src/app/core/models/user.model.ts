@@ -12,6 +12,8 @@ export interface IUser {
   isActive: boolean;
   createdAt?: string;
   updatedAt?: string;
+  phone?: string;
+  company?: string;
 }
 
 export interface IAuthResponse {
@@ -27,6 +29,8 @@ export class User implements IUser {
   isActive: boolean;
   createdAt?: string;
   updatedAt?: string;
+  phone?: string;
+  company?: string;
 
   constructor(data: Partial<IUser> = {}) {
     this._id = data._id || '';
@@ -36,6 +40,8 @@ export class User implements IUser {
     this.isActive = data.isActive !== undefined ? data.isActive : true;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
+    this.phone = data.phone;
+    this.company = data.company;
   }
 
   hasRole(role: UserRole): boolean {
@@ -54,7 +60,9 @@ export class User implements IUser {
       role: data.role || UserRole.USER,
       isActive: data.isActive !== undefined ? data.isActive : true,
       createdAt: data.createdAt ? new Date(data.createdAt).toISOString() : undefined,
-      updatedAt: data.updatedAt ? new Date(data.updatedAt).toISOString() : undefined
+      updatedAt: data.updatedAt ? new Date(data.updatedAt).toISOString() : undefined,
+      phone: data.phone,
+      company: data.company
     });
   }
 
@@ -66,7 +74,9 @@ export class User implements IUser {
       role: this.role,
       isActive: this.isActive,
       ...(this.createdAt && { createdAt: this.createdAt }),
-      ...(this.updatedAt && { updatedAt: this.updatedAt })
+      ...(this.updatedAt && { updatedAt: this.updatedAt }),
+      ...(this.phone && { phone: this.phone }),
+      ...(this.company && { company: this.company })
     }
   }
 }

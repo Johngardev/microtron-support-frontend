@@ -1,8 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { BehaviorSubject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -12,8 +14,10 @@ import { BehaviorSubject } from 'rxjs';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
+  private router = inject(Router);
   private authService = inject(AuthService);
   private showPassword$ = new BehaviorSubject<boolean>(false);
+  private snackBar = inject(MatSnackBar);
 
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -23,28 +27,28 @@ export class RegisterComponent {
   });
 
   onSubmit() {
-  if (this.registerForm.valid) {
-    const { name, email, password } = this.registerForm.value;
-    
-    if (!name || !email || !password) {
-      console.error('Form values are missing');
-      return;
-    }
-
-    this.authService.register({ 
-      name, 
-      email, 
-      password 
-    }).subscribe({
-      next: (response) => {
-        console.log(response);
-      },
-      error: (error) => {
-        console.error(error);
+    if (this.registerForm.valid) {
+      const { name, email, password } = this.registerForm.value;
+      
+      if (!name || !email || !password) {
+        console.error('Form values are missing');
+        return;
       }
-    });
+
+      this.authService.register({ 
+        name, 
+        email, 
+        password 
+      }).subscribe({
+        next: () => {
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          console.error('Registration failed:', error);
+        }
+      });
+    }
   }
-}
 
   showPassword() {
     return this.showPassword$?.value;

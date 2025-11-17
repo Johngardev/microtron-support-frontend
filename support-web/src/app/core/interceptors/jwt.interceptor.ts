@@ -12,6 +12,7 @@ export class JwtInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     const token = this.authService.getToken();
+    console.log('JWT Interceptor - Token:', token); // Debug log
     
     if (token) {
       request = request.clone({
@@ -19,6 +20,9 @@ export class JwtInterceptor implements HttpInterceptor {
           Authorization: `Bearer ${token}`
         }
       });
+      console.log('JWT Interceptor - Token:', token); // Debug log
+    } else {
+      console.log('JWT Interceptor - No token found'); // Debug log
     }
 
     return next.handle(request);

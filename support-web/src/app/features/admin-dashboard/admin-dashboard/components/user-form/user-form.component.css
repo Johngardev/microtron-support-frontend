@@ -1,0 +1,48 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 0;
+  min-width: 400px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.dialog-actions {
+  padding: 16px 0 0 0;
+  margin: 0;
+  justify-content: flex-end;
+}
+
+.button-loading {
+  display: inline-block;
+  margin: 0 8px;
+}
+
+mat-dialog-content {
+  overflow: visible;
+}
+
+/* If you want to align the label with other form fields */
+.form-field mat-label {
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* For the checkbox specifically */
+.form-field mat-checkbox {
+  margin-top: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .form-container {
+    min-width: 280px;
+  }
+}
