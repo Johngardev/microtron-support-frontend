@@ -17,10 +17,10 @@ export class UsersService {
    * @returns Observable<User[]>
    */
   getUsers() {
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.authService.getToken()}`
-  });
-  return this.http.get<User[]>('http://localhost:3000/users', { headers });
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+    return this.http.get<User[]>(this.apiUrl, { headers });
 }
 
   /**
