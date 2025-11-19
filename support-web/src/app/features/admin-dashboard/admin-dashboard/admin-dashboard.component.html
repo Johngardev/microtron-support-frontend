@@ -1,80 +1,121 @@
-<div class="p-12">
-  <h1 class="text-2xl font-bold text-gray-800 mb-6">Panel de Administración</h1>
+<div class="p-6 md:p-12">
+  <!-- Header -->
+  <header class="flex justify-between items-center mb-8">
+    <h1 class="text-2xl font-bold text-gray-800">Panel de Administración</h1>
 
-  <!-- Estadísticas rápidas -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-    <div class="bg-white p-6 rounded-lg shadow">
-      <h3 class="text-gray-500 text-sm font-medium">Incidentes Totales</h3>
-      <p class="text-3xl font-bold text-gray-500">{{ (stats$ | async)?.totalIncidents || 0 }}</p>
+  </header>
+
+  <!-- Stats Cards -->
+  <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <!-- Total Incidents Card -->
+    <div class="bg-white p-6 rounded-lg shadow h-full">
+      <div class="flex items-center">
+        <span class="text-2xl mr-3">📊</span>
+        <h3 class="text-gray-500 text-sm font-medium">Incidentes Totales</h3>
+      </div>
+      <p class="text-3xl font-bold text-gray-400 mt-2">
+        {{ (stats$ | async)?.totalIncidents || 0 }}
+      </p>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow">
-      <h3 class="text-gray-500 text-sm font-medium">Incidentes Abiertos</h3>
-      <p class="text-3xl font-bold text-red-500">{{ (stats$ | async)?.openIncidents || 0 }}</p>
+    <!-- Open Incidents Card -->
+    <div class="bg-white p-6 rounded-lg shadow h-full">
+      <div class="flex items-center">
+        <span class="text-2xl mr-3">⚠️</span>
+        <h3 class="text-gray-500 text-sm font-medium">Incidentes Abiertos</h3>
+      </div>
+      <p class="text-3xl font-bold text-red-400 mt-2">
+        {{ (stats$ | async)?.openIncidents || 0 }}
+      </p>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow">
-      <h3 class="text-gray-500 text-sm font-medium">Sesiones Programadas</h3>
-      <p class="text-3xl font-bold text-blue-500">{{ (stats$ | async)?.upcomingSessions || 0 }}</p>
+    <!-- Upcoming Sessions Card -->
+    <div class="bg-white p-6 rounded-lg shadow h-full">
+      <div class="flex items-center">
+        <span class="text-2xl mr-3">📅</span>
+        <h3 class="text-gray-500 text-sm font-medium">Sesiones Programadas</h3>
+      </div>
+      <p class="text-3xl font-bold text-blue-400 mt-2">
+        {{ (stats$ | async)?.upcomingSessions || 0 }}
+      </p>
     </div>
-  </div>
+  </section>
 
+  <!-- Main Content -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <div class="bg-white p-4 rounded-lg shadow">
-      <a class="text-lg font-semibold text-gray-800 mb-3 hover:border-b hover:border-gray-700" routerLink="/admin/incidents">Gestiona incidentes</a>
+    <!-- Incidents Section -->
+    <div class="bg-white p-6 rounded-lg shadow h-full">
+      <div class="border-b border-gray-400">
+        <a routerLink="/admin/incidents"
+          class="text-lg font-semibold text-gray-800 hover:border-b hover:border-primary hover:text-primary inline-block">
+          Gestiona incidentes
+        </a>
+      </div>
+
       <div class="space-y-3 mt-4">
-        @for (incident of incidents$ | async; track $index) {
-        <div class="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
-          <div class="flex justify-between items-center">
-            <div>
-              <p class="text-xs text-gray-400">{{ incident.id }}</p>
-              <h4 class="font-medium text-gray-900">{{ incident.title }}</h4>
-              <p class="text-sm text-gray-500">{{ incident.description | slice:0:60 }}...</p>
+        @for (incident of incidents$ | async; track incident._id) {
+        <div class="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
+          <div class="flex justify-between items-start">
+            <div class="flex-1 min-w-0">
+              <p class="text-xs text-gray-400 truncate">#{{ incident.code }}</p>
+              <h4 class="font-medium text-gray-900 truncate" [title]="incident.title">
+                {{ incident.title }}
+              </h4>
+              <p class="text-sm text-gray-500 truncate" [title]="incident.description">
+                {{ incident.description | slice:0:60 }}
+              </p>
             </div>
-            <span class="px-2 py-1 text-xs rounded-full" [ngClass]="{
-                'bg-red-100 text-red-800': incident.priority === 'Alta',
-                'bg-yellow-100 text-yellow-800': incident.priority === 'Media',
-                'bg-green-100 text-green-800': incident.priority === 'Baja'
-              }">
+            <span class="px-2 py-1 text-xs rounded-full whitespace-nowrap ml-2"
+              [ngClass]="getPriorityClass(incident.priority)">
               {{ incident.priority }}
             </span>
           </div>
           <div class="text-xs text-gray-400 mt-1">
-            {{ incident.creationDate | date:'short' }}
+            {{ incident.createdAt | date:'short' }}
           </div>
-        </div>
-        }
-        @if ((incidents$ | async)?.length === 0) {
-        <div class="text-gray-500 text-sm">
-          No hay incidentes abiertos.
         </div>
         }
       </div>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow">
-      <a class="text-lg font-semibold text-gray-800 mb-3 hover:border-b hover:border-gray-700" routerLink="/admin/sessions">Gestiona sesiones</a>
-      <!-- Gráfico o lista de actividad reciente -->
+    <!-- Sessions Section -->
+    <div class="bg-white p-6 rounded-lg shadow h-full">
+      <div class="border-b border-gray-400">
+        <a routerLink="/admin/sessions"
+          class="text-lg font-semibold text-gray-800 hover:border-b hover:border-primary hover:text-primary inline-block">
+          Gestiona sesiones
+        </a>
+      </div>
+
       <div class="space-y-3 mt-4">
-        @for (session of sessions$ | async; track $index) {
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <div class="h-8 w-8 bg-primary rounded-full flex items-center justify-center text-white">
-              {{ session.manufacturer.name.charAt(0).toUpperCase() }}
+        @if ((sessions$ | async)?.length) {
+        @for (session of sessions$ | async; track session.id) {
+        <div class="flex items-center justify-between py-2">
+          <div class="flex items-center min-w-0">
+            <div
+              class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary text-lg font-semibold flex-shrink-0">
+              {{ session.manufacturer?.name?.charAt(0)?.toUpperCase() || '?' }}
             </div>
-            <div class="ml-2">
-              <p class="text-sm font-medium text-gray-900">{{ session.admin }}</p>
-              <p class="text-xs text-gray-500">{{ session.manufacturer.name }}</p>
+            <div class="ml-3 min-w-0">
+              <p class="text-sm font-medium text-gray-900 truncate" [title]="session.admin">
+                {{ session.admin || 'Sin asignar' }}
+              </p>
+              <p class="text-xs text-gray-500 truncate" [title]="session.manufacturer?.name">
+                {{ session.manufacturer?.name || 'Sin fabricante' }}
+              </p>
             </div>
           </div>
-          <p class="text-xs text-gray-500">{{ session.requestDate }}</p>
+          <p class="text-xs text-gray-500 whitespace-nowrap ml-2">
+            {{ session.requestDate | date:'short' }}
+          </p>
+        </div>
+        }
+        } @else {
+        <div class="text-gray-500 text-sm py-4 text-center">
+          No hay sesiones programadas.
         </div>
         }
       </div>
     </div>
   </div>
-
-  <button class="mt-6 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/80 transition-colors">
-    Actualizar Datos
-  </button>
 </div>

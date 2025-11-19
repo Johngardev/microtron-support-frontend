@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder,  FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,30 +8,40 @@ import { MatDivider } from "@angular/material/divider";
 import { MatIcon } from "@angular/material/icon";
 import { MatDialogContent, MatDialogActions, MatDialogRef } from "@angular/material/dialog";
 import { MatButtonModule } from "@angular/material/button";
+import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RangeSliderComponent } from "../range-slider/range-slider.component";
+import { IncidentService } from '../../core/services/incident.service';
+import { finalize } from 'rxjs/operators';
+import { AuthService } from '../../core/services/auth.service';
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-create-incident',
   standalone: true,
-  imports: [ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDivider, MatDialogContent, MatDialogActions, MatButtonModule, CommonModule, MatIcon, RangeSliderComponent],
+  imports: [ReactiveFormsModule, MatStepperModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDivider, MatDialogContent, MatDialogActions, MatButtonModule, CommonModule, MatIcon, RangeSliderComponent, MatSnackBarModule, MatProgressSpinner],
   templateUrl: './create-incident.component.html',
   styleUrl: './create-incident.component.css'
 })
 export class CreateIncidentComponent {
   private _formBuilder = inject(FormBuilder);
-  public dialogRef = inject(MatDialogRef<CreateIncidentComponent>); // Inyectar MatDialogRef
+  private incidentService = inject(IncidentService);
+  private snackBar = inject(MatSnackBar);
+  public dialogRef = inject(MatDialogRef<CreateIncidentComponent>);
+
+  isLoading = false;
+
+  currentUser = inject(AuthService).currentUser$;
 
   selectedFiles: File[] = [];
   isLinear = true; // Para forzar que los pasos se completen en orden
 
   firstFormGroup = this._formBuilder.group({
     manufacturer: ['', Validators.required],
-    priority: ['', Validators.required],
+    priority: ['Media' as 'Alta' | 'Media' | 'Baja', Validators.required],
     title: ['', Validators.required],
     description: ['', Validators.required],
-    // El control de archivos es opcional, no necesita estar en el form group
   });
 
   secondFormGroup = this._formBuilder.group({
@@ -53,24 +63,53 @@ export class CreateIncidentComponent {
   }
 
   onSubmit(): void {
-    if (this.firstFormGroup.valid && this.secondFormGroup.valid) {
+    if (this.firstFormGroup.valid) {
+      this.isLoading = true;
+
+      // Mapear los datos del formulario al formato esperado por el servicio
       const incidentData = {
-        ...this.firstFormGroup.value,
-        ...this.secondFormGroup.value,
-        attachments: this.selectedFiles // Adjuntar los archivos reales, no solo los nombres
+        product: this.firstFormGroup.get('manufacturer')?.value || '',
+        title: this.firstFormGroup.get('title')?.value || '',
+        description: this.firstFormGroup.get('description')?.value || '',
+        priority: this.firstFormGroup.get('priority')?.value || 'Media',
+        notificationEmails: this.secondFormGroup.get('notificationEmails')?.value
+          ? [this.secondFormGroup.get('notificationEmails')?.value as string]
+          : [],
       };
-      
-      console.log('Enviando incidente:', incidentData);
-      
-      // Aquí iría tu lógica para enviar los datos a un servicio o API
-      
-      // Cerrar el diálogo y opcionalmente pasar los datos
-      this.dialogRef.close(incidentData); 
+      this.incidentService.createIncident(incidentData)
+        .pipe(
+          finalize(() => this.isLoading = false)
+        )
+        .subscribe({
+          next: (response) => {
+            this.snackBar.open('Incidencia creada exitosamente', 'Cerrar', {
+              duration: 5000,
+              panelClass: ['success-snackbar']
+            });
+            this.dialogRef.close({ success: true, data: response });
+          },
+          error: (error) => {
+            console.error('Error al crear la incidencia:', error);
+            this.snackBar.open(
+              'Error al crear la incidencia. Por favor, inténtalo de nuevo.',
+              'Cerrar',
+              {
+                duration: 5000,
+                panelClass: ['error-snackbar']
+              }
+            );
+          }
+        });
     } else {
-      console.error('El formulario no es válido');
-      // Opcional: Marcar todos los campos como tocados para mostrar errores
+      // Marcar todos los campos como tocados para mostrar errores
       this.firstFormGroup.markAllAsTouched();
       this.secondFormGroup.markAllAsTouched();
+
+      this.snackBar.open(
+        'Por favor, completa todos los campos requeridos',
+        'Cerrar',
+        { duration: 5000 }
+      );
     }
   }
 }

@@ -1,153 +1,160 @@
-<section class="flex flex-col m-6">
-  <h2 mat-dialog-title class="text-xl font-semibold mb-4">Describe tu problema</h2>
-
-  <mat-dialog-content class="mat-typography">
-    <mat-stepper #stepper [linear]="isLinear">
+<mat-dialog-content>
+  <form [formGroup]="firstFormGroup">
+    <mat-stepper [linear]="isLinear" #stepper>
+      <!-- Paso 1: Detalles del incidente -->
       <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
-          <ng-template matStepLabel>Describe el problema</ng-template>
+        <ng-template matStepLabel>Detalles del incidente</ng-template>
+        
+        <div class="m-4">
+          <p class="font-semibold mt-4">Fabricante</p>
+          <p class="text-sm text-gray-500">Selecciona el fabricante del producto.</p>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput formControlName="manufacturer" required>
+            @if (firstFormGroup.get('manufacturer')?.hasError('required')) {
+              <mat-error>El fabricante es requerido</mat-error>
+            }
+          </mat-form-field>
+        </div>
 
-          <div class="m-4">
-            <p class="mt-4 font-semibold">Seleccione el fabricante del producto afectado:</p>
-            <mat-form-field class="w-full">
-              <mat-label>Fabricante del producto afectado</mat-label>
-              <mat-select formControlName="manufacturer" required>
-                <mat-option value="adobe">Adobe</mat-option>
-                <mat-option value="anydesk">Anydesk</mat-option>
-                <mat-option value="atlasti">Atlas.ti</mat-option>
-                <mat-option value="autodesk">Autodesk</mat-option>
-                <mat-option value="claris">Claris</mat-option>
-                <mat-option value="corel">Corel</mat-option>
-                <mat-option value="graphisoft">Graphisoft</mat-option>
-                <mat-option value="kaspersky">Kaspersky</mat-option>
-                <mat-option value="microsoft">Microsoft</mat-option>
-                <mat-option value="panopto">Panopto</mat-option>
-                <mat-option value="sketchup">SketchUp</mat-option>
-                <mat-option value="starlab">Starlab</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <mat-divider></mat-divider>
-          <div class="m-4">
-            <p class="font-semibold">Seleccione la prioridad del problema:</p>
-            <mat-form-field class="w-full">
-              <mat-label>Prioridad del problema</mat-label>
-              <mat-select formControlName="priority" required>
-                <mat-option value="baja">P4: menor, Interrupciones minimas (o ninguna) de operaciones
-                  normales.</mat-option>
-                <mat-option value="media">P3: importante, Interrupciones de operaciones normales.</mat-option>
-                <mat-option value="alta">P2: urgente, Interrupciones graves de operaciones normales.</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <mat-divider></mat-divider>
-          <div class="m-4">
-            <p class="font-semibold">¿Donde esta P1: Critico?</p>
-            <p class="text-sm text-gray-500">Si el problema produce interrupciones o interrupciones extremadamente
-              graves en un sistema de producción, llámanos para que podamos atenderte de inmediato: +57 (311)774-2766
-            </p>
-          </div>
-          <mat-divider></mat-divider>
-          <div class="m-4">
-            <p class="font-semibold">Cuantificar la indicendia del problema</p>
-            <p class="text-sm text-gray-500">Ayúdanos a conocer en qué escala afecta el problema a tu organización.</p>
-          </div>
-          <mat-divider></mat-divider>
-          <div class="m-4">
-            <p class="font-semibold mt-4">Resume el problema</p>
-            <p class="text-sm text-gray-500">Escribe una breve descripción del problema. Así nos referiremos a tu caso.
-            </p>
-            <mat-form-field class="w-full">
-              <mat-label>Introducir titulo</mat-label>
-              <input matInput formControlName="title">
-            </mat-form-field>
-          </div>
-          <mat-divider></mat-divider>
-          <div class="m-4">
-            <p class="font-semibold mt-4">Describe el problema</p>
-            <p class="text-sm text-gray-500">Incluye cuándo se produjo por primera vez, las tareas que estabas tratando
-              de completar o los productos que estabas usando cuando se produjo el problema y los pasos para reproducir
-              el problema.</p>
-            <mat-form-field class="w-full">
-              <mat-label>Introducir descripción</mat-label>
-              <textarea matInput formControlName="description"></textarea>
-            </mat-form-field>
-          </div>
-          <mat-divider></mat-divider>
+        <mat-divider></mat-divider>
+        
+        <div class="m-4">
+          <p class="font-semibold mt-4">Prioridad</p>
+          <p class="text-sm text-gray-500">Ayúdanos a conocer en qué escala afecta el problema a tu organización.</p>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select formControlName="priority" required>
+              <mat-option value="Alta">Alta</mat-option>
+              <mat-option value="Media">Media</mat-option>
+              <mat-option value="Baja">Baja</mat-option>
+            </mat-select>
+            @if (firstFormGroup.get('priority')?.hasError('required')) {
+              <mat-error>La prioridad es requerida</mat-error>
+            }
+          </mat-form-field>
+        </div>
 
-          <div class="py-4 m-4 flex flex-col justify-center items-center">
-            <p class="font-semibold mt-4">Adjunta capturas de pantalla (opcional)</p>
-            <p class="text-sm text-gray-500">Archivos permitidos: SVG, PNG, JPG. Máximo 20 MB.</p>
-            <button type="button" class="text-white bg-primary hover:bg-primary/80 hover:text-white font-semibold py-2 px-4 rounded-full mt-4" (click)="fileInput.click()">Seleccionar Archivos</button>
-            <input hidden #fileInput type="file" multiple (change)="onFileSelected($event)">
-            @if (selectedFiles.length > 0) {
-            <div class="mt-2">
+        <mat-divider></mat-divider>
+        
+        <div class="m-4">
+          <p class="font-semibold mt-4">Resume el problema</p>
+          <p class="text-sm text-gray-500">Escribe una breve descripción del problema. Así nos referiremos a tu caso.</p>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput formControlName="title" placeholder="Introducir título" required>
+            @if (firstFormGroup.get('title')?.hasError('required')) {
+              <mat-error>El título es requerido</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <mat-divider></mat-divider>
+        
+        <div class="m-4">
+          <p class="font-semibold mt-4">Describe el problema</p>
+          <p class="text-sm text-gray-500">
+            Incluye cuándo se produjo por primera vez, las tareas que estabas tratando
+            de completar o los productos que estabas usando cuando se produjo el problema y los pasos para reproducir
+            el problema.
+          </p>
+          <mat-form-field appearance="outline" class="w-full">
+            <textarea matInput formControlName="description" placeholder="Introducir descripción" rows="4" required></textarea>
+            @if (firstFormGroup.get('description')?.hasError('required')) {
+              <mat-error>La descripción es requerida</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="py-4 m-4 flex flex-col justify-center items-center">
+          <p class="font-semibold mt-4">Adjunta capturas de pantalla (opcional)</p>
+          <p class="text-sm text-gray-500">Archivos permitidos: SVG, PNG, JPG. Máximo 20 MB.</p>
+          <button type="button" 
+                  class="text-white bg-primary hover:bg-primary/80 hover:text-white font-semibold py-2 px-4 rounded-full mt-4" 
+                  (click)="fileInput.click()">
+            Seleccionar Archivos
+          </button>
+          <input hidden #fileInput type="file" multiple (change)="onFileSelected($event)">
+          
+          @if (selectedFiles.length > 0) {
+            <div class="mt-2 w-full">
               @for (file of selectedFiles; track $index) {
-              <div class="text-sm flex flex-row justify-between">
-                <span class="m-2">{{ file.name }}</span>
-                <button type="button" class="text-white bg-primary hover:bg-primary/80 hover:text-white font-semibold py-2 px-4 rounded-full m-2" (click)="removeFile($index)" aria-label="Eliminar archivo">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </div>
+                <div class="flex items-center justify-between bg-gray-50 p-2 rounded mt-2">
+                  <div class="flex items-center">
+                    <mat-icon class="text-gray-500 mr-2">insert_drive_file</mat-icon>
+                    <span class="text-sm text-gray-700">{{ file.name }}</span>
+                  </div>
+                  <button type="button" 
+                          class="text-gray-500 hover:text-red-500" 
+                          (click)="removeFile($index)" 
+                          aria-label="Eliminar archivo">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
               }
             </div>
-            }
-          </div>
-        </form>
+          }
+        </div>
+
+        <div class="flex justify-end m-4">
+          <button mat-raised-button 
+                  color="primary" 
+                  matStepperNext
+                  [disabled]="!firstFormGroup.valid">
+            Siguiente
+          </button>
+        </div>
       </mat-step>
 
+      <!-- Paso 2: Notificaciones -->
       <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup">
           <ng-template matStepLabel>Método de contacto</ng-template>
 
           <div class="m-4">
             <p class="font-semibold">Correo electrónico</p>
-            <p class="text-sm text-gray-500">Te enviaremos comunicaciones y actualizaciones de casos a esta dirección: <span class="font-semibold">john&#64;microtron.com</span></p>
+            <p class="text-sm text-gray-500">
+              Te enviaremos comunicaciones y actualizaciones de casos a esta dirección: 
+              <span class="font-semibold">correos</span>
+            </p>
           </div>
+          
           <mat-divider></mat-divider>
+          
           <div class="m-4">
             <p class="font-semibold">Enumera las personas a las que deseas enviar una notificación (opcional)</p>
-            <p class="text-sm text-gray-500">El Servicio de atención al cliente de Adobe enviará novedades de casos a los correos electrónicos de esta lista. Puedes enviar notificaciones a un máximo de 10 personas.</p>
-            <mat-form-field class="w-full">
-              <mat-label>Introducir correo electrónico</mat-label>
-              <input matInput formControlName="notificationEmails">
+            <p class="text-sm text-gray-500">
+              El Servicio de atención al cliente de Microtrón enviará novedades de casos a los correos electrónicos de esta lista. 
+              Puedes enviar notificaciones a un máximo de 10 personas.
+            </p>
+            <mat-form-field appearance="outline" class="w-full">
+              <input matInput 
+                     formControlName="notificationEmails" 
+                     placeholder="Introducir correo electrónico"
+                     type="email">
+              @if (secondFormGroup.get('notificationEmails')?.hasError('email')) {
+                <mat-error>Por favor ingresa un correo electrónico válido</mat-error>
+              }
             </mat-form-field>
           </div>
-          <mat-divider></mat-divider>
-          <div class="m-4">
-            <p class="font-semibold">Horas laborales</p>
-            <p class="text-sm text-gray-500">Si necesitamos llamarte, un agente de Microtrón tendrá en cuenta cuáles son tus horas de trabajo y el horario comercial del Servicio de atención al cliente de Microtrón SAS.</p>
-            <app-range-slider></app-range-slider>
-          </div>
-          <mat-divider></mat-divider>
-          <div class="m-4">
-            <p class="font-semibold">Nùmero de telefono</p>
-            <p class="text-sm text-gray-500">Es posible que un agente de Adobe te contacte por teléfono para solucionar problemas o solicitar alguna aclaración.</p>
-            <mat-form-field class="w-full">
-              <mat-label>Introducir numero de telefono</mat-label>
-              <input matInput>
-            </mat-form-field>
+
+          <div class="flex justify-between m-4">
+            <button mat-button matStepperPrevious>Atrás</button>
+            <button mat-raised-button 
+                    color="primary" 
+                    (click)="onSubmit()" 
+                    [disabled]="isLoading">
+              @if (!isLoading) {
+                <span>Crear incidencia</span>
+              } @else {
+                <div class="flex items-center">
+                  <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+                  <span>Procesando...</span>
+                </div>
+              }
+            </button>
           </div>
         </form>
       </mat-step>
     </mat-stepper>
-  </mat-dialog-content>
-
-  <mat-dialog-actions class="mt-4">
-    <button class="text-black bg-gray-200 hover:bg-gray-300 py-2 px-4 rounded-full" (click)="dialogRef.close(false)">Cancelar</button>
-    @if (stepper.selectedIndex > 0) {
-    <button class="ml-auto text-black bg-gray-200 hover:bg-gray-300 font-semibold py-2 px-4 rounded-full" (click)="stepper.previous()">Atrás</button>
-    }
-    @if (stepper.selectedIndex < 1) {
-    <button  class="ml-auto text-white bg-primary hover:bg-primary/80 hover:text-white font-semibold py-2 px-4 rounded-full" (click)="stepper.next()">
-      Siguiente
-    </button>
-    }
-    @if (stepper.selectedIndex === 1) {
-    <button class="ml-auto text-white bg-primary hover:bg-primary/80 hover:text-white font-semibold py-2 px-4 rounded-full" (click)="onSubmit()">
-      Enviar Incidente
-    </button>
-    }
-  </mat-dialog-actions>
-
-</section>
+  </form>
+</mat-dialog-content>

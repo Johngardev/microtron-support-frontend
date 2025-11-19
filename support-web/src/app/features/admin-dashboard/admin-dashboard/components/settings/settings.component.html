@@ -1,1 +1,106 @@
-<p>settings works!</p>
+<div class="max-w-4xl mx-auto p-4 sm:p-6 h-full">
+  <mat-card class="w-full overflow-hidden shadow-md h-full">
+    <mat-card-header class="bg-gray-50 p-4 mb-6 border-b border-gray-200">
+      <mat-card-title class="text-xl font-medium text-gray-900">Configuracion de cuenta</mat-card-title>
+      <mat-card-subtitle class="text-gray-500">Manage your account preferences and security
+        settings</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="p-4 sm:p-6">
+      <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Profile Section -->
+        <mat-card class="w-full overflow-hidden shadow-sm">
+          <mat-card-header class="bg-gray-50 p-4 border-b border-gray-200">
+            <mat-card-title class="text-lg font-medium text-gray-900">Informacion de perfil</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="p-4 sm:p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 m-4">
+              <mat-form-field class="w-full">
+                <mat-label>Nombre completo</mat-label>
+                <input matInput formControlName="name" placeholder="Enter your full name">
+                @if (name?.hasError('required')) {
+                  <mat-error>Nombre es requerido</mat-error>
+                }
+                @if (name?.hasError('minlength')) {
+                  <mat-error>Nombre debe tener al menos 3 caracteres</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email" placeholder="Enter your email">
+                @if (email?.hasError('required')) {
+                  <mat-error>Email es requerido</mat-error>
+                }
+                @if (email?.hasError('email')) {
+                  <mat-error>Por favor ingresa un correo electronico valido</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="role">
+                  <mat-option value="admin">Administrator</mat-option>
+                  <mat-option value="editor">Editor</mat-option>
+                  <mat-option value="viewer">Viewer</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Preferences Section -->
+        <mat-card class="w-full overflow-hidden shadow-sm">
+          <mat-card-header class="bg-gray-50 p-4 border-b border-gray-200">
+            <mat-card-title class="text-lg font-medium text-gray-900">Preferencias</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="p-4 sm:p-6 space-y-6">
+            <div class="space-y-3 m-4">
+              <h4 class="text-base text-gray-900 mt-4">Notificaciones</h4>
+              <div class="space-y-2">
+                <mat-slide-toggle formControlName="email" class="w-full">
+                  Notificaciones por correo
+                </mat-slide-toggle>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Security Section -->
+        <mat-card class="w-full overflow-hidden shadow-sm">
+          <mat-card-header class="bg-gray-50 p-4 border-b border-gray-200">
+            <mat-card-title class="text-lg font-medium text-gray-900">Seguridad</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="p-4 sm:p-6">
+            <div class="space-y-2 m-4">
+              <mat-slide-toggle formControlName="twoFactorAuth" class="w-full">
+                Activar autenticacion de dos factores
+              </mat-slide-toggle>
+              <p class="text-sm text-gray-500 italic">Agrega una capa extra de seguridad a tu cuenta
+              </p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Save Button -->
+        <div class="flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-gray-200">
+          <button type="submit" [disabled]="!settingsForm.valid"
+            class="w-full px-4 py-2 text-sm font-medium text-white bg-primary rounded-full hover:bg-primary/80 sm:w-auto">
+            Guardar cambios
+          </button>
+          <button type="button" (click)="settingsForm.reset()" class="w-full px-4 py-2 text-sm font-medium text-white bg-gray-100 rounded-full hover:bg-gray-200 sm:w-auto">
+            Cancelar
+          </button>
+        </div>
+      </form>
+
+      <ng-template #loading>
+        <div class="flex flex-col items-center justify-center py-12 space-y-4">
+          <mat-spinner [diameter]="50"></mat-spinner>
+          <p class="text-gray-600">Cargando configuracion...</p>
+        </div>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>

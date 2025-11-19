@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { IncidentService } from '../../../../../core/services/incident.service';
 import { MatTableModule } from '@angular/material/table';
-import { MatTabsModule } from '@angular/material/tabs'; 
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DatePipe } from '@angular/common';
@@ -32,39 +32,69 @@ export class AdminIncidentsComponent {
   totalClosedIncidents: number = 0;
 
   ngOnInit(): void {
-      this.loadStats();
-      this.filterByStatus(IncidentStatus.Abierto);
-    }
-  
-    ngAfterViewInit(): void {
-      // Conectar el ordenador a la fuente de datos
-      this.dataSource.sort = this.sort;
-    }
-  
-    //--- Filtrado ---
-    applyFilter(event: Event): void {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-    }
-  
-    // --- Filtrado por estado (usando el servicio) ---
-    filterByStatus(status: IncidentStatus): void {
-      this._incidentService.getIncidents(status).subscribe(data => {
+  this.loadStats();
+  // First try loading all incidents
+  this.loadAllIncidents();
+  // Then try filtering by status
+  setTimeout(() => {
+    this.filterByStatus(IncidentStatus.OPEN);
+  }, 1000);
+}
+
+  ngAfterViewInit(): void {
+    // Conectar el ordenador a la fuente de datos
+    this.dataSource.sort = this.sort;
+  }
+
+  //--- Filtrado ---
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  // --- Filtrado por estado (usando el servicio) ---
+  filterByStatus(status: IncidentStatus): void {
+
+    // Try with the status as is first
+    this._incidentService.getAllIncidents({ status: status }).subscribe({
+      next: (data) => {
         this.dataSource.data = data;
-        // Re-aplica el filtro de texto si existe
         if (this.dataSource.filter) {
           this.dataSource.filter = this.dataSource.filter;
         }
-      });
+      }
+    });
+  }
+
+  // Helper method to translate status to English
+  private translateStatusToEnglish(status: string): string | null {
+    const statusMap: { [key: string]: string } = {
+      'abierto': 'open',
+      'en progreso': 'in_progress',
+      'cerrado': 'closed',
+      'resuelto': 'resolved'
+    };
+    return statusMap[status.toLowerCase()] || null;
+  }
+
+  // --- Carga de estadísticas (usando el servicio) ---
+  loadStats(): void {
+    this._incidentService.getIncidentStats().subscribe(stats => {
+      this.totalIncidents = stats.total;
+      this.totalOpenIncidents = stats.open;
+      this.totalClosedIncidents = stats.closed;
+    });
+  }
+
+  loadAllIncidents(): void {
+  this._incidentService.getAllIncidents().subscribe({
+    next: (data) => {
+      this.dataSource.data = data;
+    },
+    error: (error) => {
+      console.error('Error loading all incidents:', error);
     }
-  
-    // --- Carga de estadísticas (usando el servicio) ---
-    loadStats(): void {
-      this._incidentService.getIncidentStats().subscribe(stats => {
-        this.totalIncidents = stats.total;
-        this.totalOpenIncidents = stats.open;
-        this.totalClosedIncidents = stats.closed;
-      });
-    }
+  });
+}
 
 }

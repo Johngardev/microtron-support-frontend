@@ -5,7 +5,7 @@ import { AdminGuard } from './core/guards/admin.guard';
 export const routes: Routes = [
   //Rutas publicas
   {
-    path: 'login',
+    path: 'auth/login',
     loadComponent: () => import('./auth/login/login/login.component').then(m => m.LoginComponent),
     title: 'Iniciar sesión - Microtrón Support',
     data: { animation: 'login' }

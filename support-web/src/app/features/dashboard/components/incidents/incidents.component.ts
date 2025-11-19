@@ -13,9 +13,11 @@ import { IncidentService } from '../../../../core/services/incident.service';
 import { RouterLink } from "@angular/router";
 
 export enum IncidentStatus {
-  Abierto = 'Abierto',
-  Cerrado = 'Cerrado',
-  Todos = 'Todos'
+  OPEN = 'Abierto',
+  IN_PROGRESS = 'En Proceso',
+  RESOLVED = 'Resuelto',
+  CLOSED = 'Cerrado',
+  ALL = 'Todos'
 }
 
 @Component({
@@ -45,7 +47,7 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadStats();
-    this.filterByStatus(IncidentStatus.Abierto);
+    this.filterByStatus(IncidentStatus.OPEN);
   }
 
   ngAfterViewInit(): void {
@@ -61,7 +63,7 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
 
   // --- Filtrado por estado (usando el servicio) ---
   filterByStatus(status: IncidentStatus): void {
-    this._incidentService.getIncidents(status).subscribe(data => {
+    this._incidentService.getAllIncidents({ status: status }).subscribe(data => {
       this.dataSource.data = data;
       // Re-aplica el filtro de texto si existe
       if (this.dataSource.filter) {

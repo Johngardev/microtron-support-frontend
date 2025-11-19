@@ -11,20 +11,30 @@ export class JwtInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
+    // Skip adding token for auth requests
+    if (request.url.includes('/auth/')) {
+      console.log('JWT Interceptor - Skipping auth request');
+      return next.handle(request);
+    }
+
     const token = this.authService.getToken();
-    console.log('JWT Interceptor - Token:', token); // Debug log
+    console.log(`JWT Interceptor - Processing request to: ${request.url}`);
+    console.log('JWT Interceptor - Token exists:', !!token);
     
     if (token) {
-      request = request.clone({
+      const authReq = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
         }
       });
-      console.log('JWT Interceptor - Token:', token); // Debug log
+      console.log('JWT Interceptor - Added Authorization header');
+      return next.handle(authReq);
     } else {
-      console.log('JWT Interceptor - No token found'); // Debug log
+      console.warn('JWT Interceptor - No token found for protected route', {
+        url: request.url,
+        method: request.method
+      });
+      return next.handle(request);
     }
-
-    return next.handle(request);
   }
 }

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Session } from '../models/session.model';
-import { IncidentStatus } from '../../features/dashboard/components/incidents/incidents.component';
 import { Observable, of } from 'rxjs';
 import { SessionStatus } from '../../features/dashboard/components/sessions/sessions.component';
 import { map } from 'rxjs/operators';
@@ -39,8 +38,8 @@ export class SessionService {
 
   getSessionStats(): Observable<{total: number; open: number; closed: number}> {
     const total = MOCK_SESSIONS.length;
-    const open = MOCK_SESSIONS.filter(session => session.status === IncidentStatus.Abierto).length;
-    const closed = MOCK_SESSIONS.filter(session => session.status === IncidentStatus.Cerrado).length;
+    const open = MOCK_SESSIONS.filter(session => session.status === SessionStatus.Abierto).length;
+    const closed = MOCK_SESSIONS.filter(session => session.status === SessionStatus.Cerrado).length;
     return of({total, open, closed});
   }
 

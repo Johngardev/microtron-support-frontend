@@ -57,7 +57,7 @@
 
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>ID de caso</th>
-          <td mat-cell *matCellDef="let incident"><a [routerLink]="['/incident', incident.id]" class="text-blue-600 hover:underline cursor-pointer">{{ incident.id }}</a></td>
+          <td mat-cell *matCellDef="let incident"><a [routerLink]="['/incident', incident._id]" class="text-blue-600 hover:underline cursor-pointer">{{ incident.code }}</a></td>
         </ng-container>
         <ng-container matColumnDef="product">
           <th mat-header-cell *matHeaderCellDef>Producto</th>
@@ -69,7 +69,7 @@
         </ng-container>
         <ng-container matColumnDef="admin">
           <th mat-header-cell *matHeaderCellDef>Administrador</th>
-          <td mat-cell *matCellDef="let incident">{{ incident.admin }}</td>
+          <td mat-cell *matCellDef="let incident">{{ incident.createdBy.name }}</td>
         </ng-container>
         <ng-container matColumnDef="priority">
           <th mat-header-cell *matHeaderCellDef>Prioridad</th>
@@ -77,7 +77,7 @@
         </ng-container>
         <ng-container matColumnDef="creationDate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Creación</th>
-          <td mat-cell *matCellDef="let incident">{{ incident.creationDate | date: 'dd/MM/yyyy' }}</td>
+          <td mat-cell *matCellDef="let incident">{{ incident.createdAt | date: 'dd/MM/yyyy' }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

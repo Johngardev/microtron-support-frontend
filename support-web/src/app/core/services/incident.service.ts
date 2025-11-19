@@ -1,56 +1,115 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { Incident } from '../models/incident.model';
+import { AuthService } from './auth.service';
 import { IncidentStatus } from '../../features/dashboard/components/incidents/incidents.component';
-import { map, Observable, of } from 'rxjs';
 
-const MOCK_INCIDENTS: Incident[] = [
-  { id: 'C-1024', status: 'Cerrado', product: 'Adobe Photoshop', title: 'Error al exportar a PNG', admin: 'John Doe', priority: 'Media', creationDate: new Date('2025-09-15') },
-  { id: 'C-1025', status: 'Cerrado', product: 'Autodesk AutoCAD', title: 'Fallo en la licencia de red', admin: 'Jane Smith', priority: 'Alta', creationDate: new Date('2025-09-20') },
-  { id: 'C-1026', status: 'Abierto', product: 'Microsoft 365', title: 'No se sincroniza OneDrive', admin: 'John Doe', priority: 'Baja', creationDate: new Date('2025-09-22') },
-  { id: 'C-1027', status: 'Abierto', product: 'Anydesk', title: 'Conexión remota inestable', admin: 'Peter Jones', priority: 'Media', creationDate: new Date('2025-10-01') },
-  { id: 'C-1028', status: 'Abierto', product: 'Anydesk', title: 'Conexión remota inestable', admin: 'Peter Jones', priority: 'Media', creationDate: new Date('2025-10-01') },
-  { id: 'C-1029', status: 'Abierto', product: 'Kaspersky', title: 'Error al instalar', admin: 'John Doe', priority: 'Alta', creationDate: new Date('2025-11-01') },
-];
+export interface CreateIncidentDto {
+  product: string;
+  title: string;
+  description?: string;
+  priority: 'Alta' | 'Media' | 'Baja';
+  notificationEmails?: string[];
+  phoneNumber?: string;
+}
+
+export interface UpdateIncidentDto {
+  status?: 'Abierto' | 'En Proceso' | 'Resuelto' | 'Cerrado';
+  assignedTo?: string;
+  description?: string;
+  priority?: 'Alta' | 'Media' | 'Baja';
+  notificationEmails?: string[];
+  phoneNumber?: string;
+}
+
+export interface IncidentStats {
+  total: number;
+  open: number;
+  inProgress: number;
+  resolved: number;
+  closed: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class IncidentService {
+  private readonly apiUrl = `${environment.apiUrl}/incidents`;
 
-  constructor() { }
-
-  // Método para obtener todos los incidentes
-  getAllIncidents(): Observable<Incident[]> {
-    return of(MOCK_INCIDENTS);
-  }
-
-  // Método para obtener un incidente por su ID
-  getIncidentById(id: string): Observable<Incident | undefined> {
-    return this.getAllIncidents().pipe(
-      map(incidents => incidents.find(incident => incident.id === id))
-    );
-  }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   /**
-   * Obtiene los incidentes, opcionalmente filtrados por estado.
-   * Devuelve un Observable para simular una llamada a una API asíncrona.
+   * Obtiene todos los incidentes, opcionalmente filtrados por estado
    */
-  getIncidents(status: IncidentStatus): Observable<Incident[]> {
-    if (status === IncidentStatus.Todos) {
-      return of(MOCK_INCIDENTS);
+  getAllIncidents(filter?: { status?: string | IncidentStatus }): Observable<Incident[]> {
+  const token = this.authService.getToken();
+  
+  // Create a clean params object with only defined values
+  const params: any = {};
+  if (filter?.status) {
+    params.status = filter.status;
+  }
+
+  const options = {
+    params: params,
+    headers: {
+      'Authorization': `Bearer ${token}`
     }
-    const filteredIncidents = MOCK_INCIDENTS.filter(incident => incident.status === status);
-    return of(filteredIncidents);
+  };
+  
+  return this.http.get<Incident[]>(this.apiUrl, options)
+}
+
+  /**
+   * Obtiene un incidente por su ID
+   */
+  getIncidentById(id: string): Observable<Incident> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+    return this.http.get<Incident>(`${this.apiUrl}/${id}`, { headers });
   }
 
   /**
-   * Calcula y devuelve las estadísticas de los incidentes.
+   * Crea un nuevo incidente
    */
-  getIncidentStats(): Observable<{ total: number; open: number; closed: number }> {
-    const total = MOCK_INCIDENTS.length;
-    const open = MOCK_INCIDENTS.filter(incident => incident.status === IncidentStatus.Abierto).length;
-    const closed = MOCK_INCIDENTS.filter(incident => incident.status === IncidentStatus.Cerrado).length;
-    
-    return of({ total, open, closed });
+  createIncident(incidentData: CreateIncidentDto): Observable<Incident> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+    return this.http.post<Incident>(this.apiUrl, incidentData, { headers });
   }
+
+  /**
+   * Actualiza un incidente existente
+   */
+  updateIncident(id: string, updateData: UpdateIncidentDto): Observable<Incident> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+    return this.http.patch<Incident>(`${this.apiUrl}/${id}`, updateData, { headers });
+  }
+
+  /**
+   * Elimina un incidente
+   */
+  deleteIncident(id: string): Observable<void> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
+  }
+
+  /**
+   * Obtiene estadísticas de incidentes
+   */
+  getIncidentStats(): Observable<IncidentStats> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+    return this.http.get<IncidentStats>(`${this.apiUrl}/stats`, { headers });
+  }
+
 }

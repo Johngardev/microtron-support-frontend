@@ -52,7 +52,7 @@ export class HeaderComponent {
 
   onLogout(): void {
     this._authService.logout();
-    this._router.navigate(['/login']);
+    this._router.navigate(['/auth/login']);
   }
 
 }

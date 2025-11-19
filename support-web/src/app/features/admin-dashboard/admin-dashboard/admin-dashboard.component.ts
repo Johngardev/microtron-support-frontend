@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of, combineLatest } from 'rxjs';
+import { catchError, startWith } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { StatsService } from '../../../core/services/stats.service';
+import { UsersService } from '../../../core/services/users.service';
 import { Stats } from '../../../core/models/stats.model';
 import { IncidentService } from '../../../core/services/incident.service';
 import { Incident } from '../../../core/models/incident.model';
@@ -19,18 +20,42 @@ import { Session } from '../../../core/models/session.model';
 })
 export class AdminDashboardComponent {
   private incidentService = inject(IncidentService);
-  private statsService = inject(StatsService);
   private sessionService = inject(SessionService);
-  stats$: Observable<Stats>;
+  private usersService = inject(UsersService);
+  // stats$ will emit either Stats or null while loading/error
+  stats$: Observable<Stats | null>;
   incidents$: Observable<Incident[]>;
   sessions$: Observable<Session[]>;
+  incident: Incident | undefined;
 
   constructor() {
-    this.stats$ = this.statsService.getAdminStats();
-    this.incidents$ = this.incidentService.getIncidents(IncidentStatus.Abierto).pipe(
+    // Compose admin stats from incident API + sessions (mock) + users API
+    this.stats$ = combineLatest([
+      this.incidentService.getIncidentStats(),
+      this.sessionService.getAllSessions(),
+      this.usersService.getUsers().pipe(catchError(() => of([])))
+    ]).pipe(
+      map(([incStats, sessions, users]) => ({
+        totalIncidents: incStats?.total ?? 0,
+        openIncidents: incStats?.open ?? 0,
+        closedIncidents: incStats?.closed ?? 0,
+        totalSessions: Array.isArray(sessions) ? sessions.length : 0,
+        upcomingSessions: Array.isArray(sessions)
+          ? sessions.filter(s => s.scheduledDate && new Date(s.scheduledDate) > new Date()).length
+          : 0,
+        activeUsers: Array.isArray(users) ? users.length : 0
+      } as Stats)),
+      // show null while loading
+      startWith(null),
+      catchError(err => {
+        console.error('Error composing admin stats', err);
+        return of(null);
+      })
+    );
+    this.incidents$ = this.incidentService.getAllIncidents({ status: IncidentStatus.OPEN }).pipe(
   map(incidents => 
     [...incidents]
-      .sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime())
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 3)
   )
 );
@@ -41,6 +66,28 @@ export class AdminDashboardComponent {
           .slice(0, 3)
       )
     );
+  }
+
+  // Optional trackBy functions for ngFor performance (if template uses ngFor)
+  trackByIncident(index: number, item: Incident) {
+    return item?._id || index;
+  }
+
+  trackBySession(index: number, item: Session) {
+    return item?.id || index;
+  }
+
+  getPriorityClass(priority: string): string {
+    switch (priority) {
+      case 'Alta':
+        return 'bg-red-200 text-red-800';
+      case 'Media':
+        return 'bg-yellow-200 text-yellow-800';
+      case 'Baja':
+        return 'bg-green-200 text-green-800';
+      default:
+        return 'bg-gray-500 text-white';
+    }
   }
 
 }

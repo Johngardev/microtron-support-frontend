@@ -1,13 +1,24 @@
 export interface Incident {
-  id: string;
-  status: 'Abierto' | 'Cerrado';
+  _id: string;
+  code: string;
+  status: 'Abierto' | 'En Proceso' | 'Resuelto' | 'Cerrado';
   product: string;
   title: string;
   description?: string;
   priority: 'Alta' | 'Media' | 'Baja';
-  creationDate: Date;
+  createdBy: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+  assignedTo?: {
+    _id: string;
+    name: string;
+    email: string;
+  };
   notificationEmails?: string[];
-  attachments?: File[];
-  admin: string;
+  attachments?: string[];
   phoneNumber?: string;
+  createdAt: string;
+  updatedAt: string;
 }
