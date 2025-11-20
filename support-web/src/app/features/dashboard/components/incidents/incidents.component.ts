@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, OnInit, ViewChild, inject } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
 import { Incident } from '../../../../core/models/incident.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -25,7 +26,7 @@ export enum IncidentStatus {
 @Component({
   selector: 'app-incidents',
   standalone: true,
-  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink],
+  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink, CommonModule],
   templateUrl: './incidents.component.html',
   styleUrl: './incidents.component.css'
 })
@@ -34,7 +35,28 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
   private _incidentService = inject(IncidentService);
   private _authService = inject(AuthService);
 
-  displayedColumns: string[] = ['id', 'status', 'product', 'title', 'admin', 'priority', 'creationDate'];
+  displayedColumns: string[] = ['id', 'status', 'product', 'title', 'admin', 'priority', 'creationDate', 'assignedTo'];
+  // Método para saber si el usuario actual es admin
+  isAdmin(): boolean {
+    const user = this._authService.currentUserValue;
+    return user && user.role === UserRole.ADMIN;
+  }
+
+  // Método para atender incidente (asignar al admin actual)
+  atenderIncidente(incident: Incident): void {
+    const user = this._authService.currentUserValue;
+    if (!user || user.role !== UserRole.ADMIN) return;
+    this._incidentService.updateIncident(incident._id, { assignedTo: user._id }).subscribe({
+      next: (updated) => {
+        // Actualizar la tabla localmente
+        incident.assignedTo = { _id: user._id, name: user.name, email: user.email };
+      },
+      error: (err) => {
+        // Manejo de error (opcional: notificación)
+        console.error('Error asignando incidente:', err);
+      }
+    });
+  }
 
   dataSource = new MatTableDataSource<Incident>();
 
@@ -56,6 +78,12 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Conectar el ordenador a la fuente de datos
     this.dataSource.sort = this.sort;
+    // Debug: listar columnas esperadas y las definidas en el DOM
+    try {
+      const defined = Array.from(document.querySelectorAll('[matColumnDef]')).map(el => el.getAttribute('matColumnDef'));
+    } catch (e) {
+      // ignore
+    }
   }
 
   //--- Filtrado ---

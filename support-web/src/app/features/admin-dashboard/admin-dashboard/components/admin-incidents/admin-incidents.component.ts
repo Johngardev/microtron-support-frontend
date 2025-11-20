@@ -1,4 +1,6 @@
 import { Component, inject, ViewChild } from '@angular/core';
+import { AuthService } from '../../../../../core/services/auth.service';
+import { UserRole } from '../../../../../core/models/user.model';
 import { Incident } from '../../../../../core/models/incident.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -7,21 +9,39 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink } from "@angular/router";
 import { IncidentStatus } from '../../../../dashboard/components/incidents/incidents.component';
 
 @Component({
   selector: 'app-admin-incidents',
   standalone: true,
-  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink],
+  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink, CommonModule],
   templateUrl: './admin-incidents.component.html',
   styleUrl: './admin-incidents.component.css'
 })
 export class AdminIncidentsComponent {
   private _incidentService = inject(IncidentService);
 
-  displayedColumns: string[] = ['id', 'product', 'title', 'admin', 'priority', 'status'];
+  displayedColumns: string[] = ['idCol', 'product', 'title', 'admin', 'priority', 'status', 'assignedTo', 'actions'];
+  private _authService = inject(AuthService);
+  isAdmin(): boolean {
+    const user = this._authService.currentUserValue;
+    return user && user.role === UserRole.ADMIN;
+  }
+
+  atenderIncidente(incident: Incident): void {
+    const user = this._authService.currentUserValue;
+    if (!user || user.role !== UserRole.ADMIN) return;
+    this._incidentService.updateIncident(incident._id, { assignedTo: user._id }).subscribe({
+      next: (updated) => {
+        incident.assignedTo = { _id: user._id, name: user.name, email: user.email };
+      },
+      error: (err) => {
+        console.error('Error asignando incidente:', err);
+      }
+    });
+  }
 
   dataSource = new MatTableDataSource<Incident>();
 
@@ -44,6 +64,10 @@ export class AdminIncidentsComponent {
   ngAfterViewInit(): void {
     // Conectar el ordenador a la fuente de datos
     this.dataSource.sort = this.sort;
+    try {
+      const defined = Array.from(document.querySelectorAll('[matColumnDef]')).map(el => el.getAttribute('matColumnDef'));
+      console.log('[AdminIncidents] displayedColumns=', this.displayedColumns, 'defined matColumnDefs=', defined);
+    } catch (e) {}
   }
 
   //--- Filtrado ---
