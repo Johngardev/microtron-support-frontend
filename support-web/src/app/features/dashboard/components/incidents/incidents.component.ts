@@ -10,6 +10,8 @@ import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateIncidentComponent } from '../../../../shared/create-incident/create-incident.component';
 import { IncidentService } from '../../../../core/services/incident.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { UserRole } from '../../../../core/models/user.model';
 import { RouterLink } from "@angular/router";
 
 export enum IncidentStatus {
@@ -30,6 +32,7 @@ export enum IncidentStatus {
 export class IncidentsComponent implements OnInit, AfterViewInit {
   private _dialog = inject(MatDialog);
   private _incidentService = inject(IncidentService);
+  private _authService = inject(AuthService);
 
   displayedColumns: string[] = ['id', 'status', 'product', 'title', 'admin', 'priority', 'creationDate'];
 
@@ -64,7 +67,14 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
   // --- Filtrado por estado (usando el servicio) ---
   filterByStatus(status: IncidentStatus): void {
     this._incidentService.getAllIncidents({ status: status }).subscribe(data => {
-      this.dataSource.data = data;
+      // Si el usuario actual tiene rol 'user', mostrar solo los incidentes creados por él
+      const currentUser = this._authService.currentUserValue;
+      if (currentUser && currentUser.role === UserRole.USER) {
+        this.dataSource.data = data.filter(i => i.createdBy && i.createdBy._id === currentUser._id);
+      } else {
+        // administradores u otros roles ven todos
+        this.dataSource.data = data;
+      }
       // Re-aplica el filtro de texto si existe
       if (this.dataSource.filter) {
         this.dataSource.filter = this.dataSource.filter;
@@ -74,11 +84,22 @@ export class IncidentsComponent implements OnInit, AfterViewInit {
 
   // --- Carga de estadísticas (usando el servicio) ---
   loadStats(): void {
-    this._incidentService.getIncidentStats().subscribe(stats => {
-      this.totalIncidents = stats.total;
-      this.totalOpenIncidents = stats.open;
-      this.totalClosedIncidents = stats.closed;
-    });
+    const currentUser = this._authService.currentUserValue;
+    if (currentUser && currentUser.role === UserRole.USER) {
+      // Solicitar estadísticas filtradas por el usuario actual
+      this._incidentService.getIncidentStats({ createdBy: currentUser._id }).subscribe(stats => {
+        this.totalIncidents = stats.total;
+        this.totalOpenIncidents = stats.open;
+        this.totalClosedIncidents = stats.closed;
+      });
+    } else {
+      // Administradores u otros roles ven estadísticas globales
+      this._incidentService.getIncidentStats().subscribe(stats => {
+        this.totalIncidents = stats.total;
+        this.totalOpenIncidents = stats.open;
+        this.totalClosedIncidents = stats.closed;
+      });
+    }
   }
 
 }

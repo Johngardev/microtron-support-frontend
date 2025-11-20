@@ -103,13 +103,24 @@ export class IncidentService {
   }
 
   /**
-   * Obtiene estadísticas de incidentes
+   * Obtiene estadísticas de incidentes, opcionalmente filtradas (p.ej. por createdBy)
    */
-  getIncidentStats(): Observable<IncidentStats> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.authService.getToken()}`
-    });
-    return this.http.get<IncidentStats>(`${this.apiUrl}/stats`, { headers });
+  getIncidentStats(filter?: { createdBy?: string }): Observable<IncidentStats> {
+    const token = this.authService.getToken();
+
+    const params: any = {};
+    if (filter?.createdBy) {
+      params.createdBy = filter.createdBy;
+    }
+
+    const options = {
+      params: params,
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+
+    return this.http.get<IncidentStats>(`${this.apiUrl}/stats`, options);
   }
 
 }
