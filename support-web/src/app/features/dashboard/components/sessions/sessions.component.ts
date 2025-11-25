@@ -5,6 +5,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { DatePipe } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
 import { SessionService } from '../../../../core/services/session.service';
@@ -22,7 +23,7 @@ export enum SessionStatus {
 @Component({
   selector: 'app-sessions',
   standalone: true,
-  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, CreateSessionComponent, RouterLink],
+  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, MatIconModule, DatePipe, CreateSessionComponent, RouterLink],
   templateUrl: './sessions.component.html',
   styleUrl: './sessions.component.css'
 })

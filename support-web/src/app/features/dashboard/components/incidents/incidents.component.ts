@@ -7,6 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs'; 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateIncidentComponent } from '../../../../shared/create-incident/create-incident.component';
@@ -26,7 +27,7 @@ export enum IncidentStatus {
 @Component({
   selector: 'app-incidents',
   standalone: true,
-  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink, CommonModule],
+  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, MatIconModule, DatePipe, RouterLink, CommonModule],
   templateUrl: './incidents.component.html',
   styleUrl: './incidents.component.css'
 })
