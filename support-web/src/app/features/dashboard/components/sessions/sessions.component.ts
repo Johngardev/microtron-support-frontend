@@ -23,7 +23,7 @@ export enum SessionStatus {
 @Component({
   selector: 'app-sessions',
   standalone: true,
-  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, MatIconModule, DatePipe, CreateSessionComponent, RouterLink],
+  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, MatIconModule, DatePipe, RouterLink],
   templateUrl: './sessions.component.html',
   styleUrl: './sessions.component.css'
 })

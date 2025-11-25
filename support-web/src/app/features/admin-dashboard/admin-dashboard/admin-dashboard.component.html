@@ -128,14 +128,14 @@
           <div class="flex items-center min-w-0">
             <div
               class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary text-lg font-semibold flex-shrink-0">
-              {{ session.manufacturer?.name?.charAt(0)?.toUpperCase() || '?' }}
+              {{ session.manufacturer.name.charAt(0).toUpperCase() || '?' }}
             </div>
             <div class="ml-3 min-w-0">
               <p class="text-sm font-medium text-gray-900 truncate" [title]="session.admin">
                 {{ session.admin || 'Sin asignar' }}
               </p>
-              <p class="text-xs text-gray-500 truncate" [title]="session.manufacturer?.name">
-                {{ session.manufacturer?.name || 'Sin fabricante' }}
+              <p class="text-xs text-gray-500 truncate" [title]="session.manufacturer.name">
+                {{ session.manufacturer.name || 'Sin fabricante' }}
               </p>
             </div>
           </div>
