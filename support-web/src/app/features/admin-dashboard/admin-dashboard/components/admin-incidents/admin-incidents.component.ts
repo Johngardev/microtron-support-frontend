@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink } from "@angular/router";
 import { IncidentStatus } from '../../../../dashboard/components/incidents/incidents.component';
@@ -16,7 +17,7 @@ import { IncidentStatus } from '../../../../dashboard/components/incidents/incid
 @Component({
   selector: 'app-admin-incidents',
   standalone: true,
-  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink, CommonModule],
+  imports: [MatTableModule, MatTabsModule, MatFormFieldModule, MatInputModule, MatIconModule, DatePipe, RouterLink, CommonModule],
   templateUrl: './admin-incidents.component.html',
   styleUrl: './admin-incidents.component.css'
 })

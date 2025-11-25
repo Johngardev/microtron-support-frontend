@@ -22,7 +22,7 @@
     <!-- Open Incidents Card -->
     <div class="bg-white p-6 rounded-lg shadow h-full">
       <div class="flex items-center">
-        <span class="text-2xl mr-3">⚠️</span>
+        <span class="text-2xl mr-3">🆘</span>
         <h3 class="text-gray-500 text-sm font-medium">Incidentes Abiertos</h3>
       </div>
       <p class="text-3xl font-bold text-red-400 mt-2">
@@ -44,7 +44,7 @@
     <!-- Assigned Incidents Card -->
     <div class="bg-white p-6 rounded-lg shadow h-full">
       <div class="flex items-center">
-        <span class="text-2xl mr-3">👨</span>
+        <span class="text-2xl mr-3">✔</span>
         <h3 class="text-gray-500 text-sm font-medium">Incidentes Asignados</h3>
       </div>
       <p class="text-3xl font-bold text-green-600 mt-2">
@@ -56,7 +56,7 @@
     <div class="bg-white p-6 rounded-lg shadow h-full">
       <div class="flex items-center">
         <span class="text-2xl mr-3">❓</span>
-        <h3 class="text-gray-500 text-sm font-medium">Sin Asignar</h3>
+        <h3 class="text-gray-500 text-sm font-medium">Incidentes sin Asignar</h3>
       </div>
       <p class="text-3xl font-bold text-gray-500 mt-2">
         {{ (stats$ | async)?.unassignedIncidents || 0 }}
