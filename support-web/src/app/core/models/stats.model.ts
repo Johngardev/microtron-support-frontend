@@ -5,4 +5,6 @@ export interface Stats {
   totalSessions: number;
   upcomingSessions: number;
   activeUsers: number;
+  assignedIncidents: number;
+  unassignedIncidents: number;
 }

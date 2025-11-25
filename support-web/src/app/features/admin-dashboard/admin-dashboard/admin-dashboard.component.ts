@@ -33,18 +33,27 @@ export class AdminDashboardComponent {
     this.stats$ = combineLatest([
       this.incidentService.getIncidentStats(),
       this.sessionService.getAllSessions(),
-      this.usersService.getUsers().pipe(catchError(() => of([])))
+      this.usersService.getUsers().pipe(catchError(() => of([]))),
+      // include all incidents so we can compute assigned/unassigned counts
+      this.incidentService.getAllIncidents().pipe(catchError(() => of([])))
     ]).pipe(
-      map(([incStats, sessions, users]) => ({
-        totalIncidents: incStats?.total ?? 0,
-        openIncidents: incStats?.open ?? 0,
-        closedIncidents: incStats?.closed ?? 0,
-        totalSessions: Array.isArray(sessions) ? sessions.length : 0,
-        upcomingSessions: Array.isArray(sessions)
-          ? sessions.filter(s => s.scheduledDate && new Date(s.scheduledDate) > new Date()).length
-          : 0,
-        activeUsers: Array.isArray(users) ? users.length : 0
-      } as Stats)),
+      map(([incStats, sessions, users, allIncidents]) => {
+        const incidentsArray = Array.isArray(allIncidents) ? allIncidents : [];
+        const assigned = incidentsArray.filter(i => i && i.assignedTo).length;
+        const unassigned = incidentsArray.length - assigned;
+        return ({
+          totalIncidents: incStats?.total ?? 0,
+          openIncidents: incStats?.open ?? 0,
+          closedIncidents: incStats?.closed ?? 0,
+          totalSessions: Array.isArray(sessions) ? sessions.length : 0,
+          upcomingSessions: Array.isArray(sessions)
+            ? sessions.filter(s => s.scheduledDate && new Date(s.scheduledDate) > new Date()).length
+            : 0,
+          activeUsers: Array.isArray(users) ? users.length : 0,
+          assignedIncidents: assigned,
+          unassignedIncidents: unassigned
+        } as Stats);
+      }),
       // show null while loading
       startWith(null),
       catchError(err => {

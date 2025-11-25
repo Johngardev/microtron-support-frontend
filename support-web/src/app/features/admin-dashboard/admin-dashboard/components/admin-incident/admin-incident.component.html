@@ -54,8 +54,16 @@
       <div class="bg-white border rounded-lg p-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Acciones</h3>
         <div class="flex flex-col gap-3 ">
-          <button class="bg-gray-100 text-gray-800 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-200">Reabrir incidencia</button>
-          <button class="bg-gray-100 text-gray-800 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-200">Realizar encuesta</button>
+          <button (click)="reopenIncident()"
+            [disabled]="isUpdating || incident.status !== 'Cerrado'"
+            class="bg-gray-100 text-gray-800 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-200 disabled:opacity-50">
+            Reabrir incidencia
+          </button>
+          <button (click)="closeIncident()"
+            [disabled]="isUpdating || incident.status === 'Cerrado'"
+            class="bg-gray-100 text-gray-800 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-200 disabled:opacity-50">
+            Cerrar incidencia
+          </button>
         </div>
       </div>
 

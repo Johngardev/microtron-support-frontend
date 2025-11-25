@@ -66,7 +66,6 @@ export class AdminIncidentsComponent {
     this.dataSource.sort = this.sort;
     try {
       const defined = Array.from(document.querySelectorAll('[matColumnDef]')).map(el => el.getAttribute('matColumnDef'));
-      console.log('[AdminIncidents] displayedColumns=', this.displayedColumns, 'defined matColumnDefs=', defined);
     } catch (e) {}
   }
 

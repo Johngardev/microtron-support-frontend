@@ -122,5 +122,4 @@ export class IncidentService {
 
     return this.http.get<IncidentStats>(`${this.apiUrl}/stats`, options);
   }
-
 }

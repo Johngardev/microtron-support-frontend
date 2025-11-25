@@ -7,11 +7,12 @@
 
   <!-- Stats Cards -->
   <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+
     <!-- Total Incidents Card -->
     <div class="bg-white p-6 rounded-lg shadow h-full">
       <div class="flex items-center">
         <span class="text-2xl mr-3">📊</span>
-        <h3 class="text-gray-500 text-sm font-medium">Incidentes Totales</h3>
+        <a routerLink="/admin/incidents" class="text-gray-500 text-sm font-medium hover:underline">Incidentes Totales</a>
       </div>
       <p class="text-3xl font-bold text-gray-400 mt-2">
         {{ (stats$ | async)?.totalIncidents || 0 }}
@@ -39,6 +40,39 @@
         {{ (stats$ | async)?.upcomingSessions || 0 }}
       </p>
     </div>
+
+    <!-- Assigned Incidents Card -->
+    <div class="bg-white p-6 rounded-lg shadow h-full">
+      <div class="flex items-center">
+        <span class="text-2xl mr-3">👨</span>
+        <h3 class="text-gray-500 text-sm font-medium">Incidentes Asignados</h3>
+      </div>
+      <p class="text-3xl font-bold text-green-600 mt-2">
+        {{ (stats$ | async)?.assignedIncidents || 0 }}
+      </p>
+    </div>
+
+    <!-- Unassigned Incidents Card -->
+    <div class="bg-white p-6 rounded-lg shadow h-full">
+      <div class="flex items-center">
+        <span class="text-2xl mr-3">❓</span>
+        <h3 class="text-gray-500 text-sm font-medium">Sin Asignar</h3>
+      </div>
+      <p class="text-3xl font-bold text-gray-500 mt-2">
+        {{ (stats$ | async)?.unassignedIncidents || 0 }}
+      </p>
+    </div>
+
+    <!-- Active Users Card -->
+    <div class="bg-white p-6 rounded-lg shadow h-full">
+      <div class="flex items-center">
+        <span class="text-2xl mr-3">👨‍💼</span>
+        <a routerLink="/admin/users" class="text-gray-500 text-sm font-medium hover:underline">Usuarios Activos</a>
+      </div>
+      <p class="text-3xl font-bold text-green-400 mt-2">
+        {{ (stats$ | async)?.activeUsers || 0 }}
+      </p>
+    </div>  
   </section>
 
   <!-- Main Content -->
