@@ -1,94 +1,154 @@
 <section class="flex flex-col m-6">
-  <h2 mat-dialog-title class="text-xl font-semibold mb-4">Agendar Sesión</h2>
+  <h2 mat-dialog-title class="text-xl font-semibold mb-4">Agendar Nueva Sesión</h2>
 
-  <mat-dialog-content class="mat-typography">
+  <mat-dialog-content class="mat-typography max-h-96 overflow-y-auto">
     <form [formGroup]="sessionForm">
+      <!-- Fabricante -->
       <div class="m-4">
-        <p class="font-semibold">Seleccione el fabricante en que requiere enfocar la sesion:</p>
-        <p class="text-sm text-gray-500">Selecciona el fabricante en que requieres enfocar la sesion.</p>
+        <p class="font-semibold">Seleccione el fabricante:</p>
+        <p class="text-sm text-gray-500">Elige el fabricante en el que requieres enfocar la sesión.</p>
         <mat-form-field class="w-full">
           <mat-label>Fabricante</mat-label>
           <mat-select formControlName="manufacturer" required>
-            <mat-option value="adobe">Adobe</mat-option>
-            <mat-option value="anydesk">Anydesk</mat-option>
-            <mat-option value="atlasti">Atlas.ti</mat-option>
-            <mat-option value="autodesk">Autodesk</mat-option>
-            <mat-option value="claris">Claris</mat-option>
-            <mat-option value="corel">Corel</mat-option>
-            <mat-option value="graphisoft">Graphisoft</mat-option>
-            <mat-option value="kaspersky">Kaspersky</mat-option>
-            <mat-option value="microsoft">Microsoft</mat-option>
-            <mat-option value="panopto">Panopto</mat-option>
-            <mat-option value="sketchup">SketchUp</mat-option>
-            <mat-option value="starlab">Starlab</mat-option>
+            @for (manufacturer of manufacturers; track manufacturer.key) {
+              <mat-option [value]="manufacturer.key">{{ manufacturer.name }}</mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>
       <mat-divider></mat-divider>
+
+      <!-- Título -->
       <div class="m-4">
-        <p class="font-semibold">Escribe el producto especifico que requieres enfocar la sesion:</p>
-        <p class="text-sm text-gray-500">Escribe el producto especifico que requieres enfocar la sesion.</p>
+        <p class="font-semibold">Título de la sesión:</p>
+        <p class="text-sm text-gray-500">Proporciona un título descriptivo para la sesión.</p>
         <mat-form-field class="w-full">
-          <mat-label>Producto</mat-label>
-          <input matInput formControlName="product">
+          <mat-label>Título</mat-label>
+          <input matInput formControlName="title" required>
         </mat-form-field>
       </div>
       <mat-divider></mat-divider>
+
+      <!-- Descripción -->
       <div class="m-4">
-        <p class="font-semibold">Describe el tema</p>
-        <p class="text-sm text-gray-500">Describe el tema que requieres enfocar la sesion.</p>
+        <p class="font-semibold">Descripción:</p>
+        <p class="text-sm text-gray-500">Describe el tema que necesitas cubrir en la sesión.</p>
         <mat-form-field class="w-full">
-          <mat-label>Introducir tema</mat-label>
-          <textarea matInput formControlName="description"></textarea>
+          <mat-label>Descripción</mat-label>
+          <textarea matInput formControlName="description" rows="3"></textarea>
         </mat-form-field>
       </div>
       <mat-divider></mat-divider>
+
+      <!-- Email principal -->
       <div class="m-4">
-        <p class="font-semibold">Introduce tu numero de telefono:</p>
-        <p class="text-sm text-gray-500">Introduce tu numero de telefono para que podamos contactarte.</p>
+        <p class="font-semibold">Tu correo electrónico:</p>
+        <p class="text-sm text-gray-500">Correo de contacto principal para la sesión.</p>
         <mat-form-field class="w-full">
-          <mat-label>Introducir numero de telefono</mat-label>
-          <input matInput formControlName="phone">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput formControlName="email" type="email" required>
         </mat-form-field>
       </div>
       <mat-divider></mat-divider>
+
+      <!-- Emails adicionales -->
       <div class="m-4">
-        <p class="font-semibold">Correo electronico:</p>
-        <p class="text-sm text-gray-500">Se te enviarán comunicaciones a esta dirección.</p>
-        <p class="text-xl font-semibold">{{ currentUser }}</p>
+        <p class="font-semibold">Correos adicionales:</p>
+        <p class="text-sm text-gray-500">Agrega emails de otros participantes.</p>
+        <div class="flex gap-2 mb-3">
+          <mat-form-field class="flex-1">
+            <mat-label>Añadir correo</mat-label>
+            <input matInput type="email" #emailInput (keyup.enter)="addEmail()">
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="addEmail()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        @if (selectedEmails.length > 0) {
+          <div class="flex flex-wrap gap-2">
+            @for (email of selectedEmails; track email) {
+              <mat-chip (removed)="removeEmail(email)">
+                {{ email }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip>
+            }
+          </div>
+        }
       </div>
       <mat-divider></mat-divider>
+
+      <!-- Fecha programada -->
       <div class="m-4">
-        <p class="font-semibold">Planear horario para la sesion:</p>
+        <p class="font-semibold">Fecha programada:</p>
+        <p class="text-sm text-gray-500">Selecciona la fecha en que deseas programar la sesión.</p>
+        <mat-form-field class="w-full">
+          <mat-label>Fecha</mat-label>
+          <input matInput type="date" formControlName="scheduledDate" required>
+        </mat-form-field>
+        @if (sessionForm.controls.calendlyEventUri.value) {
+          <p class="text-sm text-green-700 mt-2">Fecha establecida por Calendly. Puedes editarla si lo deseas.</p>
+        }
+      </div>
+      <mat-divider></mat-divider>
+
+      <!-- Calendly -->
+      <div class="m-4">
+        <p class="font-semibold">Agendar en Calendly:</p>
         <p class="text-sm text-gray-500">
-          Primero completa los campos anteriores y luego haz clic para seleccionar
-          fecha y hora en Calendly.
+          Completa los campos anteriores y luego haz clic para seleccionar fecha y hora en Calendly.
         </p>
 
-        <button mat-stroked-button color="primary" class="w-full mt-2" (click)="scheduleSession()"
+        <button 
+          mat-stroked-button 
+          color="primary" 
+          class="w-full mt-2" 
+          (click)="scheduleSession()"
           [disabled]="!isFormPrefilled">
           <mat-icon>calendar_month</mat-icon>
-          Seleccionar Fecha y Hora
+          Seleccionar Fecha y Hora en Calendly
         </button>
 
-        @if (sessionForm.controls.calendlyEventUri.valid) {
-        <div class="text-green-600 font-semibold mt-4 p-3 bg-green-50 rounded-md flex items-center">
-          <mat-icon>check_circle</mat-icon>
-          <span class="ml-2">¡Sesión programada con éxito!</span>
-        </div>
+        @if (sessionForm.controls.calendlyEventUri.value) {
+          <div class="mt-4 p-3 bg-green-50 rounded-md">
+            <div class="flex items-start justify-between">
+              <div class="flex items-start">
+                <mat-icon class="text-green-600">check_circle</mat-icon>
+                <div class="ml-3">
+                  <div class="text-green-600 font-semibold">¡Sesión programada en Calendly!</div>
+                  <div class="text-sm text-gray-700">Fecha: {{ sessionForm.controls.scheduledDate.value || calendlyEventData?.event?.start_time }}</div>
+                  @if (sessionForm.controls.calendlyEventUri.value) {
+                    <div class="text-sm mt-1"><a class="text-blue-600 underline" href="{{ sessionForm.controls.calendlyEventUri.value }}" target="_blank" rel="noopener">Ver evento en Calendly</a></div>
+                  }
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button mat-stroked-button color="warn" (click)="clearCalendlySelection()">Borrar selección</button>
+              </div>
+            </div>
+          </div>
         }
-
       </div>
-      <mat-divider></mat-divider>
     </form>
   </mat-dialog-content>
-  <mat-dialog-actions class="mt-4">
-    <button class="ml-auto bg-gray-200 text-gray-800 hover:bg-gray-300 rounded-full px-4 py-2 font-semibold"
-      mat-dialog-close>Cancelar</button>
-    <button class="ml-auto bg-primary text-white hover:bg-primary/80 rounded-full px-4 py-2 font-semibold"
-      [mat-dialog-close]="sessionForm.value" cdkFocusInitial
-      [disabled]="!sessionForm.valid">
-      Confirmar Sesión
+
+  <mat-dialog-actions class="mt-4 flex justify-end gap-2">
+    <button 
+      class="bg-gray-200 text-gray-800 hover:bg-gray-300 rounded-full px-4 py-2 font-semibold"
+      (click)="closeDialog()">
+      Cancelar
+    </button>
+    <button 
+      class="bg-primary text-white hover:bg-primary/80 rounded-full px-4 py-2 font-semibold disabled:opacity-50"
+      (click)="submitSession()"
+      [disabled]="!sessionForm.valid || !calendlyEventData || isSubmitting">
+      @if (isSubmitting) {
+        <mat-icon class="animate-spin">hourglass_empty</mat-icon>
+        Creando...
+      } @else {
+        Confirmar Sesión
+      }
     </button>
   </mat-dialog-actions>
 </section>

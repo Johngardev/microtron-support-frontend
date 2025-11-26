@@ -1,8 +1,12 @@
 import { Manufacturer } from "./manufacturer.model";
 
 export interface Session {
+  calendlyEventUri: any;
   id: string;
-  manufacturer: Manufacturer;
+  // Compatibilidad: el backend devuelve manufacturerKey/manufacturerName.
+  manufacturer?: Manufacturer | null;
+  manufacturerKey?: string;
+  manufacturerName?: string;
   title: string;
   description?: string;
   admin: string;

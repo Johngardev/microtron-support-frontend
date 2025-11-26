@@ -82,7 +82,7 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ incident.createdAt| date: 'dd/MM/yyyy' }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                   @if (incident.assignedTo) {
-                    <span class="text-gray-900">{{ incident.assignedTo.name }}</span>
+                    <span class="text-gray-900">{{ incident.assignedTo?.name }}</span>
                   } @else {
                     <span class="text-gray-400">Sin asignar</span>
                   }

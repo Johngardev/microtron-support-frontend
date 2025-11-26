@@ -70,7 +70,7 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <a [routerLink]="['/session', session.id]" class="text-primary hover:text-primary/80 hover:underline font-medium">{{ session.id }}</a>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ session.manufacturer.name }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ session.manufacturer?.name || session.manufacturerName || session.manufacturerKey }}</td>
                 <td class="px-6 py-4 text-sm text-gray-900">{{ session.title }}</td>
                 <td class="px-6 py-4 text-sm text-gray-900">{{ session.description }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ session.admin }}</td>

@@ -12,6 +12,17 @@ interface Notification {
   providedIn: 'root'
 })
 export class NotificationService {
+  error(message: string, duration = 5000) {
+    this.show({ id: String(Date.now()), message, type: 'error', duration });
+  }
+
+  success(message: string, duration = 4000) {
+    this.show({ id: String(Date.now()), message, type: 'success', duration });
+  }
+
+  warning(message: string, duration = 5000) {
+    this.show({ id: String(Date.now()), message, type: 'warning', duration });
+  }
   private notificationSubject = new BehaviorSubject<Notification[]>([]);
   public notification$ = this.notificationSubject.asObservable();
 
