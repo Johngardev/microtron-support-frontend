@@ -36,6 +36,10 @@ export class HeaderComponent {
     return role === 'admin';
   }
 
+  isUser(role: string): boolean {
+    return role === 'user';
+  }
+
   toggleUserMenu(event?: Event): void {
     if (event) {
       event.stopPropagation();
