@@ -10,11 +10,12 @@ import { RouterLink } from "@angular/router";
 import { NgClass } from '@angular/common';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { NotificationService } from '../../../../../core/services/notification.service';
+import { IncidentChatComponent } from '../../../../../shared/incident-chat/incident-chat.component';
 
 @Component({
   selector: 'app-admin-incident',
   standalone: true,
-  imports: [MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink, NgClass],
+  imports: [MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink, NgClass, IncidentChatComponent, AsyncPipe],
   templateUrl: './admin-incident.component.html',
   styleUrl: './admin-incident.component.css'
 })

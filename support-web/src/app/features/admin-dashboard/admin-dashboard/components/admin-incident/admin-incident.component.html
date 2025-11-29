@@ -1,15 +1,15 @@
 <section class="p-6 max-w-7xl mx-auto bg-gray-50">
   @if (incident) {
-   <div class="mb-6">
+  <div class="mb-6">
     <nav class="text-sm text-gray-500">
       <a routerLink="/admin/incidents" class="hover:underline">Casos de asistencia técnica</a>
       <span class="mx-2 font-bold">></span>
       <span>{{ incident.title }}</span>
     </nav>
     <h1 class="text-3xl text-gray-800 mt-2">{{ incident.title }}</h1>
-   </div> 
+  </div>
 
-   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <main class="lg:col-span-2">
       <div class="bg-white border rounded-lg p-6">
         <div class="flex justify-between items-center border-b pb-4 mb-4">
@@ -29,7 +29,7 @@
           </div>
           <div>
             <p class="text-gray-500 uppercase text-xs tracking-wider">Administrador</p>
-            <p class="text-gray-900 font-semibold mt-1">{{ incident.createdBy.name }}</p>
+            <p class="text-gray-900 font-semibold mt-1">{{ incident.createdBy.email }}</p>
           </div>
           <div>
             <p class="text-gray-500 uppercase text-xs tracking-wider">Prioridad</p>
@@ -45,22 +45,20 @@
 
       <div class="mt-8">
         <h2 class="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Debate</h2>
-        <div class="space-y-6">
-          comments
-        </div>
+        <app-incident-chat [incidentId]="incident._id" [currentUserName]="(currentUser$ | async)?.name || 'Admin'"
+          currentUserType="Admin">
+        </app-incident-chat>
       </div>
     </main>
     <aside>
       <div class="bg-white border rounded-lg p-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Acciones</h3>
         <div class="flex flex-col gap-3 ">
-          <button (click)="reopenIncident()"
-            [disabled]="isUpdating || incident.status !== 'Cerrado'"
+          <button (click)="reopenIncident()" [disabled]="isUpdating || incident.status !== 'Cerrado'"
             class="bg-gray-100 text-gray-800 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-200 disabled:opacity-50">
             Reabrir incidencia
           </button>
-          <button (click)="closeIncident()"
-            [disabled]="isUpdating || incident.status === 'Cerrado'"
+          <button (click)="closeIncident()" [disabled]="isUpdating || incident.status === 'Cerrado'"
             class="bg-gray-100 text-gray-800 px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-200 disabled:opacity-50">
             Cerrar incidencia
           </button>
@@ -77,7 +75,7 @@
         </div>
       </div>
     </aside>
-   </div>
+  </div>
   } @else {
   <p class="text-center text-gray-500">Cargando datos del incidente...</p>
   }

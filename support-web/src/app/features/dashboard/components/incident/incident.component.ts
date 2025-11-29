@@ -8,11 +8,12 @@ import { MatInputModule } from '@angular/material/input';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from "@angular/router";
 import { NgClass } from '@angular/common';
+import { IncidentChatComponent } from '../../../../shared/incident-chat/incident-chat.component';
 
 @Component({
   selector: 'app-incident',
   standalone: true,
-  imports: [MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink, NgClass],
+  imports: [MatTabsModule, MatFormFieldModule, MatInputModule, DatePipe, RouterLink, NgClass, IncidentChatComponent],
   templateUrl: './incident.component.html',
   styleUrl: './incident.component.css'
 })
